@@ -17,7 +17,7 @@
 
   <properties>
     <sonar.version>2.11</sonar.version>
-    <sslrVersion>1.11-SNAPSHOT</sslrVersion>
+    <sslrVersion>1.11</sslrVersion>
   </properties>
   
   <modules>
