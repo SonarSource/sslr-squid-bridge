@@ -17,6 +17,7 @@
   <properties>
     <sonar.version>2.11</sonar.version>
     <sslrVersion>1.11-SNAPSHOT</sslrVersion>
+    <sonar.switchoffviolations.configFile>${project.basedir}/violations-filter.txt</sonar.switchoffviolations.configFile>
   </properties>
   
 	<dependencies>
