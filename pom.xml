@@ -15,6 +15,12 @@
 
 	<name>SonarSource :: Language Recognizer :: Squid Bridge :: Parent</name>
 
+  <scm>
+    <connection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</connection>
+    <developerConnection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</developerConnection>
+    <url>https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</url>
+  </scm>
+
   <properties>
     <sonar.version>2.11</sonar.version>
     <sslrVersion>1.11</sslrVersion>
