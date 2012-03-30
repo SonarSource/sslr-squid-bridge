@@ -10,15 +10,15 @@
 
   <groupId>com.sonarsource.sslr</groupId>
 	<artifactId>sslr-squid-bridge-parent</artifactId>
-  <version>1.0-SNAPSHOT</version>
+  <version>1.0</version>
   <packaging>pom</packaging>
 
 	<name>SonarSource :: Language Recognizer :: Squid Bridge :: Parent</name>
 
   <scm>
-    <connection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</connection>
-    <developerConnection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</developerConnection>
-    <url>https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</url>
+    <connection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/tags/sslr-squid-bridge-parent-1.0</connection>
+    <developerConnection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/tags/sslr-squid-bridge-parent-1.0</developerConnection>
+    <url>https://subversion.assembla.com/svn/sonarsourcecode/tags/sslr-squid-bridge-parent-1.0</url>
   </scm>
 
   <properties>
