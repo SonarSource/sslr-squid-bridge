@@ -9,11 +9,11 @@
   </parent>
 
   <groupId>com.sonarsource.sslr</groupId>
-	<artifactId>sslr-squid-bridge-parent</artifactId>
+  <artifactId>sslr-squid-bridge-parent</artifactId>
   <version>1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
 
-	<name>SonarSource :: Language Recognizer :: Squid Bridge :: Parent</name>
+  <name>SonarSource :: Language Recognizer :: Squid Bridge :: Parent</name>
 
   <scm>
     <connection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</connection>
@@ -25,7 +25,7 @@
     <sonar.version>2.11</sonar.version>
     <sslrVersion>1.11</sslrVersion>
   </properties>
-  
+
   <modules>
     <module>sslr-squid-bridge</module>
     <module>sslr-squid-bridge-testing-harness</module>

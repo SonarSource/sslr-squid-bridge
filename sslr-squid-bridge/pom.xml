@@ -9,16 +9,16 @@
   </parent>
 
   <groupId>com.sonarsource.sslr</groupId>
-	<artifactId>sslr-squid-bridge</artifactId>
+  <artifactId>sslr-squid-bridge</artifactId>
   <version>1.1-SNAPSHOT</version>
 
-	<name>SonarSource :: Language Recognizer :: Squid Bridge</name>
+  <name>SonarSource :: Language Recognizer :: Squid Bridge</name>
 
   <properties>
     <sonar.switchoffviolations.configFile>${project.basedir}/violations-filter.txt</sonar.switchoffviolations.configFile>
   </properties>
-  
-	<dependencies>
+
+  <dependencies>
     <dependency>
       <groupId>com.sonarsource.sslr</groupId>
       <artifactId>sslr-core</artifactId>
@@ -76,5 +76,5 @@
       <artifactId>hamcrest-all</artifactId>
       <scope>test</scope>
     </dependency>
-	</dependencies>
+  </dependencies>
 </project>
