@@ -6,6 +6,8 @@
 
 package com.sonar.sslr.squid.checks;
 
+import com.google.common.collect.Maps;
+import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultiset;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
@@ -98,35 +100,35 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
     }
 
     public void printReport() {
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
-      System.out.println("********************************"); // NOSONAR println() is ok here, KIIS principle
-      System.out.println("* Violation differences report *"); // NOSONAR println() is ok here, KIIS principle
-      System.out.println("********************************"); // NOSONAR println() is ok here, KIIS principle
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      System.out.println("********************************"); // NOSONAR println() is ok here, KISS principle
+      System.out.println("* Violation differences report *"); // NOSONAR println() is ok here, KISS principle
+      System.out.println("********************************"); // NOSONAR println() is ok here, KISS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
       printDifferencesByFile();
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
       printDifferencesByRule();
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
-      System.out.println("*****************"); // NOSONAR println() is ok here, KIIS principle
-      System.out.println("* End of report *"); // NOSONAR println() is ok here, KIIS principle
-      System.out.println("*****************"); // NOSONAR println() is ok here, KIIS principle
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
-      System.out.println(); // NOSONAR println() is ok here, KIIS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      System.out.println("*****************"); // NOSONAR println() is ok here, KISS principle
+      System.out.println("* End of report *"); // NOSONAR println() is ok here, KISS principle
+      System.out.println("*****************"); // NOSONAR println() is ok here, KISS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      System.out.println(); // NOSONAR println() is ok here, KISS principle
     }
 
     private void printDifferencesByFile() {
-      System.out.println("Differences by file:"); // NOSONAR println() is ok here, KIIS principle
+      System.out.println("Differences by file:"); // NOSONAR println() is ok here, KISS principle
 
-      Set<String[]> handledFilesRules = new HashSet<String[]>();
+      Set<Map.Entry<String, String>> handledFilesRules = Sets.newHashSet();
 
       for (String file : expected.violationsByFileAndRule.keySet()) {
         boolean shouldPrintHeader = true;
         for (String rule : expected.violationsByFileAndRule.get(file).keySet()) {
-          handledFilesRules.add(new String[] {file, rule});
+          handledFilesRules.add(Maps.immutableEntry(file, rule));
           shouldPrintHeader = printDifferencesByFileAndRule(shouldPrintHeader, file, rule);
         }
       }
@@ -134,18 +136,18 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
       for (String file : actual.violationsByFileAndRule.keySet()) {
         boolean shouldPrintHeader = true;
         for (String rule : actual.violationsByFileAndRule.get(file).keySet()) {
-          if (handledFilesRules.contains(new String[] {file, rule})) {
+          if (handledFilesRules.contains(Maps.immutableEntry(file, rule))) {
             continue;
           }
           shouldPrintHeader = printDifferencesByFileAndRule(shouldPrintHeader, file, rule);
         }
       }
 
-      System.out.println("End of differences by file."); // NOSONAR println() is ok here, KIIS principle
+      System.out.println("End of differences by file."); // NOSONAR println() is ok here, KISS principle
     }
 
     private static void printDifferencesByFileHeader(String file) {
-      System.out.println("  File " + file + ":"); // NOSONAR println() is ok here, KIIS principle
+      System.out.println("  File " + file + ":"); // NOSONAR println() is ok here, KISS principle
     }
 
     private boolean printDifferencesByFileAndRule(boolean shouldPrintHeader, String file, String rule) {
@@ -160,7 +162,7 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
           printDifferencesByFileHeader(file);
         }
 
-        System.out.println("    " + rule + ", (difference only) expected (" // NOSONAR println() is ok here, KIIS principle
+        System.out.println("    " + rule + ", (difference only) expected (" // NOSONAR println() is ok here, KISS principle
           + StringUtils.join(setDifference(linesExpected, linesActual), ",") + "), actual ("
           + StringUtils.join(setDifference(linesActual, linesExpected), ",") + ").");
 
@@ -187,23 +189,23 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
     }
 
     private void printDifferencesByRule() {
-      System.out.println("Differences by rule:"); // NOSONAR println() is ok here, KIIS principle
+      System.out.println("Differences by rule:"); // NOSONAR println() is ok here, KISS principle
 
       for (String rule : getRules()) {
         int expectedViolations = getViolationsByRule(expected, rule);
         int actualViolations = getViolationsByRule(actual, rule);
 
         System.out.print("  " + rule + " expected: " + expectedViolations + ", actual: " + actualViolations + ": "); // NOSONAR print() is
-                                                                                                                     // ok here, KIIS
+                                                                                                                     // ok here, KISS
                                                                                                                      // principle
         if (expectedViolations == actualViolations) {
-          System.out.println("OK"); // NOSONAR println() is ok here, KIIS principle
+          System.out.println("OK"); // NOSONAR println() is ok here, KISS principle
         } else {
-          System.out.println("*** FAILURE ***"); // NOSONAR println() is ok here, KIIS principle
+          System.out.println("*** FAILURE ***"); // NOSONAR println() is ok here, KISS principle
         }
       }
 
-      System.out.println("End of differences by rule."); // NOSONAR println() is ok here, KIIS principle
+      System.out.println("End of differences by rule."); // NOSONAR println() is ok here, KISS principle
     }
 
     private Set<String> getRules() {
