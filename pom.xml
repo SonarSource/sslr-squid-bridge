@@ -5,7 +5,7 @@
   <parent>
     <groupId>com.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>13</version>
+    <version>14-SNAPSHOT</version>
   </parent>
 
   <groupId>com.sonarsource.sslr</groupId>
@@ -23,7 +23,7 @@
 
   <properties>
     <sonar.version>2.11</sonar.version>
-    <sslrVersion>1.11</sslrVersion>
+    <sslrVersion>1.12-SNAPSHOT</sslrVersion>
   </properties>
 
   <modules>
