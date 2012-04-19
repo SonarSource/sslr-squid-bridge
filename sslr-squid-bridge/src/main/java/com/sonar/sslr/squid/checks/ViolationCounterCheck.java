@@ -99,29 +99,37 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
       this.actual = actual;
     }
 
+    private static void println() {
+      System.out.println();
+    }
+
+    private static void println(String msg) {
+      System.out.println(msg);
+    }
+
     public void printReport() {
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
-      System.out.println("********************************"); // NOSONAR println() is ok here, KISS principle
-      System.out.println("* Violation differences report *"); // NOSONAR println() is ok here, KISS principle
-      System.out.println("********************************"); // NOSONAR println() is ok here, KISS principle
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      println();
+      println();
+      println("********************************");
+      println("* Violation differences report *");
+      println("********************************");
+      println();
+      println();
       printDifferencesByFile();
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      println();
+      println();
       printDifferencesByRule();
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
-      System.out.println("*****************"); // NOSONAR println() is ok here, KISS principle
-      System.out.println("* End of report *"); // NOSONAR println() is ok here, KISS principle
-      System.out.println("*****************"); // NOSONAR println() is ok here, KISS principle
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
-      System.out.println(); // NOSONAR println() is ok here, KISS principle
+      println();
+      println();
+      println("*****************");
+      println("* End of report *");
+      println("*****************");
+      println();
+      println();
     }
 
     private void printDifferencesByFile() {
-      System.out.println("Differences by file:"); // NOSONAR println() is ok here, KISS principle
+      println("Differences by file:");
 
       Set<Map.Entry<String, String>> handledFilesRules = Sets.newHashSet();
 
@@ -143,11 +151,11 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
         }
       }
 
-      System.out.println("End of differences by file."); // NOSONAR println() is ok here, KISS principle
+      println("End of differences by file.");
     }
 
     private static void printDifferencesByFileHeader(String file) {
-      System.out.println("  File " + file + ":"); // NOSONAR println() is ok here, KISS principle
+      println("  File " + file + ":");
     }
 
     private boolean printDifferencesByFileAndRule(boolean shouldPrintHeader, String file, String rule) {
@@ -162,9 +170,9 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
           printDifferencesByFileHeader(file);
         }
 
-        System.out.println("    " + rule + ", (difference only) expected (" // NOSONAR println() is ok here, KISS principle
-          + StringUtils.join(setDifference(linesExpected, linesActual), ",") + "), actual ("
-          + StringUtils.join(setDifference(linesActual, linesExpected), ",") + ").");
+        println("    " + rule + ", (difference only) expected ("
+            + StringUtils.join(setDifference(linesExpected, linesActual), ",") + "), actual ("
+            + StringUtils.join(setDifference(linesActual, linesExpected), ",") + ").");
 
         return false;
       } else {
@@ -175,7 +183,7 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
 
     private static TreeMultiset<Integer> getLines(ViolationCounter counter, String file, String rule) {
       if (!counter.violationsByFileAndRule.containsKey(file)
-        || !counter.violationsByFileAndRule.get(file).containsKey(rule)) {
+          || !counter.violationsByFileAndRule.get(file).containsKey(rule)) {
         return TreeMultiset.create();
       } else {
         return counter.violationsByFileAndRule.get(file).get(rule);
@@ -189,23 +197,17 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
     }
 
     private void printDifferencesByRule() {
-      System.out.println("Differences by rule:"); // NOSONAR println() is ok here, KISS principle
+      println("Differences by rule:");
 
       for (String rule : getRules()) {
         int expectedViolations = getViolationsByRule(expected, rule);
         int actualViolations = getViolationsByRule(actual, rule);
 
-        System.out.print("  " + rule + " expected: " + expectedViolations + ", actual: " + actualViolations + ": "); // NOSONAR print() is
-                                                                                                                     // ok here, KISS
-                                                                                                                     // principle
-        if (expectedViolations == actualViolations) {
-          System.out.println("OK"); // NOSONAR println() is ok here, KISS principle
-        } else {
-          System.out.println("*** FAILURE ***"); // NOSONAR println() is ok here, KISS principle
-        }
+        println("  " + rule + " expected: " + expectedViolations + ", actual: " + actualViolations + ": "
+            + (expectedViolations == actualViolations ? "OK" : "*** FAILURE ***"));
       }
 
-      System.out.println("End of differences by rule."); // NOSONAR println() is ok here, KISS principle
+      println("End of differences by rule.");
     }
 
     private Set<String> getRules() {
@@ -274,7 +276,7 @@ public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisi
 
     if (!canonicalPath.startsWith(projectsDirCanonicalPath)) {
       throw new IllegalArgumentException("The file located at \"" + canonicalPath + "\" is not within projectsDir (\""
-        + projectsDirCanonicalPath + "\").");
+          + projectsDirCanonicalPath + "\").");
     }
 
     return canonicalPath.substring(projectsDirCanonicalPath.length()).replace('\\', '/');
