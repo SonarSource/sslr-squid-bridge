@@ -32,7 +32,7 @@ public abstract class AbstractCommentRegularExpressionCheck<GRAMMAR extends Gram
 
     if (!"".equals(regularExpression)) {
       try {
-        pattern = Pattern.compile(regularExpression);
+        pattern = Pattern.compile(regularExpression, Pattern.DOTALL);
       } catch (RuntimeException e) {
         throw new SonarException("[AbstractCommentRegularExpressionCheck] Unable to compile the regular expression ("
           + regularExpression

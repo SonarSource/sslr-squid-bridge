@@ -34,11 +34,11 @@ public class AbstractCommentRegularExpressionCheckTest {
     assertNoViolation();
   }
 
-  private static class CommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<MiniCGrammar> {
+  private static class CaseInsensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<MiniCGrammar> {
 
     @Override
     public String getRegularExpression() {
-      return "(?is).*TODO.*";
+      return "(?i).*TODO.*";
     }
 
     @Override
@@ -49,14 +49,37 @@ public class AbstractCommentRegularExpressionCheckTest {
   }
 
   @Test
-  public void commentRegularExpressionWithResultsCheck() {
-    setCurrentSourceFile(scanFile("/checks/commentRegularExpression.mc", new CommentRegularExpressionWithResultsCheck()));
+  public void caseInsensitiveCommentRegularExpressionWithResultsCheck() {
+    setCurrentSourceFile(scanFile("/checks/commentRegularExpression.mc", new CaseInsensitiveCommentRegularExpressionWithResultsCheck()));
 
     assertNumberOfViolations(3);
 
     assertViolation().atLine(3).withMessage("Avoid TODO.");
     assertViolation().atLine(5);
     assertViolation().atLine(7);
+  }
+
+  private static class CaseSensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<MiniCGrammar> {
+
+    @Override
+    public String getRegularExpression() {
+      return ".*TODO.*";
+    }
+
+    @Override
+    public String getMessage() {
+      return "Avoid TODO.";
+    }
+
+  }
+
+  @Test
+  public void caseSensitiveCommentRegularExpressionWithResultsCheck() {
+    setCurrentSourceFile(scanFile("/checks/commentRegularExpression.mc", new CaseSensitiveCommentRegularExpressionWithResultsCheck()));
+
+    assertNumberOfViolations(1);
+
+    assertViolation().atLine(3).withMessage("Avoid TODO.");
   }
 
 }
