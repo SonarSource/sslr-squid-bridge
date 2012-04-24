@@ -61,7 +61,8 @@
     <dependency>
       <groupId>junit</groupId>
       <artifactId>junit</artifactId>
-      <scope>provided</scope>
+      <!-- Note that junit is optional for CheckMessagesVerifier -->
+      <optional>true</optional>
     </dependency>
     <dependency>
       <groupId>org.mockito</groupId>

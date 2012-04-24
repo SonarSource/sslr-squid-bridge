@@ -21,18 +21,18 @@ import static org.hamcrest.Matchers.containsString;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-public class ViolationCheckerTest {
+public class CheckMessagesVerifierTest {
 
   @Rule
   public ExpectedException thrown = ExpectedException.none();
 
   @Test
-  public void hasNext() {
+  public void next() {
     thrown.expect(AssertionError.class);
     thrown.expectMessage("\nExpected violation");
 
     CheckMessagesVerifier.verify(Collections.EMPTY_LIST)
-        .hasNext();
+        .next();
   }
 
   @Test
@@ -52,7 +52,7 @@ public class ViolationCheckerTest {
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .hasNext().atLine(2);
+        .next().atLine(2);
   }
 
   @Test
@@ -72,7 +72,7 @@ public class ViolationCheckerTest {
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .hasNext().atLine(1).withMessage("bar");
+        .next().atLine(1).withMessage("bar");
   }
 
   @Test
@@ -86,21 +86,21 @@ public class ViolationCheckerTest {
   }
 
   @Test
-  public void withMessage2() {
+  public void messageThat() {
     thrown.expect(AssertionError.class);
     thrown.expectMessage("\nExpected: a string containing \"bar\"\n     got: \"foo\"");
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .hasNext().atLine(1).withMessage(containsString("bar"));
+        .next().atLine(1).messageThat(containsString("bar"));
   }
 
   @Test
   public void ok() {
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"), mockCheckMessage(1, "bar"));
     CheckMessagesVerifier.verify(messages)
-        .hasNext().atLine(1).withMessage("bar")
-        .hasNext().atLine(1).withMessage(containsString("foo"))
+        .next().atLine(1).withMessage("bar")
+        .next().atLine(1).messageThat(containsString("foo"))
         .noMore();
   }
 

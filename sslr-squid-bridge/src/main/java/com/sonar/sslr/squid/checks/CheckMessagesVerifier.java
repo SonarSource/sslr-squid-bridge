@@ -26,6 +26,8 @@ import static org.junit.Assert.assertThat;
  * }</pre>
  * Strictly speaking this is just a wrapper over collection of {@link CheckMessage},
  * which guarantees order of traversal.
+ *
+ * @since sslr-squid-bridge 2.1
  */
 public final class CheckMessagesVerifier {
 
@@ -52,7 +54,7 @@ public final class CheckMessagesVerifier {
     iterator = ORDERING.compound(ORDERING2).sortedCopy(messages).iterator();
   }
 
-  public CheckMessagesVerifier hasNext() {
+  public CheckMessagesVerifier next() {
     if (!iterator.hasNext()) {
       throw new AssertionError("\nExpected violation");
     }
@@ -92,7 +94,7 @@ public final class CheckMessagesVerifier {
   /**
    * Note that this method requires JUnit and Hamcrest.
    */
-  public CheckMessagesVerifier withMessage(Matcher<String> matcher) {
+  public CheckMessagesVerifier messageThat(Matcher<String> matcher) {
     checkStateOfCurrent();
     String actual = current.getText(Locale.ENGLISH);
     assertThat(actual, matcher);
