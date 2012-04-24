@@ -8,8 +8,7 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractSingleLineCommentsSyntaxCheckTest {
 
@@ -24,12 +23,10 @@ public class AbstractSingleLineCommentsSyntaxCheckTest {
 
   @Test
   public void singleLineCommentsSyntax() {
-    setCurrentSourceFile(scanFile("/checks/single_line_comments_syntax.mc", new Check()));
-
-    assertNumberOfViolations(2);
-
-    assertViolation().atLine(1).withMessage("This single line comment should use the single line comment syntax \"//\"");
-    assertViolation().atLine(15);
+    CheckMessagesVerifier.verify(scanFile("/checks/single_line_comments_syntax.mc", new Check()).getCheckMessages())
+        .next().atLine(1).withMessage("This single line comment should use the single line comment syntax \"//\"")
+        .next().atLine(15)
+        .noMore();
   }
 
 }

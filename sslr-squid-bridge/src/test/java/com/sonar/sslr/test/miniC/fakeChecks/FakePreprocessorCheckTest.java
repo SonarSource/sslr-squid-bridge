@@ -5,15 +5,14 @@
  */
 package com.sonar.sslr.test.miniC.fakeChecks;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
-
-import org.junit.Test;
-
 import com.sonar.sslr.api.*;
+import com.sonar.sslr.squid.checks.CheckMessagesVerifier;
 import com.sonar.sslr.squid.checks.SquidCheck;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import com.sonar.sslr.test.miniC.MiniCPreprocessor;
+import org.junit.Test;
+
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class FakePreprocessorCheckTest {
 
@@ -38,9 +37,9 @@ public class FakePreprocessorCheckTest {
 
   @Test
   public void testFakeCommentCheck() {
-    setCurrentSourceFile(scanFile("/fakeChecks/fakePreprocessor.mc", new FakePreprocessorCheck()));
-
-    assertOnlyOneViolation().atLine(2);
+    CheckMessagesVerifier.verify(scanFile("/fakeChecks/fakePreprocessor.mc", new FakePreprocessorCheck()).getCheckMessages())
+        .next().atLine(2)
+        .noMore();
   }
 
 }

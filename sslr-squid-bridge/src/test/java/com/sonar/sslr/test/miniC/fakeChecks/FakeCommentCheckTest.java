@@ -5,17 +5,15 @@
  */
 package com.sonar.sslr.test.miniC.fakeChecks;
 
-import org.junit.Test;
-
 import com.sonar.sslr.api.AstAndTokenVisitor;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.api.Trivia;
+import com.sonar.sslr.squid.checks.CheckMessagesVerifier;
 import com.sonar.sslr.squid.checks.SquidCheck;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
+import org.junit.Test;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
-import static com.sonar.sslr.test.squid.CheckMatchers.assertOnlyOneViolation;
-import static com.sonar.sslr.test.squid.CheckMatchers.setCurrentSourceFile;
 
 public class FakeCommentCheckTest {
 
@@ -33,9 +31,9 @@ public class FakeCommentCheckTest {
 
   @Test
   public void testFakeCommentCheck() {
-    setCurrentSourceFile(scanFile("/fakeChecks/fakeComment.mc", new FakeCommentCheck()));
-
-    assertOnlyOneViolation().atLine(6);
+    CheckMessagesVerifier.verify(scanFile("/fakeChecks/fakeComment.mc", new FakeCommentCheck()).getCheckMessages())
+        .next().atLine(6)
+        .noMore();
   }
 
 }

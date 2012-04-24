@@ -10,8 +10,7 @@ import com.sonar.sslr.api.Rule;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractOneStatementPerLineCheckTest {
 
@@ -31,9 +30,9 @@ public class AbstractOneStatementPerLineCheckTest {
 
   @Test
   public void detected() {
-    setCurrentSourceFile(scanFile("/checks/one_statement_per_line.mc", new Check()));
-
-    assertOnlyOneViolation().atLine(7).withMessage("At most one statement is allowed per line, but 2 statements were found on this line.");
+    CheckMessagesVerifier.verify(scanFile("/checks/one_statement_per_line.mc", new Check()).getCheckMessages())
+        .next().atLine(7).withMessage("At most one statement is allowed per line, but 2 statements were found on this line.")
+        .noMore();
   }
 
 }

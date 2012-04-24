@@ -10,8 +10,7 @@ import com.sonar.sslr.api.Rule;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractNamingCheckTest {
 
@@ -46,11 +45,9 @@ public class AbstractNamingCheckTest {
 
   @Test
   public void detected() {
-    setCurrentSourceFile(scanFile("/checks/naming.mc", new Check()));
-
-    assertNumberOfViolations(2);
-
-    assertViolation().atLine(5).withMessage("\"BAD\" is a bad name.");
-    assertViolation().atLine(12).withMessage("\"myFunction\" is a bad name.");
+    CheckMessagesVerifier.verify(scanFile("/checks/naming.mc", new Check()).getCheckMessages())
+        .next().atLine(5).withMessage("\"BAD\" is a bad name.")
+        .next().atLine(12).withMessage("\"myFunction\" is a bad name.")
+        .noMore();
   }
 }

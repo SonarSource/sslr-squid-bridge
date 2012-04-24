@@ -9,8 +9,7 @@ import com.sonar.sslr.api.Rule;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractNestedIfCheckTest {
 
@@ -32,9 +31,9 @@ public class AbstractNestedIfCheckTest {
 
   @Test
   public void nestedIfWithDefaultNesting() {
-    setCurrentSourceFile(scanFile("/checks/nested_if.mc", new Check()));
-
-    assertOnlyOneViolation().atLine(9).withMessage("This if has a nesting level of 4, which is higher than the maximum allowed 3.");
+    CheckMessagesVerifier.verify(scanFile("/checks/nested_if.mc", new Check()).getCheckMessages())
+        .next().atLine(9).withMessage("This if has a nesting level of 4, which is higher than the maximum allowed 3.")
+        .noMore();
   }
 
   @Test
@@ -42,13 +41,11 @@ public class AbstractNestedIfCheckTest {
     Check check = new Check();
     check.maximumNestingLevel = 2;
 
-    setCurrentSourceFile(scanFile("/checks/nested_if.mc", check));
-
-    assertNumberOfViolations(3);
-
-    assertViolation().atLine(7);
-    assertViolation().atLine(9);
-    assertViolation().atLine(27);
+    CheckMessagesVerifier.verify(scanFile("/checks/nested_if.mc", check).getCheckMessages())
+        .next().atLine(7)
+        .next().atLine(9)
+        .next().atLine(27)
+        .noMore();
   }
 
 }

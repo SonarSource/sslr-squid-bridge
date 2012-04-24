@@ -10,8 +10,7 @@ import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 import org.sonar.squid.measures.MetricDef;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractFileComplexityCheckTest {
 
@@ -36,9 +35,8 @@ public class AbstractFileComplexityCheckTest {
     Check check = new Check();
     check.maximumFileComplexity = 5;
 
-    setCurrentSourceFile(scanFile("/checks/complexity5.mc", check));
-
-    assertNoViolation();
+    CheckMessagesVerifier.verify(scanFile("/checks/complexity5.mc", check).getCheckMessages())
+        .noMore();
   }
 
   @Test
@@ -46,10 +44,9 @@ public class AbstractFileComplexityCheckTest {
     Check check = new Check();
     check.maximumFileComplexity = 4;
 
-    setCurrentSourceFile(scanFile("/checks/complexity5.mc", check));
-
-    assertNumberOfViolations(1);
-    assertViolation().withMessage("The file is too complex (5 while maximum allowed is set to 4).");
+    CheckMessagesVerifier.verify(scanFile("/checks/complexity5.mc", check).getCheckMessages())
+        .next().withMessage("The file is too complex (5 while maximum allowed is set to 4).")
+        .noMore();
   }
 
 }

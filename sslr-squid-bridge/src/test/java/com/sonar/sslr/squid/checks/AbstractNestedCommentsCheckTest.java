@@ -12,8 +12,7 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Set;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractNestedCommentsCheckTest {
 
@@ -30,12 +29,10 @@ public class AbstractNestedCommentsCheckTest {
 
   @Test
   public void singleLineCommentsSyntax() {
-    setCurrentSourceFile(scanFile("/checks/nested_comments.mc", new Check()));
-
-    assertNumberOfViolations(2);
-
-    assertViolation().atLine(1).withMessage("This comments contains the nested comment start tag \"/*\"");
-    assertViolation().atLine(2).withMessage("This comments contains the nested comment start tag \"//\"");
+    CheckMessagesVerifier.verify(scanFile("/checks/nested_comments.mc", new Check()).getCheckMessages())
+        .next().atLine(1).withMessage("This comments contains the nested comment start tag \"/*\"")
+        .next().atLine(2).withMessage("This comments contains the nested comment start tag \"//\"")
+        .noMore();
   }
 
 }

@@ -8,8 +8,7 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractXPathCheckTest {
 
@@ -29,9 +28,8 @@ public class AbstractXPathCheckTest {
 
   @Test
   public void emptyXPathCheck() {
-    setCurrentSourceFile(scanFile("/checks/xpath.mc", new EmptyXPathCheck()));
-
-    assertNoViolation();
+    CheckMessagesVerifier.verify(scanFile("/checks/xpath.mc", new EmptyXPathCheck()).getCheckMessages())
+        .noMore();
   }
 
   private static class BooleanXPathCheckWithResults extends AbstractXPathCheck<MiniCGrammar> {
@@ -50,11 +48,9 @@ public class AbstractXPathCheckTest {
 
   @Test
   public void booleanXPathCheckWithResults() {
-    setCurrentSourceFile(scanFile("/checks/xpath.mc", new BooleanXPathCheckWithResults()));
-
-    assertNumberOfViolations(1);
-
-    assertViolation().withMessage("Boolean XPath rule with results.");
+    CheckMessagesVerifier.verify(scanFile("/checks/xpath.mc", new BooleanXPathCheckWithResults()).getCheckMessages())
+        .next().withMessage("Boolean XPath rule with results.")
+        .noMore();
   }
 
   private static class BooleanXPathCheckWithoutResults extends AbstractXPathCheck<MiniCGrammar> {
@@ -73,9 +69,8 @@ public class AbstractXPathCheckTest {
 
   @Test
   public void booleanXPathCheckWithoutResults() {
-    setCurrentSourceFile(scanFile("/checks/xpath.mc", new BooleanXPathCheckWithoutResults()));
-
-    assertNoViolation();
+    CheckMessagesVerifier.verify(scanFile("/checks/xpath.mc", new BooleanXPathCheckWithoutResults()).getCheckMessages())
+        .noMore();
   }
 
   private static class AstNodesXpathCheck extends AbstractXPathCheck<MiniCGrammar> {
@@ -94,12 +89,10 @@ public class AbstractXPathCheckTest {
 
   @Test
   public void astNodesXpathCheck() {
-    setCurrentSourceFile(scanFile("/checks/xpath.mc", new AstNodesXpathCheck()));
-
-    assertNumberOfViolations(2);
-
-    assertViolation().atLine(1).withMessage("No variable definitions allowed!");
-    assertViolation().atLine(5);
+    CheckMessagesVerifier.verify(scanFile("/checks/xpath.mc", new AstNodesXpathCheck()).getCheckMessages())
+        .next().atLine(1).withMessage("No variable definitions allowed!")
+        .next().atLine(5)
+        .noMore();
   }
 
 }

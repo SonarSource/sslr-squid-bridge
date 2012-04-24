@@ -15,8 +15,7 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.Set;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractMagicCheckTest {
 
@@ -51,12 +50,10 @@ public class AbstractMagicCheckTest {
 
   @Test
   public void detected() {
-    setCurrentSourceFile(scanFile("/checks/magic.mc", new Check()));
-
-    assertNumberOfViolations(2);
-
-    assertViolation().atLine(5).withMessage("Avoid magic stuff.");
-    assertViolation().atLine(9);
+    CheckMessagesVerifier.verify(scanFile("/checks/magic.mc", new Check()).getCheckMessages())
+        .next().atLine(5).withMessage("Avoid magic stuff.")
+        .next().atLine(9)
+        .noMore();
   }
 
 }

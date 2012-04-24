@@ -8,8 +8,7 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractLineLengthCheckTest {
 
@@ -26,9 +25,9 @@ public class AbstractLineLengthCheckTest {
 
   @Test
   public void lineLengthWithDefaultLength() {
-    setCurrentSourceFile(scanFile("/checks/line_length.mc", new Check()));
-
-    assertOnlyOneViolation().atLine(3).withMessage("The line length is greater than 80 authorized.");
+    CheckMessagesVerifier.verify(scanFile("/checks/line_length.mc", new Check()).getCheckMessages())
+        .next().atLine(3).withMessage("The line length is greater than 80 authorized.")
+        .noMore();
   }
 
   @Test
@@ -36,12 +35,10 @@ public class AbstractLineLengthCheckTest {
     Check check = new Check();
     check.maximumLineLength = 7;
 
-    setCurrentSourceFile(scanFile("/checks/line_length.mc", check));
-
-    assertNumberOfViolations(2);
-
-    assertViolation().atLine(3);
-    assertViolation().atLine(4);
+    CheckMessagesVerifier.verify(scanFile("/checks/line_length.mc", check).getCheckMessages())
+        .next().atLine(3)
+        .next().atLine(4)
+        .noMore();
   }
 
 }

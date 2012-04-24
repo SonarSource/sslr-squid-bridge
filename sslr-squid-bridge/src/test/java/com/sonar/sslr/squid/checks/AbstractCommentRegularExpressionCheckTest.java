@@ -8,8 +8,7 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractCommentRegularExpressionCheckTest {
 
@@ -29,9 +28,8 @@ public class AbstractCommentRegularExpressionCheckTest {
 
   @Test
   public void emptyCommentRegularExpresssionCheck() {
-    setCurrentSourceFile(scanFile("/checks/commentRegularExpression.mc", new EmptyCommentRegularExpressionCheck()));
-
-    assertNoViolation();
+    CheckMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new EmptyCommentRegularExpressionCheck()).getCheckMessages())
+        .noMore();
   }
 
   private static class CaseInsensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<MiniCGrammar> {
@@ -50,13 +48,11 @@ public class AbstractCommentRegularExpressionCheckTest {
 
   @Test
   public void caseInsensitiveCommentRegularExpressionWithResultsCheck() {
-    setCurrentSourceFile(scanFile("/checks/commentRegularExpression.mc", new CaseInsensitiveCommentRegularExpressionWithResultsCheck()));
-
-    assertNumberOfViolations(3);
-
-    assertViolation().atLine(3).withMessage("Avoid TODO.");
-    assertViolation().atLine(5);
-    assertViolation().atLine(7);
+    CheckMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new CaseInsensitiveCommentRegularExpressionWithResultsCheck()).getCheckMessages())
+        .next().atLine(3).withMessage("Avoid TODO.")
+        .next().atLine(5)
+        .next().atLine(7)
+        .noMore();
   }
 
   private static class CaseSensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<MiniCGrammar> {
@@ -75,11 +71,9 @@ public class AbstractCommentRegularExpressionCheckTest {
 
   @Test
   public void caseSensitiveCommentRegularExpressionWithResultsCheck() {
-    setCurrentSourceFile(scanFile("/checks/commentRegularExpression.mc", new CaseSensitiveCommentRegularExpressionWithResultsCheck()));
-
-    assertNumberOfViolations(1);
-
-    assertViolation().atLine(3).withMessage("Avoid TODO.");
+    CheckMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new CaseSensitiveCommentRegularExpressionWithResultsCheck()).getCheckMessages())
+        .next().atLine(3).withMessage("Avoid TODO.")
+        .noMore();
   }
 
 }

@@ -9,8 +9,7 @@ import com.sonar.sslr.api.Rule;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractGotoCheckTest {
 
@@ -25,8 +24,8 @@ public class AbstractGotoCheckTest {
 
   @Test
   public void detected() {
-    setCurrentSourceFile(scanFile("/checks/goto.mc", new Check()));
-
-    assertOnlyOneViolation().atLine(9).withMessage("Goto should be avoided.");
+    CheckMessagesVerifier.verify(scanFile("/checks/goto.mc", new Check()).getCheckMessages())
+        .next().atLine(9).withMessage("Goto should be avoided.")
+        .noMore();
   }
 }

@@ -8,8 +8,7 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractParseErrorCheckTest {
 
@@ -18,9 +17,8 @@ public class AbstractParseErrorCheckTest {
 
   @Test
   public void parseError() {
-    setCurrentSourceFile(scanFile("/checks/parse_error.mc", new Check()));
-
-    assertOnlyOneViolation().atLine(3);
+    CheckMessagesVerifier.verify(scanFile("/checks/parse_error.mc", new Check()).getCheckMessages())
+        .next().atLine(3)
+        .noMore();
   }
-
 }

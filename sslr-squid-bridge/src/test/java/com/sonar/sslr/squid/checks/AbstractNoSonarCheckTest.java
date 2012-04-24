@@ -8,8 +8,7 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static com.sonar.sslr.test.squid.CheckMatchers.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractNoSonarCheckTest {
 
@@ -18,13 +17,11 @@ public class AbstractNoSonarCheckTest {
 
   @Test
   public void singleLineCommentsSyntax() {
-    setCurrentSourceFile(scanFile("/checks/no_sonar.mc", new Check()));
-
-    assertNumberOfViolations(3);
-
-    assertViolation().atLine(5).withMessage("Is NOSONAR usage acceptable or does it hide a real quality flaw?");
-    assertViolation().atLine(6);
-    assertViolation().atLine(10);
+    CheckMessagesVerifier.verify(scanFile("/checks/no_sonar.mc", new Check()).getCheckMessages())
+        .next().atLine(5).withMessage("Is NOSONAR usage acceptable or does it hide a real quality flaw?")
+        .next().atLine(6)
+        .next().atLine(10)
+        .noMore();
   }
 
 }
