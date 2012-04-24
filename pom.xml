@@ -11,9 +11,8 @@
   <groupId>com.sonarsource.sslr</groupId>
   <artifactId>sslr-squid-bridge-parent</artifactId>
   <version>2.1-SNAPSHOT</version>
-  <packaging>pom</packaging>
 
-  <name>SonarSource :: Language Recognizer :: Squid Bridge :: Parent</name>
+  <name>SonarSource :: Language Recognizer :: Squid Bridge</name>
 
   <scm>
     <connection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</connection>
@@ -23,82 +22,77 @@
 
   <properties>
     <sonar.version>2.11</sonar.version>
-    <sslrVersion>1.12-SNAPSHOT</sslrVersion>
+    <sslrVersion>1.12</sslrVersion>
+
+    <sonar.switchoffviolations.configFile>${project.basedir}/violations-filter.txt</sonar.switchoffviolations.configFile>
   </properties>
 
-  <modules>
-    <module>sslr-squid-bridge</module>
-    <module>sslr-squid-bridge-testing-harness</module>
-  </modules>
-
-  <dependencyManagement>
-    <dependencies>
-      <dependency>
-        <groupId>com.sonarsource.sslr</groupId>
-        <artifactId>sslr-squid-bridge-testing-harness</artifactId>
-        <version>${project.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>com.sonarsource.sslr</groupId>
-        <artifactId>sslr-core</artifactId>
-        <version>1.12</version>
-      </dependency>
-      <dependency>
-        <groupId>com.sonarsource.sslr</groupId>
-        <artifactId>sslr-xpath</artifactId>
-        <version>1.12</version>
-      </dependency>
-      <dependency>
-        <groupId>com.sonarsource.sslr</groupId>
-        <artifactId>sslr-testing-harness</artifactId>
-        <version>1.12</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-channel</artifactId>
-        <version>${sonar.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-squid</artifactId>
-        <version>${sonar.version}</version>
-      </dependency>
-     <dependency>
-        <groupId>org.codehaus.sonar</groupId>
-        <artifactId>sonar-plugin-api</artifactId>
-        <version>${sonar.version}</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>slf4j-api</artifactId>
-        <version>1.5.6</version>
-      </dependency>
-      <dependency>
-        <groupId>org.slf4j</groupId>
-        <artifactId>jcl-over-slf4j</artifactId>
-        <version>1.5.6</version>
-      </dependency>
-      <dependency>
-        <groupId>ch.qos.logback</groupId>
-        <artifactId>logback-classic</artifactId>
-        <version>0.9.15</version>
-      </dependency>
-      <dependency>
-        <groupId>junit</groupId>
-        <artifactId>junit</artifactId>
-        <version>4.8.1</version>
-      </dependency>
-      <dependency>
-        <groupId>org.mockito</groupId>
-        <artifactId>mockito-all</artifactId>
-        <version>1.8.5</version>
-      </dependency>
-      <dependency>
-        <groupId>org.hamcrest</groupId>
-        <artifactId>hamcrest-all</artifactId>
-        <version>1.1</version>
-      </dependency>
-    </dependencies>
-  </dependencyManagement>
+  <dependencies>
+    <dependency>
+      <groupId>com.sonarsource.sslr</groupId>
+      <artifactId>sslr-core</artifactId>
+      <version>${sslrVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>com.sonarsource.sslr</groupId>
+      <artifactId>sslr-xpath</artifactId>
+      <version>${sslrVersion}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-channel</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-squid</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.codehaus.sonar</groupId>
+      <artifactId>sonar-plugin-api</artifactId>
+      <version>${sonar.version}</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>slf4j-api</artifactId>
+      <version>1.5.6</version>
+    </dependency>
+    <dependency>
+      <groupId>org.slf4j</groupId>
+      <artifactId>jcl-over-slf4j</artifactId>
+      <version>1.5.6</version>
+    </dependency>
+    <dependency>
+      <groupId>ch.qos.logback</groupId>
+      <artifactId>logback-classic</artifactId>
+      <version>0.9.15</version>
+    </dependency>
+    <dependency>
+      <groupId>junit</groupId>
+      <artifactId>junit</artifactId>
+      <!-- Note that junit is optional for CheckMessagesVerifier -->
+      <version>4.8.1</version>
+      <optional>true</optional>
+    </dependency>
+    <dependency>
+      <groupId>com.sonarsource.sslr</groupId>
+      <artifactId>sslr-testing-harness</artifactId>
+      <version>${sslrVersion}</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.mockito</groupId>
+      <artifactId>mockito-all</artifactId>
+      <version>1.8.5</version>
+      <scope>test</scope>
+    </dependency>
+    <dependency>
+      <groupId>org.hamcrest</groupId>
+      <artifactId>hamcrest-all</artifactId>
+      <version>1.1</version>
+      <scope>test</scope>
+    </dependency>
+  </dependencies>
 
 </project>
