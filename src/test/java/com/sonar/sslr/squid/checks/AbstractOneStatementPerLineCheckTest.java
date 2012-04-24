@@ -14,6 +14,9 @@ import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractOneStatementPerLineCheckTest {
 
+  @org.junit.Rule
+  public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
+
   private static class Check extends AbstractOneStatementPerLineCheck<MiniCGrammar> {
 
     @Override
@@ -30,9 +33,8 @@ public class AbstractOneStatementPerLineCheckTest {
 
   @Test
   public void detected() {
-    CheckMessagesVerifier.verify(scanFile("/checks/one_statement_per_line.mc", new Check()).getCheckMessages())
-        .next().atLine(7).withMessage("At most one statement is allowed per line, but 2 statements were found on this line.")
-        .noMore();
+    checkMessagesVerifier.verify(scanFile("/checks/one_statement_per_line.mc", new Check()).getCheckMessages())
+        .next().atLine(7).withMessage("At most one statement is allowed per line, but 2 statements were found on this line.");
   }
 
 }

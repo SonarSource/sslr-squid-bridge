@@ -14,6 +14,9 @@ import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractNamingCheckTest {
 
+  @org.junit.Rule
+  public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
+
   private static class Check extends AbstractNamingCheck<MiniCGrammar> {
 
     @Override
@@ -45,9 +48,8 @@ public class AbstractNamingCheckTest {
 
   @Test
   public void detected() {
-    CheckMessagesVerifier.verify(scanFile("/checks/naming.mc", new Check()).getCheckMessages())
+    checkMessagesVerifier.verify(scanFile("/checks/naming.mc", new Check()).getCheckMessages())
         .next().atLine(5).withMessage("\"BAD\" is a bad name.")
-        .next().atLine(12).withMessage("\"myFunction\" is a bad name.")
-        .noMore();
+        .next().atLine(12).withMessage("\"myFunction\" is a bad name.");
   }
 }

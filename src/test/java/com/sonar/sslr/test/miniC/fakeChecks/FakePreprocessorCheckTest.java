@@ -6,18 +6,21 @@
 package com.sonar.sslr.test.miniC.fakeChecks;
 
 import com.sonar.sslr.api.*;
-import com.sonar.sslr.squid.checks.CheckMessagesVerifier;
+import com.sonar.sslr.squid.checks.CheckMessagesVerifierRule;
 import com.sonar.sslr.squid.checks.SquidCheck;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import com.sonar.sslr.test.miniC.MiniCPreprocessor;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class FakePreprocessorCheckTest {
 
-  private class FakePreprocessorCheck extends SquidCheck<MiniCGrammar> implements AstAndTokenVisitor {
+  @Rule
+  public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
+  private class FakePreprocessorCheck extends SquidCheck<MiniCGrammar> implements AstAndTokenVisitor {
     public void visitToken(Token token) {
       for (Trivia trivia : token.getTrivia()) {
         if (trivia.isPreprocessor() && trivia.hasPreprocessingDirective()) {
@@ -32,14 +35,12 @@ public class FakePreprocessorCheckTest {
         }
       }
     }
-
   }
 
   @Test
   public void testFakeCommentCheck() {
-    CheckMessagesVerifier.verify(scanFile("/fakeChecks/fakePreprocessor.mc", new FakePreprocessorCheck()).getCheckMessages())
-        .next().atLine(2)
-        .noMore();
+    checkMessagesVerifier.verify(scanFile("/fakeChecks/fakePreprocessor.mc", new FakePreprocessorCheck()).getCheckMessages())
+        .next().atLine(2);
   }
 
 }

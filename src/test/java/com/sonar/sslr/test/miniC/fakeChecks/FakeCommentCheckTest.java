@@ -8,17 +8,20 @@ package com.sonar.sslr.test.miniC.fakeChecks;
 import com.sonar.sslr.api.AstAndTokenVisitor;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.api.Trivia;
-import com.sonar.sslr.squid.checks.CheckMessagesVerifier;
+import com.sonar.sslr.squid.checks.CheckMessagesVerifierRule;
 import com.sonar.sslr.squid.checks.SquidCheck;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
+import org.junit.Rule;
 import org.junit.Test;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class FakeCommentCheckTest {
 
-  private class FakeCommentCheck extends SquidCheck<MiniCGrammar> implements AstAndTokenVisitor {
+  @Rule
+  public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
+  private class FakeCommentCheck extends SquidCheck<MiniCGrammar> implements AstAndTokenVisitor {
     public void visitToken(Token token) {
       for (Trivia trivia : token.getTrivia()) {
         if (trivia.isComment() && trivia.getToken().getValue().contains("stupid")) {
@@ -26,14 +29,12 @@ public class FakeCommentCheckTest {
         }
       }
     }
-
   }
 
   @Test
   public void testFakeCommentCheck() {
-    CheckMessagesVerifier.verify(scanFile("/fakeChecks/fakeComment.mc", new FakeCommentCheck()).getCheckMessages())
-        .next().atLine(6)
-        .noMore();
+    checkMessagesVerifier.verify(scanFile("/fakeChecks/fakeComment.mc", new FakeCommentCheck()).getCheckMessages())
+        .next().atLine(6);
   }
 
 }

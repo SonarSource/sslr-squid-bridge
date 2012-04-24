@@ -13,6 +13,9 @@ import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractNestedIfCheckTest {
 
+  @org.junit.Rule
+  public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
+
   private static class Check extends AbstractNestedIfCheck<MiniCGrammar> {
 
     public int maximumNestingLevel = 3;
@@ -31,9 +34,8 @@ public class AbstractNestedIfCheckTest {
 
   @Test
   public void nestedIfWithDefaultNesting() {
-    CheckMessagesVerifier.verify(scanFile("/checks/nested_if.mc", new Check()).getCheckMessages())
-        .next().atLine(9).withMessage("This if has a nesting level of 4, which is higher than the maximum allowed 3.")
-        .noMore();
+    checkMessagesVerifier.verify(scanFile("/checks/nested_if.mc", new Check()).getCheckMessages())
+        .next().atLine(9).withMessage("This if has a nesting level of 4, which is higher than the maximum allowed 3.");
   }
 
   @Test
@@ -41,11 +43,10 @@ public class AbstractNestedIfCheckTest {
     Check check = new Check();
     check.maximumNestingLevel = 2;
 
-    CheckMessagesVerifier.verify(scanFile("/checks/nested_if.mc", check).getCheckMessages())
+    checkMessagesVerifier.verify(scanFile("/checks/nested_if.mc", check).getCheckMessages())
         .next().atLine(7)
         .next().atLine(9)
-        .next().atLine(27)
-        .noMore();
+        .next().atLine(27);
   }
 
 }

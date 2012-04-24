@@ -10,6 +10,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import com.sonar.sslr.test.miniC.MiniCLexer;
+import org.junit.Rule;
 import org.junit.Test;
 
 import java.util.Collections;
@@ -18,6 +19,9 @@ import java.util.Set;
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractMagicCheckTest {
+
+  @Rule
+  public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
   private static class Check extends AbstractMagicCheck<MiniCGrammar> {
 
@@ -50,10 +54,9 @@ public class AbstractMagicCheckTest {
 
   @Test
   public void detected() {
-    CheckMessagesVerifier.verify(scanFile("/checks/magic.mc", new Check()).getCheckMessages())
+    checkMessagesVerifier.verify(scanFile("/checks/magic.mc", new Check()).getCheckMessages())
         .next().atLine(5).withMessage("Avoid magic stuff.")
-        .next().atLine(9)
-        .noMore();
+        .next().atLine(9);
   }
 
 }

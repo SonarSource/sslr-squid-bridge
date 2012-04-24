@@ -13,6 +13,9 @@ import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractGotoCheckTest {
 
+  @org.junit.Rule
+  public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
+
   private static class Check extends AbstractGotoCheck<MiniCGrammar> {
 
     @Override
@@ -24,8 +27,8 @@ public class AbstractGotoCheckTest {
 
   @Test
   public void detected() {
-    CheckMessagesVerifier.verify(scanFile("/checks/goto.mc", new Check()).getCheckMessages())
-        .next().atLine(9).withMessage("Goto should be avoided.")
-        .noMore();
+    checkMessagesVerifier.verify(scanFile("/checks/goto.mc", new Check()).getCheckMessages())
+        .next().atLine(9).withMessage("Goto should be avoided.");
   }
+
 }
