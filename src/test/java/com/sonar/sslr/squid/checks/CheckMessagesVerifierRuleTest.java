@@ -22,13 +22,13 @@ public class CheckMessagesVerifierRuleTest {
   public ExpectedException thrown = ExpectedException.none();
 
   @Test
-  public void shouldNotFailIfNothingToVerify() throws Throwable {
+  public void shouldNotFailIfNothingToVerify() {
     CheckMessagesVerifierRule rule = new CheckMessagesVerifierRule();
     rule.verify();
   }
 
   @Test
-  public void shouldNotFailIfVerificationsWereSuccessful() throws Throwable {
+  public void shouldNotFailIfVerificationsWereSuccessful() {
     CheckMessagesVerifierRule rule = new CheckMessagesVerifierRule();
     rule.verify(Collections.EMPTY_LIST);
     rule.verify(Collections.EMPTY_LIST);
@@ -36,7 +36,7 @@ public class CheckMessagesVerifierRuleTest {
   }
 
   @Test
-  public void shouldFailIfFirstVerificationFailed() throws Throwable {
+  public void shouldFailIfFirstVerificationFailed() {
     thrown.expect(AssertionError.class);
     thrown.expectMessage("\nNo more violations expected\ngot:");
 
@@ -48,7 +48,7 @@ public class CheckMessagesVerifierRuleTest {
   }
 
   @Test
-  public void shouldFailIfSecondVerificationFailed() throws Throwable {
+  public void shouldFailIfSecondVerificationFailed() {
     thrown.expect(AssertionError.class);
     thrown.expectMessage("\nNo more violations expected\ngot:");
 

@@ -39,7 +39,7 @@ public class CheckMessagesVerifierRule extends Verifier {
   }
 
   @Override
-  protected void verify() throws Throwable {
+  protected void verify() {
     for (CheckMessagesVerifier verifier : verifiers) {
       verifier.noMore();
     }
