@@ -71,7 +71,7 @@ public final class CheckMessagesVerifier {
 
   private void checkStateOfCurrent() {
     if (current == null) {
-      throw new IllegalStateException("Prior to this method you should call hasNext()");
+      throw new IllegalStateException("Prior to this method you should call next()");
     }
   }
 
@@ -95,7 +95,7 @@ public final class CheckMessagesVerifier {
   /**
    * Note that this method requires JUnit and Hamcrest.
    */
-  public CheckMessagesVerifier messageThat(Matcher<String> matcher) {
+  public CheckMessagesVerifier withMessageThat(Matcher<String> matcher) {
     checkStateOfCurrent();
     String actual = current.getText(Locale.ENGLISH);
     assertThat(actual, matcher);

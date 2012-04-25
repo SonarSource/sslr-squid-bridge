@@ -58,7 +58,7 @@ public class CheckMessagesVerifierTest {
   @Test
   public void line_withoutHasNext() {
     thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("Prior to this method you should call hasNext()");
+    thrown.expectMessage("Prior to this method you should call next()");
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
@@ -78,7 +78,7 @@ public class CheckMessagesVerifierTest {
   @Test
   public void withMessage_withoutHasNext() {
     thrown.expect(IllegalStateException.class);
-    thrown.expectMessage("Prior to this method you should call hasNext()");
+    thrown.expectMessage("Prior to this method you should call next()");
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
@@ -86,13 +86,13 @@ public class CheckMessagesVerifierTest {
   }
 
   @Test
-  public void messageThat() {
+  public void withMessageThat() {
     thrown.expect(AssertionError.class);
     thrown.expectMessage("\nExpected: a string containing \"bar\"\n     got: \"foo\"");
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .next().atLine(1).messageThat(containsString("bar"));
+        .next().atLine(1).withMessageThat(containsString("bar"));
   }
 
   @Test
@@ -100,7 +100,7 @@ public class CheckMessagesVerifierTest {
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"), mockCheckMessage(1, "bar"));
     CheckMessagesVerifier.verify(messages)
         .next().atLine(1).withMessage("bar")
-        .next().atLine(1).messageThat(containsString("foo"))
+        .next().atLine(1).withMessageThat(containsString("foo"))
         .noMore();
   }
 
