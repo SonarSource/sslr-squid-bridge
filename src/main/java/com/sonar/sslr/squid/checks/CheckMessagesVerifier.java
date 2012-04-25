@@ -20,8 +20,8 @@ import static org.junit.Assert.assertThat;
  * It can be used as following:
  * <pre>{@code
  * CheckMessagesVerifier.verify(messages)
- *   .hasNext().atLine(1).withMessage("foo")
- *   .hasNext().atLine(2).withMessage("bar")
+ *   .next().atLine(1).withMessage("foo")
+ *   .next().atLine(2).withMessage("bar")
  *   .noMore();
  * }</pre>
  * Strictly speaking this is just a wrapper over collection of {@link CheckMessage},
