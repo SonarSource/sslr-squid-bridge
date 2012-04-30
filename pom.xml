@@ -39,6 +39,8 @@
   </ciManagement>
 
   <properties>
+    <license.title>SSLR Squid Bridge</license.title>
+
     <sonar.version>2.11</sonar.version>
     <sslrVersion>1.12</sslrVersion>
 
