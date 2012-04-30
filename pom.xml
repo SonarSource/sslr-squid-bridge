@@ -15,9 +15,9 @@
   <name>SonarSource :: Language Recognizer :: Squid Bridge</name>
 
   <scm>
-    <connection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</connection>
-    <developerConnection>scm:svn:https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</developerConnection>
-    <url>https://subversion.assembla.com/svn/sonarsourcecode/trunk/sslr-squid-bridge</url>
+    <connection>scm:git:git@github.com:SonarSource/sslr-squid-bridge.git</connection>
+    <developerConnection>scm:git:git@github.com:SonarSource/sslr-squid-bridge.git</developerConnection>
+    <url>https://github.com/SonarSource/sslr-squid-bridge</url>
   </scm>
 
   <properties>
