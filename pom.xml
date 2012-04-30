@@ -42,19 +42,19 @@
     <license.title>SSLR Squid Bridge</license.title>
 
     <sonar.version>2.11</sonar.version>
-    <sslrVersion>1.12</sslrVersion>
+    <sslrVersion>1.13-SNAPSHOT</sslrVersion>
 
     <sonar.switchoffviolations.configFile>${project.basedir}/violations-filter.txt</sonar.switchoffviolations.configFile>
   </properties>
 
   <dependencies>
     <dependency>
-      <groupId>com.sonarsource.sslr</groupId>
+      <groupId>org.codehaus.sonar.sslr</groupId>
       <artifactId>sslr-core</artifactId>
       <version>${sslrVersion}</version>
     </dependency>
     <dependency>
-      <groupId>com.sonarsource.sslr</groupId>
+      <groupId>org.codehaus.sonar.sslr</groupId>
       <artifactId>sslr-xpath</artifactId>
       <version>${sslrVersion}</version>
     </dependency>
@@ -96,7 +96,7 @@
       <optional>true</optional>
     </dependency>
     <dependency>
-      <groupId>com.sonarsource.sslr</groupId>
+      <groupId>org.codehaus.sonar.sslr</groupId>
       <artifactId>sslr-testing-harness</artifactId>
       <version>${sslrVersion}</version>
       <scope>test</scope>
