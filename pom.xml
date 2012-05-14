@@ -41,6 +41,8 @@
   <properties>
     <license.title>SSLR Squid Bridge</license.title>
 
+    <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
+
     <sonar.version>2.11</sonar.version>
     <sslrVersion>1.13-SNAPSHOT</sslrVersion>
   </properties>
