@@ -26,7 +26,7 @@ import com.sonar.sslr.api.Rule;
 
 import java.util.Map;
 
-public abstract class AbstractOneStatementPerLineCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> {
+public abstract class AbstractOneStatementPerLineCheck<G extends Grammar> extends SquidCheck<G> {
 
   private final Map<Integer, Integer> statementsPerLine = Maps.newHashMap();
 

@@ -28,7 +28,7 @@ import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.*;
 
-public abstract class AbstractNamingCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> {
+public abstract class AbstractNamingCheck<G extends Grammar> extends SquidCheck<G> {
 
   private Pattern pattern;
 

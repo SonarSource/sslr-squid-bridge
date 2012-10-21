@@ -26,7 +26,7 @@ import org.sonar.squid.measures.MetricDef;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 
-public abstract class AbstractFileComplexityCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> {
+public abstract class AbstractFileComplexityCheck<G extends Grammar> extends SquidCheck<G> {
 
   // See SONAR-3164
   public abstract int getMaximumFileComplexity();

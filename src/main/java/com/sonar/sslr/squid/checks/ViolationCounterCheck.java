@@ -35,7 +35,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public class ViolationCounterCheck<GRAMMAR extends Grammar> extends SquidAstVisitor<GRAMMAR> {
+public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G> {
 
   private final ViolationCounter violationCounter;
   private final String projectsDirCanonicalPath;

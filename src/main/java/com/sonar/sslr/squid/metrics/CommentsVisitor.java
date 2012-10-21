@@ -30,7 +30,7 @@ import java.util.Set;
 /**
  * Visitor that computes the number of lines of comments and the number of empty lines of comments.
  */
-public final class CommentsVisitor<GRAMMAR extends Grammar> extends SquidAstVisitor<GRAMMAR> implements AstAndTokenVisitor {
+public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G> implements AstAndTokenVisitor {
 
   private Set<Integer> noSonar;
   private Set<Integer> comments;
@@ -42,7 +42,7 @@ public final class CommentsVisitor<GRAMMAR extends Grammar> extends SquidAstVisi
   private final MetricDef blankCommentMetric;
   private final boolean ignoreHeaderComments;
 
-  private CommentsVisitor(CommentsVisitorBuilder<GRAMMAR> builder) {
+  private CommentsVisitor(CommentsVisitorBuilder<G> builder) {
     this.enableNoSonar = builder.enableNoSonar;
     this.commentMetric = builder.commentMetric;
     this.blankCommentMetric = builder.blankCommentMetric;
@@ -127,11 +127,11 @@ public final class CommentsVisitor<GRAMMAR extends Grammar> extends SquidAstVisi
     }
   }
 
-  public static <GRAMMAR extends Grammar> CommentsVisitorBuilder<GRAMMAR> builder() {
-    return new CommentsVisitorBuilder<GRAMMAR>();
+  public static <G extends Grammar> CommentsVisitorBuilder<G> builder() {
+    return new CommentsVisitorBuilder<G>();
   }
 
-  public static final class CommentsVisitorBuilder<GRAMMAR extends Grammar> {
+  public static final class CommentsVisitorBuilder<G extends Grammar> {
 
     private boolean enableNoSonar = false;
     private MetricDef commentMetric;
@@ -141,26 +141,26 @@ public final class CommentsVisitor<GRAMMAR extends Grammar> extends SquidAstVisi
     private CommentsVisitorBuilder() {
     }
 
-    public CommentsVisitor<GRAMMAR> build() {
-      return new CommentsVisitor<GRAMMAR>(this);
+    public CommentsVisitor<G> build() {
+      return new CommentsVisitor<G>(this);
     }
 
-    public CommentsVisitorBuilder<GRAMMAR> withNoSonar(boolean enableNoSonar) {
+    public CommentsVisitorBuilder<G> withNoSonar(boolean enableNoSonar) {
       this.enableNoSonar = enableNoSonar;
       return this;
     }
 
-    public CommentsVisitorBuilder<GRAMMAR> withCommentMetric(MetricDef commentMetric) {
+    public CommentsVisitorBuilder<G> withCommentMetric(MetricDef commentMetric) {
       this.commentMetric = commentMetric;
       return this;
     }
 
-    public CommentsVisitorBuilder<GRAMMAR> withBlankCommentMetric(MetricDef blankCommentMetric) {
+    public CommentsVisitorBuilder<G> withBlankCommentMetric(MetricDef blankCommentMetric) {
       this.blankCommentMetric = blankCommentMetric;
       return this;
     }
 
-    public CommentsVisitorBuilder<GRAMMAR> withIgnoreHeaderComment(boolean ignoreHeaderComments) {
+    public CommentsVisitorBuilder<G> withIgnoreHeaderComment(boolean ignoreHeaderComments) {
       this.ignoreHeaderComments = ignoreHeaderComments;
       return this;
     }

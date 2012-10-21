@@ -40,22 +40,22 @@ import java.util.List;
 
 import static com.google.common.base.Preconditions.*;
 
-public final class AstScanner<GRAMMAR extends Grammar> {
+public final class AstScanner<G extends Grammar> {
 
   private static final Logger LOG = LoggerFactory.getLogger(AstScanner.class);
-  private final SquidAstVisitorContextImpl<GRAMMAR> context;
+  private final SquidAstVisitorContextImpl<G> context;
   private final ParserRecoveryListener parserRecoveryListener;
-  private final Parser<GRAMMAR> parserProduction;
-  private final Parser<GRAMMAR> parserDebug;
-  private final List<SquidAstVisitor<GRAMMAR>> visitors;
+  private final Parser<G> parserProduction;
+  private final Parser<G> parserDebug;
+  private final List<SquidAstVisitor<G>> visitors;
   private final AuditListener[] auditListeners;
   private final SquidIndex indexer = new SquidIndex();
   private final CommentAnalyser commentAnalyser;
   private final MetricDef[] metrics;
   private final MetricDef filesMetric;
 
-  private AstScanner(Builder<GRAMMAR> builder) {
-    this.visitors = new ArrayList<SquidAstVisitor<GRAMMAR>>(builder.visitors);
+  private AstScanner(Builder<G> builder) {
+    this.visitors = new ArrayList<SquidAstVisitor<G>>(builder.visitors);
     this.auditListeners = builder.auditListeners.toArray(new AuditListener[builder.auditListeners.size()]);
 
     this.parserRecoveryListener = new ParserRecoveryListener();
@@ -167,38 +167,38 @@ public final class AstScanner<GRAMMAR extends Grammar> {
     }
   }
 
-  public static <GRAMMAR extends Grammar> Builder<GRAMMAR> builder(SquidAstVisitorContextImpl<GRAMMAR> context) {
-    return new Builder<GRAMMAR>(context);
+  public static <G extends Grammar> Builder<G> builder(SquidAstVisitorContextImpl<G> context) {
+    return new Builder<G>(context);
   }
 
-  public static class Builder<GRAMMAR extends Grammar> {
+  public static class Builder<G extends Grammar> {
 
-    private Parser<GRAMMAR> baseParser;
-    private final List<SquidAstVisitor<GRAMMAR>> visitors = new ArrayList<SquidAstVisitor<GRAMMAR>>();
+    private Parser<G> baseParser;
+    private final List<SquidAstVisitor<G>> visitors = new ArrayList<SquidAstVisitor<G>>();
     private final List<AuditListener> auditListeners = new ArrayList<AuditListener>();
-    private final SquidAstVisitorContextImpl<GRAMMAR> context;
+    private final SquidAstVisitorContextImpl<G> context;
     private CommentAnalyser commentAnalyser;
     private MetricDef[] metrics;
     private MetricDef filesMetric;
 
-    public Builder(SquidAstVisitorContextImpl<GRAMMAR> context) {
+    public Builder(SquidAstVisitorContextImpl<G> context) {
       checkNotNull(context, "context cannot be null");
       this.context = context;
     }
 
-    public Builder<GRAMMAR> setBaseParser(Parser<GRAMMAR> baseParser) {
+    public Builder<G> setBaseParser(Parser<G> baseParser) {
       checkNotNull(baseParser, "baseParser cannot be null");
       this.baseParser = baseParser;
       return this;
     }
 
-    public Builder<GRAMMAR> setCommentAnalyser(CommentAnalyser commentAnalyser) {
+    public Builder<G> setCommentAnalyser(CommentAnalyser commentAnalyser) {
       checkNotNull(commentAnalyser, "commentAnalyser cannot be null");
       this.commentAnalyser = commentAnalyser;
       return this;
     }
 
-    public Builder<GRAMMAR> withSquidAstVisitor(SquidAstVisitor<GRAMMAR> visitor) {
+    public Builder<G> withSquidAstVisitor(SquidAstVisitor<G> visitor) {
       checkNotNull(visitor, "visitor cannot be null");
 
       visitor.setContext(context);
@@ -211,7 +211,7 @@ public final class AstScanner<GRAMMAR extends Grammar> {
       return this;
     }
 
-    public Builder<GRAMMAR> withMetrics(MetricDef... metrics) {
+    public Builder<G> withMetrics(MetricDef... metrics) {
       for (MetricDef metric : metrics) {
         checkNotNull(metric, "metrics cannot be null");
       }
@@ -219,18 +219,18 @@ public final class AstScanner<GRAMMAR extends Grammar> {
       return this;
     }
 
-    public Builder<GRAMMAR> setFilesMetric(MetricDef filesMetric) {
+    public Builder<G> setFilesMetric(MetricDef filesMetric) {
       checkNotNull(filesMetric, "filesMetric cannot be null");
       this.filesMetric = filesMetric;
       return this;
     }
 
-    public AstScanner<GRAMMAR> build() {
+    public AstScanner<G> build() {
       checkState(baseParser != null, "baseParser must be set");
       checkState(commentAnalyser != null, "commentAnalyser must be set");
       checkState(filesMetric != null, "filesMetric must be set");
 
-      return new AstScanner<GRAMMAR>(this);
+      return new AstScanner<G>(this);
     }
   }
 
@@ -261,7 +261,7 @@ public final class AstScanner<GRAMMAR extends Grammar> {
 
   }
 
-  private class ParserRecoveryLogger extends SquidAstVisitor<GRAMMAR> implements AuditListener {
+  private class ParserRecoveryLogger extends SquidAstVisitor<G> implements AuditListener {
 
     public void processRecognitionException(RecognitionException re) {
       if (re.isFatal()) {

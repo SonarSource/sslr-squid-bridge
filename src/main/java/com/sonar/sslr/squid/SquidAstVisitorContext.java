@@ -29,11 +29,11 @@ import com.sonar.sslr.api.CommentAnalyser;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
 
-public abstract class SquidAstVisitorContext<GRAMMAR extends Grammar> {
+public abstract class SquidAstVisitorContext<G extends Grammar> {
 
   public abstract File getFile();
 
-  public abstract GRAMMAR getGrammar();
+  public abstract G getGrammar();
 
   public abstract void addSourceCode(SourceCode child);
 

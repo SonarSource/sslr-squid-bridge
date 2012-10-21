@@ -25,7 +25,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Rule;
 
-public abstract class AbstractNestedIfCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> {
+public abstract class AbstractNestedIfCheck<G extends Grammar> extends SquidCheck<G> {
 
   private int nestingLevel;
 

@@ -27,7 +27,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.xpath.api.AstNodeXPathQuery;
 
-public abstract class AbstractXPathCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> {
+public abstract class AbstractXPathCheck<G extends Grammar> extends SquidCheck<G> {
 
   // See SONAR-3164
   public abstract String getXPathQuery();

@@ -25,7 +25,7 @@ import com.sonar.sslr.api.Token;
 import com.sonar.sslr.api.Trivia;
 import org.apache.commons.lang.StringUtils;
 
-public abstract class AbstractSingleLineCommentsSyntaxCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> implements AstAndTokenVisitor {
+public abstract class AbstractSingleLineCommentsSyntaxCheck<G extends Grammar> extends SquidCheck<G> implements AstAndTokenVisitor {
 
   public abstract String getSingleLineCommentSyntaxPrefix();
 

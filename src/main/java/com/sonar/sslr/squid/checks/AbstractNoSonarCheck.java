@@ -24,7 +24,7 @@ import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.api.Trivia;
 
-public abstract class AbstractNoSonarCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> implements AstAndTokenVisitor {
+public abstract class AbstractNoSonarCheck<G extends Grammar> extends SquidCheck<G> implements AstAndTokenVisitor {
 
   public void visitToken(Token token) {
     for (Trivia trivia : token.getTrivia()) {

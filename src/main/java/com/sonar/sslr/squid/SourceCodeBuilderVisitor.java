@@ -26,7 +26,7 @@ import com.sonar.sslr.api.Grammar;
 /**
  * Visitor that create resources.
  */
-public class SourceCodeBuilderVisitor<GRAMMAR extends Grammar> extends SquidAstVisitor<GRAMMAR> {
+public class SourceCodeBuilderVisitor<G extends Grammar> extends SquidAstVisitor<G> {
 
   private final SourceCodeBuilderCallback callback;
   private final AstNodeType[] astNodeTypes;

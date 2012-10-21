@@ -23,7 +23,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Rule;
 
-public abstract class AbstractGotoCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> {
+public abstract class AbstractGotoCheck<G extends Grammar> extends SquidCheck<G> {
 
   public abstract Rule getGotoRule();
 

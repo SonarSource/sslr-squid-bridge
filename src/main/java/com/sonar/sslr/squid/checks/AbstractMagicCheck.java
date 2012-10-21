@@ -25,7 +25,7 @@ import com.sonar.sslr.api.Grammar;
 
 import java.util.Set;
 
-public abstract class AbstractMagicCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> {
+public abstract class AbstractMagicCheck<G extends Grammar> extends SquidCheck<G> {
 
   public abstract Set<AstNodeType> getPatterns();
 

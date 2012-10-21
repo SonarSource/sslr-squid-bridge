@@ -29,7 +29,7 @@ import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.*;
 
-public abstract class AbstractCommentRegularExpressionCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> implements AstAndTokenVisitor {
+public abstract class AbstractCommentRegularExpressionCheck<G extends Grammar> extends SquidCheck<G> implements AstAndTokenVisitor {
 
   // See SONAR-3164
   public abstract String getRegularExpression();

@@ -26,7 +26,7 @@ import com.sonar.sslr.api.Trivia;
 
 import java.util.Set;
 
-public abstract class AbstractNestedCommentsCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> implements AstAndTokenVisitor {
+public abstract class AbstractNestedCommentsCheck<G extends Grammar> extends SquidCheck<G> implements AstAndTokenVisitor {
 
   public abstract Set<String> getCommentStartTags();
 

@@ -34,15 +34,15 @@ import com.sonar.sslr.api.Grammar;
  * 
  * Methods are visited in the following sequential order : init(), visitFile(), visitNode(), leaveNode(), leaveFile() and destroy()
  */
-public class SquidAstVisitor<GRAMMAR extends Grammar> implements CodeVisitor, AstVisitor {
+public class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisitor {
 
   private final List<AstNodeType> astNodeTypesToVisit = new ArrayList<AstNodeType>();
-  private SquidAstVisitorContext<GRAMMAR> context = null;
+  private SquidAstVisitorContext<G> context = null;
 
   /**
    * This method can't be overridden. Used by AstScanners to inject contexts into the actual visitors.
    */
-  public final void setContext(SquidAstVisitorContext<GRAMMAR> context) {
+  public final void setContext(SquidAstVisitorContext<G> context) {
     if (this.context != null) {
       throw new IllegalStateException("setContext() must only be called once.");
     }
@@ -52,7 +52,7 @@ public class SquidAstVisitor<GRAMMAR extends Grammar> implements CodeVisitor, As
   /**
    * This method can't be overridden. Returns the injected context, which the visitors can use.
    */
-  public final SquidAstVisitorContext<GRAMMAR> getContext() {
+  public final SquidAstVisitorContext<G> getContext() {
     return context;
   }
 

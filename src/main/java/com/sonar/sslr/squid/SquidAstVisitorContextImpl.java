@@ -30,10 +30,10 @@ import com.sonar.sslr.api.CommentAnalyser;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
 
-public final class SquidAstVisitorContextImpl<GRAMMAR extends Grammar> extends SquidAstVisitorContext<GRAMMAR> {
+public final class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisitorContext<G> {
 
   private final Stack<SourceCode> sourceCodeStack = new Stack<SourceCode>();
-  private GRAMMAR grammar;
+  private G grammar;
   private File file;
   private final SourceProject project;
   private CommentAnalyser commentAnalyser;
@@ -47,7 +47,7 @@ public final class SquidAstVisitorContextImpl<GRAMMAR extends Grammar> extends S
     sourceCodeStack.add(project);
   }
 
-  public void setGrammar(GRAMMAR grammar) {
+  public void setGrammar(G grammar) {
     this.grammar = grammar;
   }
 
@@ -108,7 +108,7 @@ public final class SquidAstVisitorContextImpl<GRAMMAR extends Grammar> extends S
 
   /** {@inheritDoc} */
   @Override
-  public GRAMMAR getGrammar() {
+  public G getGrammar() {
     return grammar;
   }
 

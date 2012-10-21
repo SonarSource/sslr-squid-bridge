@@ -25,7 +25,7 @@ import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
 import org.sonar.api.utils.SonarException;
 
-public abstract class AbstractLineLengthCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> implements AstAndTokenVisitor {
+public abstract class AbstractLineLengthCheck<G extends Grammar> extends SquidCheck<G> implements AstAndTokenVisitor {
 
   private int lastIncorrectLine;
 

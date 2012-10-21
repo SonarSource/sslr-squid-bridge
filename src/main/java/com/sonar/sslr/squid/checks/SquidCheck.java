@@ -24,7 +24,7 @@ import org.sonar.squid.api.CodeCheck;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.squid.SquidAstVisitor;
 
-public abstract class SquidCheck<GRAMMAR extends Grammar> extends SquidAstVisitor<GRAMMAR> implements CodeCheck {
+public abstract class SquidCheck<G extends Grammar> extends SquidAstVisitor<G> implements CodeCheck {
 
   public String getKey() {
     return null;

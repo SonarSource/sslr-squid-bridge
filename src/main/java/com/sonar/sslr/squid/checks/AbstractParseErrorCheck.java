@@ -26,7 +26,7 @@ import com.sonar.sslr.api.AuditListener;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.RecognitionException;
 
-public abstract class AbstractParseErrorCheck<GRAMMAR extends Grammar> extends SquidCheck<GRAMMAR> implements AuditListener {
+public abstract class AbstractParseErrorCheck<G extends Grammar> extends SquidCheck<G> implements AuditListener {
 
   public void processRecognitionException(RecognitionException e) {
     getContext().createLineViolation(this, e.getMessage(), e.getLine());

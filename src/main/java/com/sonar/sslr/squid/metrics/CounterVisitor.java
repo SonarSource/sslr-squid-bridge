@@ -30,16 +30,16 @@ import org.sonar.squid.measures.MetricDef;
 import java.util.Collection;
 import java.util.Set;
 
-public final class CounterVisitor<GRAMMAR extends Grammar> extends SquidAstVisitor<GRAMMAR> {
+public final class CounterVisitor<G extends Grammar> extends SquidAstVisitor<G> {
 
   private final MetricDef metric;
   private final Set<AstNodeType> astNodeTypes;
 
-  public static <GRAMMAR extends Grammar> Builder<GRAMMAR> builder() {
-    return new Builder<GRAMMAR>();
+  public static <G extends Grammar> Builder<G> builder() {
+    return new Builder<G>();
   }
 
-  public static final class Builder<GRAMMAR extends Grammar> {
+  public static final class Builder<G extends Grammar> {
 
     private MetricDef metric;
     private Set<AstNodeType> astNodeTypes = Sets.newHashSet();
@@ -47,12 +47,12 @@ public final class CounterVisitor<GRAMMAR extends Grammar> extends SquidAstVisit
     private Builder() {
     }
 
-    public Builder<GRAMMAR> setMetricDef(MetricDef metric) {
+    public Builder<G> setMetricDef(MetricDef metric) {
       this.metric = metric;
       return this;
     }
 
-    public Builder<GRAMMAR> subscribeTo(AstNodeType... astNodeTypes) {
+    public Builder<G> subscribeTo(AstNodeType... astNodeTypes) {
       for (AstNodeType astNodeType : astNodeTypes) {
         this.astNodeTypes.add(astNodeType);
       }
@@ -60,18 +60,18 @@ public final class CounterVisitor<GRAMMAR extends Grammar> extends SquidAstVisit
       return this;
     }
 
-    public Builder<GRAMMAR> subscribeTo(Collection<AstNodeType> astNodeTypes) {
+    public Builder<G> subscribeTo(Collection<AstNodeType> astNodeTypes) {
       this.astNodeTypes = ImmutableSet.of(astNodeTypes.toArray(new AstNodeType[astNodeTypes.size()]));
       return this;
     }
 
-    public CounterVisitor<GRAMMAR> build() {
-      return new CounterVisitor<GRAMMAR>(this);
+    public CounterVisitor<G> build() {
+      return new CounterVisitor<G>(this);
     }
 
   }
 
-  private CounterVisitor(Builder<GRAMMAR> builder) {
+  private CounterVisitor(Builder<G> builder) {
     this.metric = builder.metric;
     this.astNodeTypes = ImmutableSet.of(builder.astNodeTypes.toArray(new AstNodeType[builder.astNodeTypes.size()]));
   }

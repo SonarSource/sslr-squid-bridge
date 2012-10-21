@@ -32,7 +32,7 @@ import com.sonar.sslr.squid.SquidAstVisitor;
 /**
  * Visitor that computes the number of lines of code of a file.
  */
-public class LinesOfCodeVisitor<GRAMMAR extends Grammar> extends SquidAstVisitor<GRAMMAR> implements AstAndTokenVisitor {
+public class LinesOfCodeVisitor<G extends Grammar> extends SquidAstVisitor<G> implements AstAndTokenVisitor {
 
   private final MetricDef metric;
   private int lastTokenLine;
