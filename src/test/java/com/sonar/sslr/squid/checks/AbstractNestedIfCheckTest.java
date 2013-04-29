@@ -60,7 +60,6 @@ public class AbstractNestedIfCheckTest {
 
     checkMessagesVerifier.verify(scanFile("/checks/nested_if.mc", check).getCheckMessages())
       .next().atLine(7)
-      .next().atLine(9)
       .next().atLine(27);
   }
 

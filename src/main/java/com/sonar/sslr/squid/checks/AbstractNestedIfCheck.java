@@ -52,7 +52,7 @@ public abstract class AbstractNestedIfCheck<G extends Grammar> extends SquidChec
   @Override
   public void visitNode(AstNode astNode) {
     nestingLevel++;
-    if (nestingLevel > getMaximumNestingLevel()) {
+    if (nestingLevel == getMaximumNestingLevel() + 1) {
       getContext().createLineViolation(this, "This if has a nesting level of {0}, which is higher than the maximum allowed {1}.", astNode,
         nestingLevel,
         getMaximumNestingLevel());
