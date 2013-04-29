@@ -19,6 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
+import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultiset;
@@ -79,7 +80,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
         oos = new ObjectOutputStream(fos);
         oos.writeObject(this.violationsByFileAndRule); // NOSONAR findbugs.DMI_NONSERIALIZABLE_OBJECT_WRITTEN
       } catch (Exception e) {
-        throw new RuntimeException(e);
+        throw Throwables.propagate(e);
       } finally {
         IOUtils.closeQuietly(fos);
         IOUtils.closeQuietly(oos);
@@ -97,7 +98,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
           ois = new ObjectInputStream(fis);
           return new ViolationCounter((Map<String, Map<String, TreeMultiset<Integer>>>) ois.readObject());
         } catch (Exception e) {
-          throw new RuntimeException(e);
+          throw Throwables.propagate(e);
         } finally {
           IOUtils.closeQuietly(fis);
           IOUtils.closeQuietly(ois);
@@ -264,7 +265,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
     try {
       this.projectsDirCanonicalPath = new File(projectsDir).getCanonicalPath();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw Throwables.propagate(e);
     }
 
     this.violationCounter = violationCounter;
@@ -289,7 +290,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
     try {
       canonicalPath = file.getCanonicalPath();
     } catch (IOException e) {
-      throw new RuntimeException(e);
+      throw Throwables.propagate(e);
     }
 
     if (!canonicalPath.startsWith(projectsDirCanonicalPath)) {

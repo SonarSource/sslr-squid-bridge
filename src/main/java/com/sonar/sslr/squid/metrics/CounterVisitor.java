@@ -61,7 +61,7 @@ public final class CounterVisitor<G extends Grammar> extends SquidAstVisitor<G> 
     }
 
     public Builder<G> subscribeTo(Collection<AstNodeType> astNodeTypes) {
-      this.astNodeTypes = ImmutableSet.of(astNodeTypes.toArray(new AstNodeType[astNodeTypes.size()]));
+      this.astNodeTypes = Sets.newHashSet(astNodeTypes);
       return this;
     }
 
@@ -73,7 +73,7 @@ public final class CounterVisitor<G extends Grammar> extends SquidAstVisitor<G> 
 
   private CounterVisitor(Builder<G> builder) {
     this.metric = builder.metric;
-    this.astNodeTypes = ImmutableSet.of(builder.astNodeTypes.toArray(new AstNodeType[builder.astNodeTypes.size()]));
+    this.astNodeTypes = ImmutableSet.copyOf(builder.astNodeTypes);
   }
 
   @Override

@@ -85,8 +85,8 @@ public final class AstScanner<G extends Grammar> {
     return indexer;
   }
 
-  public void scanFile(File plSqlFile) {
-    scanFiles(Arrays.asList(plSqlFile));
+  public void scanFile(File file) {
+    scanFiles(Arrays.asList(file));
   }
 
   public void scanFiles(Collection<File> files) {

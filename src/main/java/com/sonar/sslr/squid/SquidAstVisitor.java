@@ -25,6 +25,7 @@ import com.sonar.sslr.api.AstVisitor;
 import com.sonar.sslr.api.Grammar;
 import org.sonar.squid.api.CodeVisitor;
 
+import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -80,9 +81,9 @@ public class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisit
   }
 
   /**
-   * {@inheritDoc}
+   * @param astNode AST node or null in case of parse error
    */
-  public void visitFile(AstNode astNode) {
+  public void visitFile(@Nullable AstNode astNode) {
   }
 
   /**
@@ -94,13 +95,13 @@ public class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisit
   /**
    * {@inheritDoc}
    */
-  public void leaveFile(AstNode astNode) {
+  public void leaveNode(AstNode astNode) {
   }
 
   /**
-   * {@inheritDoc}
+   * @param astNode AST node or null in case of parse error
    */
-  public void leaveNode(AstNode astNode) {
+  public void leaveFile(@Nullable AstNode astNode) {
   }
 
   /**

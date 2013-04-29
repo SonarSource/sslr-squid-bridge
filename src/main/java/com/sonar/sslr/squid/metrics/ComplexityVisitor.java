@@ -58,17 +58,16 @@ public final class ComplexityVisitor<G extends Grammar> extends SquidAstVisitor<
       for (AstNodeType astNodeType : astNodeTypes) {
         this.astNodeTypes.add(astNodeType);
       }
-
       return this;
     }
 
     public Builder<G> subscribeTo(Collection<AstNodeType> astNodeTypes) {
-      this.astNodeTypes = ImmutableSet.of(astNodeTypes.toArray(new AstNodeType[astNodeTypes.size()]));
+      this.astNodeTypes = Sets.newHashSet(astNodeTypes);
       return this;
     }
 
     public Builder<G> setExclusions(Collection<AstNodeType> exclusionAstNodeTypes) {
-      this.exclusionAstNodeTypes = ImmutableSet.of(exclusionAstNodeTypes.toArray(new AstNodeType[exclusionAstNodeTypes.size()]));
+      this.exclusionAstNodeTypes = Sets.newHashSet(exclusionAstNodeTypes);
       return this;
     }
 
@@ -76,7 +75,6 @@ public final class ComplexityVisitor<G extends Grammar> extends SquidAstVisitor<
       for (AstNodeType exclusionAstNodeType : exclusionAstNodeTypes) {
         this.exclusionAstNodeTypes.add(exclusionAstNodeType);
       }
-
       return this;
     }
 
@@ -88,8 +86,8 @@ public final class ComplexityVisitor<G extends Grammar> extends SquidAstVisitor<
 
   private ComplexityVisitor(Builder<G> builder) {
     this.metric = builder.metric;
-    this.astNodeTypes = ImmutableSet.of(builder.astNodeTypes.toArray(new AstNodeType[builder.astNodeTypes.size()]));
-    this.exclusionAstNodeTypes = ImmutableSet.of(builder.exclusionAstNodeTypes.toArray(new AstNodeType[builder.exclusionAstNodeTypes.size()]));
+    this.astNodeTypes = ImmutableSet.copyOf(builder.astNodeTypes);
+    this.exclusionAstNodeTypes = ImmutableSet.copyOf(builder.exclusionAstNodeTypes);
   }
 
   @Override
