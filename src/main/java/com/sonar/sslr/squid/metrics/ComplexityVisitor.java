@@ -100,11 +100,10 @@ public final class ComplexityVisitor<G extends Grammar> extends SquidAstVisitor<
   @Override
   public void visitNode(AstNode astNode) {
     for (AstNodeType exclusionAstNodeType : exclusionAstNodeTypes) {
-      if (astNode.hasParents(exclusionAstNodeType)) {
+      if (astNode.hasAncestor(exclusionAstNodeType)) {
         return;
       }
     }
-
     getContext().peekSourceCode().add(metric, 1);
   }
 

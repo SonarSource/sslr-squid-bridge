@@ -71,10 +71,8 @@ public abstract class AbstractMagicCheck<G extends Grammar> extends SquidCheck<G
       inclusionLevel++;
     } else if (astNode.is(exclusions)) {
       exclusionLevel++;
-    } else if ((inclusions.length == 0 || inclusionLevel > 0) && exclusionLevel == 0) {
-      if (!isExcepted(astNode)) {
-        getContext().createLineViolation(this, getMessage(), astNode);
-      }
+    } else if ((inclusions.length == 0 || inclusionLevel > 0) && (exclusionLevel == 0) && !isExcepted(astNode)) {
+      getContext().createLineViolation(this, getMessage(), astNode);
     }
   }
 
