@@ -46,7 +46,7 @@ public class CheckMessagesVerifierTest {
     thrown.expectMessage("\nExpected violation");
 
     CheckMessagesVerifier.verify(Collections.EMPTY_LIST)
-        .next();
+      .next();
   }
 
   @Test
@@ -56,7 +56,7 @@ public class CheckMessagesVerifierTest {
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .noMore();
+      .noMore();
   }
 
   @Test
@@ -66,7 +66,7 @@ public class CheckMessagesVerifierTest {
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .next().atLine(2);
+      .next().atLine(2);
   }
 
   @Test
@@ -76,7 +76,7 @@ public class CheckMessagesVerifierTest {
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .atLine(2);
+      .atLine(2);
   }
 
   @Test
@@ -86,7 +86,7 @@ public class CheckMessagesVerifierTest {
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .next().atLine(1).withMessage("bar");
+      .next().atLine(1).withMessage("bar");
   }
 
   @Test
@@ -96,7 +96,7 @@ public class CheckMessagesVerifierTest {
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .withMessage("foo");
+      .withMessage("foo");
   }
 
   @Test
@@ -106,16 +106,16 @@ public class CheckMessagesVerifierTest {
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)
-        .next().atLine(1).withMessageThat(containsString("bar"));
+      .next().atLine(1).withMessageThat(containsString("bar"));
   }
 
   @Test
   public void ok() {
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"), mockCheckMessage(1, "bar"));
     CheckMessagesVerifier.verify(messages)
-        .next().atLine(1).withMessage("bar")
-        .next().atLine(1).withMessageThat(containsString("foo"))
-        .noMore();
+      .next().atLine(1).withMessage("bar")
+      .next().atLine(1).withMessageThat(containsString("foo"))
+      .noMore();
   }
 
   private static final CheckMessage mockCheckMessage(Integer line, String message) {

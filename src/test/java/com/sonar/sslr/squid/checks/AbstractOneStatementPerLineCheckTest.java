@@ -49,7 +49,7 @@ public class AbstractOneStatementPerLineCheckTest {
   @Test
   public void detected() {
     checkMessagesVerifier.verify(scanFile("/checks/one_statement_per_line.mc", new Check()).getCheckMessages())
-        .next().atLine(7).withMessage("At most one statement is allowed per line, but 2 statements were found on this line.");
+      .next().atLine(7).withMessage("At most one statement is allowed per line, but 2 statements were found on this line.");
   }
 
 }

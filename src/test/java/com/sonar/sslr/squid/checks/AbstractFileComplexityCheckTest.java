@@ -62,7 +62,7 @@ public class AbstractFileComplexityCheckTest {
     check.maximumFileComplexity = 4;
 
     checkMessagesVerifier.verify(scanFile("/checks/complexity5.mc", check).getCheckMessages())
-        .next().withMessage("The file is too complex (5 while maximum allowed is set to 4).");
+      .next().withMessage("The file is too complex (5 while maximum allowed is set to 4).");
   }
 
 }

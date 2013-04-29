@@ -66,9 +66,9 @@ public class AbstractCommentRegularExpressionCheckTest {
   @Test
   public void caseInsensitiveCommentRegularExpressionWithResultsCheck() {
     checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new CaseInsensitiveCommentRegularExpressionWithResultsCheck()).getCheckMessages())
-        .next().atLine(3).withMessage("Avoid TODO.")
-        .next().atLine(5)
-        .next().atLine(7);
+      .next().atLine(3).withMessage("Avoid TODO.")
+      .next().atLine(5)
+      .next().atLine(7);
   }
 
   private static class CaseSensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<Grammar> {
@@ -88,7 +88,7 @@ public class AbstractCommentRegularExpressionCheckTest {
   @Test
   public void caseSensitiveCommentRegularExpressionWithResultsCheck() {
     checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new CaseSensitiveCommentRegularExpressionWithResultsCheck()).getCheckMessages())
-        .next().atLine(3).withMessage("Avoid TODO.");
+      .next().atLine(3).withMessage("Avoid TODO.");
   }
 
 }

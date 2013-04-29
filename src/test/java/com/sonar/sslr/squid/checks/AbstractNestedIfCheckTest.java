@@ -50,7 +50,7 @@ public class AbstractNestedIfCheckTest {
   @Test
   public void nestedIfWithDefaultNesting() {
     checkMessagesVerifier.verify(scanFile("/checks/nested_if.mc", new Check()).getCheckMessages())
-        .next().atLine(9).withMessage("This if has a nesting level of 4, which is higher than the maximum allowed 3.");
+      .next().atLine(9).withMessage("This if has a nesting level of 4, which is higher than the maximum allowed 3.");
   }
 
   @Test
@@ -59,9 +59,9 @@ public class AbstractNestedIfCheckTest {
     check.maximumNestingLevel = 2;
 
     checkMessagesVerifier.verify(scanFile("/checks/nested_if.mc", check).getCheckMessages())
-        .next().atLine(7)
-        .next().atLine(9)
-        .next().atLine(27);
+      .next().atLine(7)
+      .next().atLine(9)
+      .next().atLine(27);
   }
 
 }

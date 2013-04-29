@@ -66,7 +66,7 @@ public class AbstractXPathCheckTest {
   @Test
   public void booleanXPathCheckWithResults() {
     checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", new BooleanXPathCheckWithResults()).getCheckMessages())
-        .next().withMessage("Boolean XPath rule with results.");
+      .next().withMessage("Boolean XPath rule with results.");
   }
 
   private static class BooleanXPathCheckWithoutResults extends AbstractXPathCheck<Grammar> {
@@ -105,8 +105,8 @@ public class AbstractXPathCheckTest {
   @Test
   public void astNodesXpathCheck() {
     checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", new AstNodesXpathCheck()).getCheckMessages())
-        .next().atLine(1).withMessage("No variable definitions allowed!")
-        .next().atLine(5);
+      .next().atLine(1).withMessage("No variable definitions allowed!")
+      .next().atLine(5);
   }
 
 }

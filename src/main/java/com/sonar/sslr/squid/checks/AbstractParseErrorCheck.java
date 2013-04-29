@@ -19,12 +19,12 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
-
 import com.sonar.sslr.api.AuditListener;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.RecognitionException;
+
+import java.io.PrintWriter;
+import java.io.StringWriter;
 
 public abstract class AbstractParseErrorCheck<G extends Grammar> extends SquidCheck<G> implements AuditListener {
 

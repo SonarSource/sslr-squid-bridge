@@ -48,8 +48,8 @@ public class AbstractNestedCommentsCheckTest {
   @Test
   public void singleLineCommentsSyntax() {
     checkMessagesVerifier.verify(scanFile("/checks/nested_comments.mc", new Check()).getCheckMessages())
-        .next().atLine(1).withMessage("This comments contains the nested comment start tag \"/*\"")
-        .next().atLine(2).withMessage("This comments contains the nested comment start tag \"//\"");
+      .next().atLine(1).withMessage("This comments contains the nested comment start tag \"/*\"")
+      .next().atLine(2).withMessage("This comments contains the nested comment start tag \"//\"");
   }
 
 }

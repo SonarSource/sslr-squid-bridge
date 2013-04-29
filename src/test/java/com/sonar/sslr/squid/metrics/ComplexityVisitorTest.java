@@ -23,9 +23,9 @@ import com.sonar.sslr.test.miniC.MiniCAstScanner.MiniCMetrics;
 import org.junit.Test;
 import org.sonar.squid.api.SourceFile;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ComplexityVisitorTest {
 

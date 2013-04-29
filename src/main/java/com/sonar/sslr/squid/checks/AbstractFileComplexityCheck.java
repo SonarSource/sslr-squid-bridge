@@ -19,12 +19,11 @@
  */
 package com.sonar.sslr.squid.checks;
 
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
 import org.sonar.api.utils.SonarException;
 import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.measures.MetricDef;
-
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
 
 public abstract class AbstractFileComplexityCheck<G extends Grammar> extends SquidCheck<G> {
 
@@ -37,8 +36,8 @@ public abstract class AbstractFileComplexityCheck<G extends Grammar> extends Squ
   public void init() {
     if (getMaximumFileComplexity() <= 0) {
       throw new SonarException("[AbstractFileComplexityCheck] The complexity threshold must be set to a value greater than 0 ("
-          + getMaximumFileComplexity()
-          + " given).");
+        + getMaximumFileComplexity()
+        + " given).");
     }
   }
 
@@ -49,7 +48,7 @@ public abstract class AbstractFileComplexityCheck<G extends Grammar> extends Squ
 
     if (fileComplexity > getMaximumFileComplexity()) {
       getContext().createFileViolation(this, "The file is too complex ({0} while maximum allowed is set to {1}).", fileComplexity,
-          getMaximumFileComplexity());
+        getMaximumFileComplexity());
     }
   }
 

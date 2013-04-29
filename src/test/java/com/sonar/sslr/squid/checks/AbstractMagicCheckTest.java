@@ -69,8 +69,8 @@ public class AbstractMagicCheckTest {
   @Test
   public void detected() {
     checkMessagesVerifier.verify(scanFile("/checks/magic.mc", new Check()).getCheckMessages())
-        .next().atLine(5).withMessage("Avoid magic stuff.")
-        .next().atLine(9);
+      .next().atLine(5).withMessage("Avoid magic stuff.")
+      .next().atLine(9);
   }
 
 }

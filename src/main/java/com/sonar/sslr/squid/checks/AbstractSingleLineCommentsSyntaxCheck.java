@@ -36,7 +36,7 @@ public abstract class AbstractSingleLineCommentsSyntaxCheck<G extends Grammar> e
 
         if (!comment.startsWith(getSingleLineCommentSyntaxPrefix()) && !StringUtils.containsAny(comment, "\r\n")) {
           getContext().createLineViolation(this, "This single line comment should use the single line comment syntax \"{0}\"", trivia.getToken(),
-              getSingleLineCommentSyntaxPrefix());
+            getSingleLineCommentSyntaxPrefix());
         }
       }
     }

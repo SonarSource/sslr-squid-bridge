@@ -36,7 +36,7 @@ public class AbstractParseErrorCheckTest {
   @Test
   public void parseError() {
     checkMessagesVerifier.verify(scanFile("/checks/parse_error.mc", new Check()).getCheckMessages())
-        .next().atLine(3);
+      .next().atLine(3);
   }
 
 }

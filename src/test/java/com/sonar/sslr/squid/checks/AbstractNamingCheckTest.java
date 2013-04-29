@@ -36,7 +36,7 @@ public class AbstractNamingCheckTest {
 
     @Override
     public AstNodeType[] getRules() {
-      return new AstNodeType[] {
+      return new AstNodeType[]{
         MiniCGrammar.BIN_FUNCTION_DEFINITION,
         MiniCGrammar.BIN_VARIABLE_DEFINITION
       };
@@ -67,8 +67,8 @@ public class AbstractNamingCheckTest {
   @Test
   public void detected() {
     checkMessagesVerifier.verify(scanFile("/checks/naming.mc", new Check()).getCheckMessages())
-        .next().atLine(5).withMessage("\"BAD\" is a bad name.")
-        .next().atLine(12).withMessage("\"myFunction\" is a bad name.");
+      .next().atLine(5).withMessage("\"BAD\" is a bad name.")
+      .next().atLine(12).withMessage("\"myFunction\" is a bad name.");
   }
 
 }

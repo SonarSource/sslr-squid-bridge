@@ -42,8 +42,8 @@ public class AbstractSingleLineCommentsSyntaxCheckTest {
   @Test
   public void singleLineCommentsSyntax() {
     checkMessagesVerifier.verify(scanFile("/checks/single_line_comments_syntax.mc", new Check()).getCheckMessages())
-        .next().atLine(1).withMessage("This single line comment should use the single line comment syntax \"//\"")
-        .next().atLine(15);
+      .next().atLine(1).withMessage("This single line comment should use the single line comment syntax \"//\"")
+      .next().atLine(15);
   }
 
 }

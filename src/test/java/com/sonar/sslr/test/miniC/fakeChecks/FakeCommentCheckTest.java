@@ -48,7 +48,7 @@ public class FakeCommentCheckTest {
   @Test
   public void testFakeCommentCheck() {
     checkMessagesVerifier.verify(scanFile("/fakeChecks/fakeComment.mc", new FakeCommentCheck()).getCheckMessages())
-        .next().atLine(6);
+      .next().atLine(6);
   }
 
 }

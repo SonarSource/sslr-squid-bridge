@@ -29,7 +29,12 @@ import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang.StringUtils;
 import org.sonar.squid.api.CheckMessage;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -59,7 +64,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
       Map<String, TreeMultiset<Integer>> violationsByRule = violationsByFileAndRule.get(fileRelativePath);
 
       if (!violationsByRule.containsKey(rule)) {
-        violationsByRule.put(rule, TreeMultiset.<Integer> create());
+        violationsByRule.put(rule, TreeMultiset.<Integer>create());
       }
       TreeMultiset<Integer> violations = violationsByRule.get(rule);
 
@@ -184,8 +189,8 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
         }
 
         println("    " + rule + ", (difference only) expected ("
-            + StringUtils.join(setDifference(linesExpected, linesActual), ",") + "), actual ("
-            + StringUtils.join(setDifference(linesActual, linesExpected), ",") + ").");
+          + StringUtils.join(setDifference(linesExpected, linesActual), ",") + "), actual ("
+          + StringUtils.join(setDifference(linesActual, linesExpected), ",") + ").");
 
         return false;
       } else {
@@ -196,7 +201,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
 
     private static TreeMultiset<Integer> getLines(ViolationCounter counter, String file, String rule) {
       if (!counter.violationsByFileAndRule.containsKey(file)
-          || !counter.violationsByFileAndRule.get(file).containsKey(rule)) {
+        || !counter.violationsByFileAndRule.get(file).containsKey(rule)) {
         return TreeMultiset.create();
       } else {
         return counter.violationsByFileAndRule.get(file).get(rule);
@@ -217,7 +222,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
         int actualViolations = getViolationsByRule(actual, rule);
 
         println("  " + rule + " expected: " + expectedViolations + ", actual: " + actualViolations + ": "
-            + (expectedViolations == actualViolations ? "OK" : "*** FAILURE ***"));
+          + (expectedViolations == actualViolations ? "OK" : "*** FAILURE ***"));
       }
 
       println("End of differences by rule.");
@@ -270,8 +275,8 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
     Set<CheckMessage> violationsOnCurrentFile = new HashSet<CheckMessage>(getContext().peekSourceCode().getCheckMessages());
     for (CheckMessage violation : violationsOnCurrentFile) {
       violationCounter.increment(getRelativePath(getContext().getFile()), violation.getChecker().getClass().getSimpleName(),
-          violation.getLine() == null ? -1
-              : violation.getLine());
+        violation.getLine() == null ? -1
+          : violation.getLine());
     }
   }
 
@@ -289,7 +294,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
 
     if (!canonicalPath.startsWith(projectsDirCanonicalPath)) {
       throw new IllegalArgumentException("The file located at \"" + canonicalPath + "\" is not within projectsDir (\""
-          + projectsDirCanonicalPath + "\").");
+        + projectsDirCanonicalPath + "\").");
     }
 
     return canonicalPath.substring(projectsDirCanonicalPath.length()).replace('\\', '/');

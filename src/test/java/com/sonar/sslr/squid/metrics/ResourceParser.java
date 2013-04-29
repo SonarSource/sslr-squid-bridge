@@ -44,7 +44,7 @@ public class ResourceParser {
 
   private static SourceFile scanFile(String filePath, boolean ignoreHeaderComments, SquidAstVisitor<Grammar>... visitors) {
     AstScanner<Grammar> scanner = ignoreHeaderComments ? MiniCAstScanner.createIgnoreHeaderComments(visitors) : MiniCAstScanner
-        .create(visitors);
+      .create(visitors);
     File file = FileUtils.toFile(ResourceParser.class.getResource(filePath));
     if (file == null || !file.exists()) {
       throw new IllegalArgumentException("The file located under \"" + filePath + "\" was not found.");

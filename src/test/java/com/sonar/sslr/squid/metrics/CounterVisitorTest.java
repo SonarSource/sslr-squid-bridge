@@ -19,14 +19,13 @@
  */
 package com.sonar.sslr.squid.metrics;
 
-import static com.sonar.sslr.squid.metrics.ResourceParser.*;
-import static org.hamcrest.Matchers.*;
-import static org.junit.Assert.*;
-
+import com.sonar.sslr.test.miniC.MiniCAstScanner.MiniCMetrics;
 import org.junit.Test;
 import org.sonar.squid.api.SourceFile;
 
-import com.sonar.sslr.test.miniC.MiniCAstScanner.MiniCMetrics;
+import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 public class CounterVisitorTest {
 

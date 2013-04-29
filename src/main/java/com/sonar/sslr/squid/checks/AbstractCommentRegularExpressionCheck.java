@@ -27,7 +27,7 @@ import org.sonar.api.utils.SonarException;
 
 import java.util.regex.Pattern;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AbstractCommentRegularExpressionCheck<G extends Grammar> extends SquidCheck<G> implements AstAndTokenVisitor {
 

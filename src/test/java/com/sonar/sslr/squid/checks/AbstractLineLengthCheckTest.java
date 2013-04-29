@@ -44,7 +44,7 @@ public class AbstractLineLengthCheckTest {
   @Test
   public void lineLengthWithDefaultLength() {
     checkMessagesVerifier.verify(scanFile("/checks/line_length.mc", new Check()).getCheckMessages())
-        .next().atLine(3).withMessage("The line length is greater than 80 authorized.");
+      .next().atLine(3).withMessage("The line length is greater than 80 authorized.");
   }
 
   @Test
@@ -53,8 +53,8 @@ public class AbstractLineLengthCheckTest {
     check.maximumLineLength = 7;
 
     checkMessagesVerifier.verify(scanFile("/checks/line_length.mc", check).getCheckMessages())
-        .next().atLine(3)
-        .next().atLine(4);
+      .next().atLine(3)
+      .next().atLine(4);
   }
 
 }

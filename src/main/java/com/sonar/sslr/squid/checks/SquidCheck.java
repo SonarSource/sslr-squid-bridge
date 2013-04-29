@@ -19,10 +19,9 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import org.sonar.squid.api.CodeCheck;
-
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.squid.SquidAstVisitor;
+import org.sonar.squid.api.CodeCheck;
 
 public abstract class SquidCheck<G extends Grammar> extends SquidAstVisitor<G> implements CodeCheck {
 

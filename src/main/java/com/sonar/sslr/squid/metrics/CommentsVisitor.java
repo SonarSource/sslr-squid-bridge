@@ -19,7 +19,11 @@
  */
 package com.sonar.sslr.squid.metrics;
 
-import com.sonar.sslr.api.*;
+import com.sonar.sslr.api.AstAndTokenVisitor;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
+import com.sonar.sslr.api.Token;
+import com.sonar.sslr.api.Trivia;
 import com.sonar.sslr.squid.SquidAstVisitor;
 import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.measures.MetricDef;
@@ -90,7 +94,7 @@ public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G>
       for (Trivia trivia : token.getTrivia()) {
         if (trivia.isComment()) {
           String[] commentLines = getContext().getCommentAnalyser().getContents(trivia.getToken().getOriginalValue())
-              .split("(\r)?\n|\r", -1);
+            .split("(\r)?\n|\r", -1);
           int line = trivia.getToken().getLine();
 
           for (String commentLine : commentLines) {

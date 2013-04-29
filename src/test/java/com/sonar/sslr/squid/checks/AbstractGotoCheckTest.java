@@ -43,7 +43,7 @@ public class AbstractGotoCheckTest {
   @Test
   public void detected() {
     checkMessagesVerifier.verify(scanFile("/checks/goto.mc", new Check()).getCheckMessages())
-        .next().atLine(9).withMessage("Goto should be avoided.");
+      .next().atLine(9).withMessage("Goto should be avoided.");
   }
 
 }

@@ -19,7 +19,11 @@
  */
 package com.sonar.sslr.squid;
 
-import com.sonar.sslr.api.*;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.AuditListener;
+import com.sonar.sslr.api.CommentAnalyser;
+import com.sonar.sslr.api.Grammar;
+import com.sonar.sslr.api.RecognitionException;
 import com.sonar.sslr.impl.Parser;
 import com.sonar.sslr.impl.ast.AstWalker;
 import com.sonar.sslr.impl.events.ExtendedStackTrace;
@@ -38,7 +42,8 @@ import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkNotNull;
+import static com.google.common.base.Preconditions.checkState;
 
 public final class AstScanner<G extends Grammar> {
 
@@ -73,7 +78,7 @@ public final class AstScanner<G extends Grammar> {
     ParserRecoveryLogger parserRecoveryLogger = new ParserRecoveryLogger();
     parserRecoveryLogger.setContext(this.context);
     this.parserDebug = Parser.builder(builder.baseParser).setParsingEventListeners().setExtendedStackTrace(new ExtendedStackTrace())
-        .setRecognictionExceptionListener(this.auditListeners).addRecognictionExceptionListeners(parserRecoveryLogger).build();
+      .setRecognictionExceptionListener(this.auditListeners).addRecognictionExceptionListeners(parserRecoveryLogger).build();
   }
 
   public SourceCodeSearchEngine getIndex() {
@@ -241,7 +246,7 @@ public final class AstScanner<G extends Grammar> {
     public void processRecognitionException(RecognitionException re) {
       if (re.isFatal()) {
         throw new IllegalStateException(
-            "ParserRecoveryListener.processRecognitionException() is not supposed to be called with fatal recognition exceptions.", re);
+          "ParserRecoveryListener.processRecognitionException() is not supposed to be called with fatal recognition exceptions.", re);
       }
 
       recovers++;
@@ -266,7 +271,7 @@ public final class AstScanner<G extends Grammar> {
     public void processRecognitionException(RecognitionException re) {
       if (re.isFatal()) {
         throw new IllegalStateException(
-            "ParserRecoveryLogger.processRecognitionException() is not supposed to be called with fatal recognition exceptions.", re);
+          "ParserRecoveryLogger.processRecognitionException() is not supposed to be called with fatal recognition exceptions.", re);
       }
 
       LOG.warn("Unable to completely parse the file " + getContext().getFile().getAbsolutePath());

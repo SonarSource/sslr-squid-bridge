@@ -47,7 +47,7 @@ public class FakePreprocessorCheckTest {
           AstNode definition = preprocessorStructure.findFirstDirectChild(MiniCPreprocessor.MiniCPreprocessorGrammar.BIN_DEFINITION);
           if (definition != null && "WTF".equals(definition.getTokenOriginalValue())) {
             getContext().createLineViolation(this, "Be gentle in your preprocessor definitions.",
-                trivia.getPreprocessingDirective().getAst().getTokenLine());
+              trivia.getPreprocessingDirective().getAst().getTokenLine());
           }
         }
       }
@@ -57,7 +57,7 @@ public class FakePreprocessorCheckTest {
   @Test
   public void testFakeCommentCheck() {
     checkMessagesVerifier.verify(scanFile("/fakeChecks/fakePreprocessor.mc", new FakePreprocessorCheck()).getCheckMessages())
-        .next().atLine(2);
+      .next().atLine(2);
   }
 
 }

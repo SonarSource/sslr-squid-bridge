@@ -36,9 +36,9 @@ public class AbstractNoSonarCheckTest {
   @Test
   public void singleLineCommentsSyntax() {
     checkMessagesVerifier.verify(scanFile("/checks/no_sonar.mc", new Check()).getCheckMessages())
-        .next().atLine(5).withMessage("Is NOSONAR usage acceptable or does it hide a real quality flaw?")
-        .next().atLine(6)
-        .next().atLine(10);
+      .next().atLine(5).withMessage("Is NOSONAR usage acceptable or does it hide a real quality flaw?")
+      .next().atLine(6)
+      .next().atLine(10);
   }
 
 }

@@ -19,16 +19,19 @@
  */
 package com.sonar.sslr.squid;
 
-import java.io.File;
-import java.util.Stack;
-
-import org.sonar.squid.api.*;
-import org.sonar.squid.measures.MetricDef;
-
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.CommentAnalyser;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
+import org.sonar.squid.api.CheckMessage;
+import org.sonar.squid.api.CodeCheck;
+import org.sonar.squid.api.SourceCode;
+import org.sonar.squid.api.SourceFile;
+import org.sonar.squid.api.SourceProject;
+import org.sonar.squid.measures.MetricDef;
+
+import java.io.File;
+import java.util.Stack;
 
 public final class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisitorContext<G> {
 
@@ -55,26 +58,34 @@ public final class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAs
     this.commentAnalyser = commentAnalyser;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public CommentAnalyser getCommentAnalyser() {
     return commentAnalyser;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void addSourceCode(SourceCode child) {
     peekSourceCode().addChild(child);
     sourceCodeStack.add(child);
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void popSourceCode() {
     sourceCodeStack.pop();
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public SourceCode peekSourceCode() {
     return sourceCodeStack.peek();
@@ -91,12 +102,14 @@ public final class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAs
   }
 
   private void peekTillSourceProject() {
-    while ( !(peekSourceCode() instanceof SourceProject)) {
+    while (!(peekSourceCode() instanceof SourceProject)) {
       popSourceCode();
     }
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public File getFile() {
     return file;
@@ -106,31 +119,41 @@ public final class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAs
     return project;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public G getGrammar() {
     return grammar;
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void createFileViolation(CodeCheck check, String message, Object... messageParameters) {
     createLineViolation(check, message, -1, messageParameters);
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void createLineViolation(CodeCheck check, String message, AstNode node, Object... messageParameters) {
     createLineViolation(check, message, node.getToken(), messageParameters);
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void createLineViolation(CodeCheck check, String message, Token token, Object... messageParameters) {
     createLineViolation(check, message, token.getLine(), messageParameters);
   }
 
-  /** {@inheritDoc} */
+  /**
+   * {@inheritDoc}
+   */
   @Override
   public void createLineViolation(CodeCheck check, String message, int line, Object... messageParameters) {
     CheckMessage checkMessage = new CheckMessage(check, message, messageParameters);
@@ -147,7 +170,7 @@ public final class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAs
       peekSourceCode().getParent(SourceFile.class).log(message);
     } else {
       throw new IllegalStateException("Unable to log a check message on source code '"
-          + (peekSourceCode() == null ? "[NULL]" : peekSourceCode().getKey()) + "'");
+        + (peekSourceCode() == null ? "[NULL]" : peekSourceCode().getKey()) + "'");
     }
   }
 

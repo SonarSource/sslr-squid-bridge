@@ -19,9 +19,8 @@
  */
 package com.sonar.sslr.squid;
 
-import org.sonar.squid.api.SourceCode;
-
 import com.sonar.sslr.api.AstNode;
+import org.sonar.squid.api.SourceCode;
 
 public interface SourceCodeBuilderCallback {
 

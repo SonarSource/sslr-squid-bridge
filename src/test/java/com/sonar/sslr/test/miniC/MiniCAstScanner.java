@@ -91,36 +91,36 @@ public final class MiniCAstScanner {
   private static AstScanner<Grammar> create(boolean ignoreHeaderComments, SquidAstVisitor<Grammar>... visitors) {
 
     final SquidAstVisitorContextImpl<Grammar> context = new SquidAstVisitorContextImpl<Grammar>(
-        new SourceProject("MiniC Project"));
+      new SourceProject("MiniC Project"));
     final Parser<Grammar> parser = MiniCParser.create();
 
-    AstScanner.Builder<Grammar> builder = AstScanner.<Grammar> builder(context).setBaseParser(parser);
+    AstScanner.Builder<Grammar> builder = AstScanner.<Grammar>builder(context).setBaseParser(parser);
 
     /* Metrics */
     builder.withMetrics(MiniCMetrics.values());
 
     /* Comments */
     builder.setCommentAnalyser(
-        new CommentAnalyser() {
+      new CommentAnalyser() {
 
-          @Override
-          public boolean isBlank(String commentLine) {
-            for (int i = 0; i < commentLine.length(); i++) {
-              if (Character.isLetterOrDigit(commentLine.charAt(i))) {
-                return false;
-              }
+        @Override
+        public boolean isBlank(String commentLine) {
+          for (int i = 0; i < commentLine.length(); i++) {
+            if (Character.isLetterOrDigit(commentLine.charAt(i))) {
+              return false;
             }
-
-            return true;
           }
 
-          @Override
-          public String getContents(String comment) {
-            return comment.substring(2, comment.length() - 2);
-          }
-
+          return true;
         }
-        );
+
+        @Override
+        public String getContents(String comment) {
+          return comment.substring(2, comment.length() - 2);
+        }
+
+      }
+    );
 
     /* Files */
     builder.setFilesMetric(MiniCMetrics.FILES);
@@ -138,21 +138,21 @@ public final class MiniCAstScanner {
       }
     }, MiniCGrammar.FUNCTION_DEFINITION));
 
-    builder.withSquidAstVisitor(CounterVisitor.<Grammar> builder().setMetricDef(MiniCMetrics.FUNCTIONS)
-        .subscribeTo(MiniCGrammar.FUNCTION_DEFINITION).build());
+    builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder().setMetricDef(MiniCMetrics.FUNCTIONS)
+      .subscribeTo(MiniCGrammar.FUNCTION_DEFINITION).build());
 
     /* Metrics */
     builder.withSquidAstVisitor(new LinesVisitor<Grammar>(MiniCMetrics.LINES));
     builder.withSquidAstVisitor(new LinesOfCodeVisitor<Grammar>(MiniCMetrics.LINES_OF_CODE));
-    builder.withSquidAstVisitor(CommentsVisitor.<Grammar> builder().withCommentMetric(MiniCMetrics.COMMENT_LINES)
-        .withBlankCommentMetric(MiniCMetrics.BLANK_COMMENT_LINES)
-        .withNoSonar(true)
-        .withIgnoreHeaderComment(ignoreHeaderComments)
-        .build());
-    builder.withSquidAstVisitor(CounterVisitor.<Grammar> builder().setMetricDef(MiniCMetrics.STATEMENTS)
-        .subscribeTo(MiniCGrammar.STATEMENT).build());
+    builder.withSquidAstVisitor(CommentsVisitor.<Grammar>builder().withCommentMetric(MiniCMetrics.COMMENT_LINES)
+      .withBlankCommentMetric(MiniCMetrics.BLANK_COMMENT_LINES)
+      .withNoSonar(true)
+      .withIgnoreHeaderComment(ignoreHeaderComments)
+      .build());
+    builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder().setMetricDef(MiniCMetrics.STATEMENTS)
+      .subscribeTo(MiniCGrammar.STATEMENT).build());
 
-    AstNodeType[] complexityAstNodeType = new AstNodeType[] {
+    AstNodeType[] complexityAstNodeType = new AstNodeType[]{
       MiniCGrammar.FUNCTION_DEFINITION,
       MiniCGrammar.RETURN_STATEMENT,
       MiniCGrammar.IF_STATEMENT,
@@ -160,8 +160,8 @@ public final class MiniCAstScanner {
       MiniCGrammar.CONTINUE_STATEMENT,
       MiniCGrammar.BREAK_STATEMENT
     };
-    builder.withSquidAstVisitor(ComplexityVisitor.<Grammar> builder().setMetricDef(MiniCMetrics.COMPLEXITY)
-        .subscribeTo(complexityAstNodeType).addExclusions(MiniCGrammar.NO_COMPLEXITY_STATEMENT).build());
+    builder.withSquidAstVisitor(ComplexityVisitor.<Grammar>builder().setMetricDef(MiniCMetrics.COMPLEXITY)
+      .subscribeTo(complexityAstNodeType).addExclusions(MiniCGrammar.NO_COMPLEXITY_STATEMENT).build());
 
     /* External visitors (typically Check ones) */
     for (SquidAstVisitor<Grammar> visitor : visitors) {
