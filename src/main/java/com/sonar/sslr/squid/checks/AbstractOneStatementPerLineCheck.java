@@ -21,8 +21,8 @@ package com.sonar.sslr.squid.checks;
 
 import com.google.common.collect.Maps;
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.api.Rule;
 
 import java.util.Map;
 
@@ -30,7 +30,7 @@ public abstract class AbstractOneStatementPerLineCheck<G extends Grammar> extend
 
   private final Map<Integer, Integer> statementsPerLine = Maps.newHashMap();
 
-  public abstract Rule getStatementRule();
+  public abstract AstNodeType getStatementRule();
 
   public abstract boolean isExcluded(AstNode statementNode);
 

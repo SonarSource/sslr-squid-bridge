@@ -19,11 +19,10 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import org.sonar.api.utils.SonarException;
-
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.api.Rule;
+import org.sonar.api.utils.SonarException;
 
 public abstract class AbstractNestedIfCheck<G extends Grammar> extends SquidCheck<G> {
 
@@ -32,7 +31,7 @@ public abstract class AbstractNestedIfCheck<G extends Grammar> extends SquidChec
   // See SONAR-3164
   public abstract int getMaximumNestingLevel();
 
-  public abstract Rule getIfRule();
+  public abstract AstNodeType getIfRule();
 
   @Override
   public void visitFile(AstNode astNode) {

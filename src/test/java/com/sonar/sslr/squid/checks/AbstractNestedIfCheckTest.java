@@ -19,7 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.sonar.sslr.api.Rule;
+import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
@@ -40,7 +40,7 @@ public class AbstractNestedIfCheckTest {
     }
 
     @Override
-    public Rule getIfRule() {
+    public AstNodeType getIfRule() {
       return getContext().getGrammar().ifStatement;
     }
 

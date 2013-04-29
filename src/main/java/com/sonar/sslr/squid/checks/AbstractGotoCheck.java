@@ -20,12 +20,12 @@
 package com.sonar.sslr.squid.checks;
 
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.api.Rule;
 
 public abstract class AbstractGotoCheck<G extends Grammar> extends SquidCheck<G> {
 
-  public abstract Rule getGotoRule();
+  public abstract AstNodeType getGotoRule();
 
   @Override
   public void init() {

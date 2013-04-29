@@ -20,19 +20,20 @@
 package com.sonar.sslr.squid.checks;
 
 import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.api.Rule;
 import org.sonar.api.utils.SonarException;
 
 import java.util.regex.Pattern;
 
-import static com.google.common.base.Preconditions.*;
+import static com.google.common.base.Preconditions.checkArgument;
+import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AbstractNamingCheck<G extends Grammar> extends SquidCheck<G> {
 
   private Pattern pattern;
 
-  public abstract Rule[] getRules();
+  public abstract AstNodeType[] getRules();
 
   public abstract String getName(AstNode astNode);
 
@@ -44,7 +45,7 @@ public abstract class AbstractNamingCheck<G extends Grammar> extends SquidCheck<
 
   @Override
   public void init() {
-    Rule[] rules = getRules();
+    AstNodeType[] rules = getRules();
     checkNotNull(rules, "getRules() must not return null");
     checkArgument(rules.length > 0, "getRules() must return at least one rule");
 

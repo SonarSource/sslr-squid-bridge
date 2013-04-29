@@ -19,7 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.sonar.sslr.api.Rule;
+import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
@@ -33,7 +33,7 @@ public class AbstractGotoCheckTest {
   private static class Check extends AbstractGotoCheck<MiniCGrammar> {
 
     @Override
-    public Rule getGotoRule() {
+    public AstNodeType getGotoRule() {
       return getContext().getGrammar().breakStatement;
     }
 

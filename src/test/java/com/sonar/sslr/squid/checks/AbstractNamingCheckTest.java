@@ -20,7 +20,7 @@
 package com.sonar.sslr.squid.checks;
 
 import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Rule;
+import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
@@ -34,8 +34,8 @@ public class AbstractNamingCheckTest {
   private static class Check extends AbstractNamingCheck<MiniCGrammar> {
 
     @Override
-    public Rule[] getRules() {
-      return new Rule[] {getContext().getGrammar().binFunctionDefinition, getContext().getGrammar().binVariableDefinition};
+    public AstNodeType[] getRules() {
+      return new AstNodeType[] {getContext().getGrammar().binFunctionDefinition, getContext().getGrammar().binVariableDefinition};
     }
 
     @Override
@@ -66,4 +66,5 @@ public class AbstractNamingCheckTest {
         .next().atLine(5).withMessage("\"BAD\" is a bad name.")
         .next().atLine(12).withMessage("\"myFunction\" is a bad name.");
   }
+
 }

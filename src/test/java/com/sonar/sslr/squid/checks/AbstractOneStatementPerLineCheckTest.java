@@ -20,7 +20,7 @@
 package com.sonar.sslr.squid.checks;
 
 import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Rule;
+import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class AbstractOneStatementPerLineCheckTest {
   private static class Check extends AbstractOneStatementPerLineCheck<MiniCGrammar> {
 
     @Override
-    public Rule getStatementRule() {
+    public AstNodeType getStatementRule() {
       return getContext().getGrammar().statement;
     }
 
