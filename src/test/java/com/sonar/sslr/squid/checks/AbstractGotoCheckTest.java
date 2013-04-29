@@ -20,6 +20,7 @@
 package com.sonar.sslr.squid.checks;
 
 import com.sonar.sslr.api.AstNodeType;
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
@@ -30,11 +31,11 @@ public class AbstractGotoCheckTest {
   @org.junit.Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractGotoCheck<MiniCGrammar> {
+  private static class Check extends AbstractGotoCheck<Grammar> {
 
     @Override
     public AstNodeType getGotoRule() {
-      return getContext().getGrammar().breakStatement;
+      return MiniCGrammar.BREAK_STATEMENT;
     }
 
   }

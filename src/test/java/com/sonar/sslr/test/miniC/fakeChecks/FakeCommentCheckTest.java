@@ -20,11 +20,11 @@
 package com.sonar.sslr.test.miniC.fakeChecks;
 
 import com.sonar.sslr.api.AstAndTokenVisitor;
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.api.Trivia;
 import com.sonar.sslr.squid.checks.CheckMessagesVerifierRule;
 import com.sonar.sslr.squid.checks.SquidCheck;
-import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -35,7 +35,7 @@ public class FakeCommentCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private class FakeCommentCheck extends SquidCheck<MiniCGrammar> implements AstAndTokenVisitor {
+  private class FakeCommentCheck extends SquidCheck<Grammar> implements AstAndTokenVisitor {
     public void visitToken(Token token) {
       for (Trivia trivia : token.getTrivia()) {
         if (trivia.isComment() && trivia.getToken().getValue().contains("stupid")) {

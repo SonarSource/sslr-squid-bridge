@@ -19,8 +19,8 @@
  */
 package com.sonar.sslr.squid.checks;
 
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCAstScanner.MiniCMetrics;
-import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Rule;
 import org.junit.Test;
 import org.sonar.squid.measures.MetricDef;
@@ -32,7 +32,7 @@ public class AbstractFileComplexityCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractFileComplexityCheck<MiniCGrammar> {
+  private static class Check extends AbstractFileComplexityCheck<Grammar> {
 
     public int maximumFileComplexity = 100;
 

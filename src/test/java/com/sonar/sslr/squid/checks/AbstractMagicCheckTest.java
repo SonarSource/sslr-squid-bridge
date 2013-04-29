@@ -19,15 +19,15 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.google.common.collect.Sets;
+import com.google.common.collect.ImmutableSet;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import com.sonar.sslr.test.miniC.MiniCLexer;
 import org.junit.Rule;
 import org.junit.Test;
 
-import java.util.Collections;
 import java.util.Set;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
@@ -37,21 +37,21 @@ public class AbstractMagicCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractMagicCheck<MiniCGrammar> {
+  private static class Check extends AbstractMagicCheck<Grammar> {
 
     @Override
     public Set<AstNodeType> getPatterns() {
-      return Collections.unmodifiableSet(Sets.newHashSet((AstNodeType) MiniCLexer.Literals.INTEGER));
+      return ImmutableSet.<AstNodeType>of(MiniCLexer.Literals.INTEGER);
     }
 
     @Override
     public Set<AstNodeType> getInclusions() {
-      return Collections.unmodifiableSet(Sets.newHashSet((AstNodeType) getContext().getGrammar().whileStatement));
+      return ImmutableSet.<AstNodeType>of(MiniCGrammar.WHILE_STATEMENT);
     }
 
     @Override
     public Set<AstNodeType> getExclusions() {
-      return Collections.unmodifiableSet(Sets.newHashSet((AstNodeType) getContext().getGrammar().variableInitializer));
+      return ImmutableSet.<AstNodeType>of(MiniCGrammar.VARIABLE_INITIALIZER);
     }
 
     @Override

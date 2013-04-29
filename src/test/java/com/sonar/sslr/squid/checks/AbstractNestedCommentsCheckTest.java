@@ -20,7 +20,7 @@
 package com.sonar.sslr.squid.checks;
 
 import com.google.common.collect.Sets;
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -34,7 +34,7 @@ public class AbstractNestedCommentsCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractNestedCommentsCheck<MiniCGrammar> {
+  private static class Check extends AbstractNestedCommentsCheck<Grammar> {
 
     private static final Set<String> COMMENT_START_TAGS = Collections.unmodifiableSet(Sets.newHashSet("/*", "//"));
 

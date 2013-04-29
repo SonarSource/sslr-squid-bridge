@@ -21,6 +21,7 @@ package com.sonar.sslr.squid.checks;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
@@ -31,11 +32,14 @@ public class AbstractNamingCheckTest {
   @org.junit.Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractNamingCheck<MiniCGrammar> {
+  private static class Check extends AbstractNamingCheck<Grammar> {
 
     @Override
     public AstNodeType[] getRules() {
-      return new AstNodeType[] {getContext().getGrammar().binFunctionDefinition, getContext().getGrammar().binVariableDefinition};
+      return new AstNodeType[] {
+        MiniCGrammar.BIN_FUNCTION_DEFINITION,
+        MiniCGrammar.BIN_VARIABLE_DEFINITION
+      };
     }
 
     @Override

@@ -19,7 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class AbstractXPathCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class EmptyXPathCheck extends AbstractXPathCheck<MiniCGrammar> {
+  private static class EmptyXPathCheck extends AbstractXPathCheck<Grammar> {
 
     @Override
     public String getXPathQuery() {
@@ -49,11 +49,11 @@ public class AbstractXPathCheckTest {
     checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", new EmptyXPathCheck()).getCheckMessages());
   }
 
-  private static class BooleanXPathCheckWithResults extends AbstractXPathCheck<MiniCGrammar> {
+  private static class BooleanXPathCheckWithResults extends AbstractXPathCheck<Grammar> {
 
     @Override
     public String getXPathQuery() {
-      return "count(//variableDefinition) > 0";
+      return "count(//VARIABLE_DEFINITION) > 0";
     }
 
     @Override
@@ -69,7 +69,7 @@ public class AbstractXPathCheckTest {
         .next().withMessage("Boolean XPath rule with results.");
   }
 
-  private static class BooleanXPathCheckWithoutResults extends AbstractXPathCheck<MiniCGrammar> {
+  private static class BooleanXPathCheckWithoutResults extends AbstractXPathCheck<Grammar> {
 
     @Override
     public String getXPathQuery() {
@@ -88,11 +88,11 @@ public class AbstractXPathCheckTest {
     checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", new BooleanXPathCheckWithoutResults()).getCheckMessages());
   }
 
-  private static class AstNodesXpathCheck extends AbstractXPathCheck<MiniCGrammar> {
+  private static class AstNodesXpathCheck extends AbstractXPathCheck<Grammar> {
 
     @Override
     public String getXPathQuery() {
-      return "//variableDefinition";
+      return "//VARIABLE_DEFINITION";
     }
 
     @Override

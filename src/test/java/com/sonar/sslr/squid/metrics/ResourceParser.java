@@ -19,32 +19,31 @@
  */
 package com.sonar.sslr.squid.metrics;
 
-import static org.hamcrest.CoreMatchers.*;
-import static org.junit.Assert.*;
-
-import java.io.File;
-
+import com.sonar.sslr.api.Grammar;
+import com.sonar.sslr.squid.AstScanner;
+import com.sonar.sslr.squid.SquidAstVisitor;
+import com.sonar.sslr.test.miniC.MiniCAstScanner;
 import org.apache.commons.io.FileUtils;
 import org.sonar.squid.api.SourceFile;
 import org.sonar.squid.indexer.QueryByType;
 
-import com.sonar.sslr.squid.AstScanner;
-import com.sonar.sslr.squid.SquidAstVisitor;
-import com.sonar.sslr.test.miniC.MiniCAstScanner;
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import java.io.File;
+
+import static org.hamcrest.CoreMatchers.is;
+import static org.junit.Assert.assertThat;
 
 public class ResourceParser {
 
-  public static SourceFile scanFile(String filePath, SquidAstVisitor<MiniCGrammar>... visitors) {
+  public static SourceFile scanFile(String filePath, SquidAstVisitor<Grammar>... visitors) {
     return scanFile(filePath, false, visitors);
   }
 
-  public static SourceFile scanFileIgnoreHeaderComments(String filePath, SquidAstVisitor<MiniCGrammar>... visitors) {
+  public static SourceFile scanFileIgnoreHeaderComments(String filePath, SquidAstVisitor<Grammar>... visitors) {
     return scanFile(filePath, true, visitors);
   }
 
-  private static SourceFile scanFile(String filePath, boolean ignoreHeaderComments, SquidAstVisitor<MiniCGrammar>... visitors) {
-    AstScanner<MiniCGrammar> scanner = ignoreHeaderComments ? MiniCAstScanner.createIgnoreHeaderComments(visitors) : MiniCAstScanner
+  private static SourceFile scanFile(String filePath, boolean ignoreHeaderComments, SquidAstVisitor<Grammar>... visitors) {
+    AstScanner<Grammar> scanner = ignoreHeaderComments ? MiniCAstScanner.createIgnoreHeaderComments(visitors) : MiniCAstScanner
         .create(visitors);
     File file = FileUtils.toFile(ResourceParser.class.getResource(filePath));
     if (file == null || !file.exists()) {

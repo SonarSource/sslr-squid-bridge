@@ -22,9 +22,18 @@ package com.sonar.sslr.test.miniC;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.CommentAnalyser;
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
-import com.sonar.sslr.squid.*;
-import com.sonar.sslr.squid.metrics.*;
+import com.sonar.sslr.squid.AstScanner;
+import com.sonar.sslr.squid.SourceCodeBuilderCallback;
+import com.sonar.sslr.squid.SourceCodeBuilderVisitor;
+import com.sonar.sslr.squid.SquidAstVisitor;
+import com.sonar.sslr.squid.SquidAstVisitorContextImpl;
+import com.sonar.sslr.squid.metrics.CommentsVisitor;
+import com.sonar.sslr.squid.metrics.ComplexityVisitor;
+import com.sonar.sslr.squid.metrics.CounterVisitor;
+import com.sonar.sslr.squid.metrics.LinesOfCodeVisitor;
+import com.sonar.sslr.squid.metrics.LinesVisitor;
 import org.sonar.squid.api.SourceCode;
 import org.sonar.squid.api.SourceFunction;
 import org.sonar.squid.api.SourceProject;
@@ -71,21 +80,21 @@ public final class MiniCAstScanner {
   private MiniCAstScanner() {
   }
 
-  public static AstScanner<MiniCGrammar> create(SquidAstVisitor<MiniCGrammar>... visitors) {
+  public static AstScanner<Grammar> create(SquidAstVisitor<Grammar>... visitors) {
     return create(false, visitors);
   }
 
-  public static AstScanner<MiniCGrammar> createIgnoreHeaderComments(SquidAstVisitor<MiniCGrammar>... visitors) {
+  public static AstScanner<Grammar> createIgnoreHeaderComments(SquidAstVisitor<Grammar>... visitors) {
     return create(true, visitors);
   }
 
-  private static AstScanner<MiniCGrammar> create(boolean ignoreHeaderComments, SquidAstVisitor<MiniCGrammar>... visitors) {
+  private static AstScanner<Grammar> create(boolean ignoreHeaderComments, SquidAstVisitor<Grammar>... visitors) {
 
-    final SquidAstVisitorContextImpl<MiniCGrammar> context = new SquidAstVisitorContextImpl<MiniCGrammar>(
+    final SquidAstVisitorContextImpl<Grammar> context = new SquidAstVisitorContextImpl<Grammar>(
         new SourceProject("MiniC Project"));
-    final Parser<MiniCGrammar> parser = MiniCParser.create();
+    final Parser<Grammar> parser = MiniCParser.create();
 
-    AstScanner.Builder<MiniCGrammar> builder = AstScanner.<MiniCGrammar> builder(context).setBaseParser(parser);
+    AstScanner.Builder<Grammar> builder = AstScanner.<Grammar> builder(context).setBaseParser(parser);
 
     /* Metrics */
     builder.withMetrics(MiniCMetrics.values());
@@ -117,48 +126,49 @@ public final class MiniCAstScanner {
     builder.setFilesMetric(MiniCMetrics.FILES);
 
     /* Functions */
-    builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<MiniCGrammar>(new SourceCodeBuilderCallback() {
+    builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<Grammar>(new SourceCodeBuilderCallback() {
 
       public SourceCode createSourceCode(SourceCode parentSourceCode, AstNode astNode) {
-        String functionName = astNode.findFirstChild(parser.getGrammar().binFunctionDefinition).getTokenValue();
+        String functionName = astNode.findFirstChild(MiniCGrammar.BIN_FUNCTION_DEFINITION).getTokenValue();
 
         SourceFunction function = new SourceFunction(astNode.getFromIndex() + "@" + functionName);
         function.setStartAtLine(astNode.getTokenLine());
 
         return function;
       }
-    }, parser.getGrammar().functionDefinition));
+    }, MiniCGrammar.FUNCTION_DEFINITION));
 
-    builder.withSquidAstVisitor(CounterVisitor.<MiniCGrammar> builder().setMetricDef(MiniCMetrics.FUNCTIONS)
-        .subscribeTo(parser.getGrammar().functionDefinition).build());
+    builder.withSquidAstVisitor(CounterVisitor.<Grammar> builder().setMetricDef(MiniCMetrics.FUNCTIONS)
+        .subscribeTo(MiniCGrammar.FUNCTION_DEFINITION).build());
 
     /* Metrics */
-    builder.withSquidAstVisitor(new LinesVisitor<MiniCGrammar>(MiniCMetrics.LINES));
-    builder.withSquidAstVisitor(new LinesOfCodeVisitor<MiniCGrammar>(MiniCMetrics.LINES_OF_CODE));
-    builder.withSquidAstVisitor(CommentsVisitor.<MiniCGrammar> builder().withCommentMetric(MiniCMetrics.COMMENT_LINES)
+    builder.withSquidAstVisitor(new LinesVisitor<Grammar>(MiniCMetrics.LINES));
+    builder.withSquidAstVisitor(new LinesOfCodeVisitor<Grammar>(MiniCMetrics.LINES_OF_CODE));
+    builder.withSquidAstVisitor(CommentsVisitor.<Grammar> builder().withCommentMetric(MiniCMetrics.COMMENT_LINES)
         .withBlankCommentMetric(MiniCMetrics.BLANK_COMMENT_LINES)
         .withNoSonar(true)
         .withIgnoreHeaderComment(ignoreHeaderComments)
         .build());
-    builder.withSquidAstVisitor(CounterVisitor.<MiniCGrammar> builder().setMetricDef(MiniCMetrics.STATEMENTS)
-        .subscribeTo(parser.getGrammar().statement).build());
+    builder.withSquidAstVisitor(CounterVisitor.<Grammar> builder().setMetricDef(MiniCMetrics.STATEMENTS)
+        .subscribeTo(MiniCGrammar.STATEMENT).build());
 
     AstNodeType[] complexityAstNodeType = new AstNodeType[] {
-      parser.getGrammar().functionDefinition,
-      parser.getGrammar().returnStatement,
-      parser.getGrammar().ifStatement,
-      parser.getGrammar().whileStatement,
-      parser.getGrammar().continueStatement,
-      parser.getGrammar().breakStatement
+      MiniCGrammar.FUNCTION_DEFINITION,
+      MiniCGrammar.RETURN_STATEMENT,
+      MiniCGrammar.IF_STATEMENT,
+      MiniCGrammar.WHILE_STATEMENT,
+      MiniCGrammar.CONTINUE_STATEMENT,
+      MiniCGrammar.BREAK_STATEMENT
     };
-    builder.withSquidAstVisitor(ComplexityVisitor.<MiniCGrammar> builder().setMetricDef(MiniCMetrics.COMPLEXITY)
-        .subscribeTo(complexityAstNodeType).addExclusions(parser.getGrammar().noComplexityStatement).build());
+    builder.withSquidAstVisitor(ComplexityVisitor.<Grammar> builder().setMetricDef(MiniCMetrics.COMPLEXITY)
+        .subscribeTo(complexityAstNodeType).addExclusions(MiniCGrammar.NO_COMPLEXITY_STATEMENT).build());
 
     /* External visitors (typically Check ones) */
-    for (SquidAstVisitor<MiniCGrammar> visitor : visitors) {
+    for (SquidAstVisitor<Grammar> visitor : visitors) {
       builder.withSquidAstVisitor(visitor);
     }
 
     return builder.build();
   }
+
 }

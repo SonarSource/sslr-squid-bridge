@@ -19,7 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class AbstractParseErrorCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractParseErrorCheck<MiniCGrammar> {
+  private static class Check extends AbstractParseErrorCheck<Grammar> {
   }
 
   @Test
@@ -38,4 +38,5 @@ public class AbstractParseErrorCheckTest {
     checkMessagesVerifier.verify(scanFile("/checks/parse_error.mc", new Check()).getCheckMessages())
         .next().atLine(3);
   }
+
 }

@@ -19,7 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class AbstractNoSonarCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractNoSonarCheck<MiniCGrammar> {
+  private static class Check extends AbstractNoSonarCheck<Grammar> {
   }
 
   @Test

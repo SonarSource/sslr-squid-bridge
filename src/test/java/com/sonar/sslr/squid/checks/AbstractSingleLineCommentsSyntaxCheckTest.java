@@ -19,7 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class AbstractSingleLineCommentsSyntaxCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractSingleLineCommentsSyntaxCheck<MiniCGrammar> {
+  private static class Check extends AbstractSingleLineCommentsSyntaxCheck<Grammar> {
 
     @Override
     public String getSingleLineCommentSyntaxPrefix() {
@@ -47,3 +47,4 @@ public class AbstractSingleLineCommentsSyntaxCheckTest {
   }
 
 }
+

@@ -20,6 +20,7 @@
 package com.sonar.sslr.squid.checks;
 
 import com.sonar.sslr.api.AstNodeType;
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
@@ -30,7 +31,7 @@ public class AbstractNestedIfCheckTest {
   @org.junit.Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractNestedIfCheck<MiniCGrammar> {
+  private static class Check extends AbstractNestedIfCheck<Grammar> {
 
     public int maximumNestingLevel = 3;
 
@@ -41,7 +42,7 @@ public class AbstractNestedIfCheckTest {
 
     @Override
     public AstNodeType getIfRule() {
-      return getContext().getGrammar().ifStatement;
+      return MiniCGrammar.IF_STATEMENT;
     }
 
   }

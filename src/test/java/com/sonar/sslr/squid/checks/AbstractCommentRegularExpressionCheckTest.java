@@ -19,7 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
 
@@ -30,7 +30,7 @@ public class AbstractCommentRegularExpressionCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class EmptyCommentRegularExpressionCheck extends AbstractCommentRegularExpressionCheck<MiniCGrammar> {
+  private static class EmptyCommentRegularExpressionCheck extends AbstractCommentRegularExpressionCheck<Grammar> {
 
     @Override
     public String getRegularExpression() {
@@ -49,7 +49,7 @@ public class AbstractCommentRegularExpressionCheckTest {
     checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new EmptyCommentRegularExpressionCheck()).getCheckMessages());
   }
 
-  private static class CaseInsensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<MiniCGrammar> {
+  private static class CaseInsensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<Grammar> {
 
     @Override
     public String getRegularExpression() {
@@ -71,7 +71,7 @@ public class AbstractCommentRegularExpressionCheckTest {
         .next().atLine(7);
   }
 
-  private static class CaseSensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<MiniCGrammar> {
+  private static class CaseSensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<Grammar> {
 
     @Override
     public String getRegularExpression() {

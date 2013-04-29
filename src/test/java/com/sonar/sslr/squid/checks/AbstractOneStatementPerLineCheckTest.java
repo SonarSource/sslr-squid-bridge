@@ -21,6 +21,7 @@ package com.sonar.sslr.squid.checks;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
+import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
 import org.junit.Test;
 
@@ -31,16 +32,16 @@ public class AbstractOneStatementPerLineCheckTest {
   @org.junit.Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class Check extends AbstractOneStatementPerLineCheck<MiniCGrammar> {
+  private static class Check extends AbstractOneStatementPerLineCheck<Grammar> {
 
     @Override
     public AstNodeType getStatementRule() {
-      return getContext().getGrammar().statement;
+      return MiniCGrammar.STATEMENT;
     }
 
     @Override
     public boolean isExcluded(AstNode statementNode) {
-      return statementNode.getChild(0).is(getContext().getGrammar().compoundStatement);
+      return statementNode.getChild(0).is(MiniCGrammar.COMPOUND_STATEMENT);
     }
 
   }
