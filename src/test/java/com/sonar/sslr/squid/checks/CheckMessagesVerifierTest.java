@@ -111,10 +111,18 @@ public class CheckMessagesVerifierTest {
 
   @Test
   public void ok() {
-    Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"), mockCheckMessage(1, "bar"));
+    Collection<CheckMessage> messages = Arrays.asList(
+      mockCheckMessage(null, "b"),
+      mockCheckMessage(2, "a"),
+      mockCheckMessage(null, "a"),
+      mockCheckMessage(1, "b"),
+      mockCheckMessage(1, "a"));
     CheckMessagesVerifier.verify(messages)
-      .next().atLine(1).withMessage("bar")
-      .next().atLine(1).withMessageThat(containsString("foo"))
+      .next().atLine(null).withMessage("a")
+      .next().atLine(null).withMessageThat(containsString("b"))
+      .next().atLine(1).withMessage("a")
+      .next().atLine(1).withMessage("b")
+      .next().atLine(2).withMessage("a")
       .noMore();
   }
 

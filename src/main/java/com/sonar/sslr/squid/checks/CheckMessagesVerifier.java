@@ -19,11 +19,14 @@
  */
 package com.sonar.sslr.squid.checks;
 
+import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
 import org.hamcrest.Matcher;
 import org.sonar.squid.api.CheckMessage;
 
+import javax.annotation.Nullable;
 import java.util.Collection;
+import java.util.Comparator;
 import java.util.Iterator;
 import java.util.Locale;
 
@@ -53,20 +56,23 @@ public final class CheckMessagesVerifier {
   private final Iterator<CheckMessage> iterator;
   private CheckMessage current;
 
-  private static final Ordering<CheckMessage> ORDERING = new Ordering<CheckMessage>() {
-    public int compare(CheckMessage o1, CheckMessage o2) {
-      return o1.getLine() - o2.getLine();
-    }
-  };
-
-  private static final Ordering<CheckMessage> ORDERING2 = new Ordering<CheckMessage>() {
-    public int compare(CheckMessage o1, CheckMessage o2) {
-      return o1.getDefaultMessage().compareTo(o2.getDefaultMessage());
+  private static final Comparator<CheckMessage> ORDERING = new Comparator<CheckMessage>() {
+    @Override
+    public int compare(CheckMessage left, CheckMessage right) {
+      if (Objects.equal(left.getLine(), right.getLine())) {
+        return left.getDefaultMessage().compareTo(right.getDefaultMessage());
+      } else if (left.getLine() == null) {
+        return -1;
+      } else if (right.getLine() == null) {
+        return 1;
+      } else {
+        return left.getLine().compareTo(right.getLine());
+      }
     }
   };
 
   private CheckMessagesVerifier(Collection<CheckMessage> messages) {
-    iterator = ORDERING.compound(ORDERING2).sortedCopy(messages).iterator();
+    iterator = Ordering.from(ORDERING).sortedCopy(messages).iterator();
   }
 
   public CheckMessagesVerifier next() {
@@ -89,9 +95,9 @@ public final class CheckMessagesVerifier {
     }
   }
 
-  public CheckMessagesVerifier atLine(int expectedLine) {
+  public CheckMessagesVerifier atLine(@Nullable Integer expectedLine) {
     checkStateOfCurrent();
-    if (expectedLine != current.getLine()) {
+    if (!Objects.equal(expectedLine, current.getLine())) {
       throw new AssertionError("\nExpected: " + expectedLine + "\ngot: " + current.getLine());
     }
     return this;
