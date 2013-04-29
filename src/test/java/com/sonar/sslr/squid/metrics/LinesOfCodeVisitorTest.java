@@ -24,8 +24,7 @@ import org.junit.Test;
 import org.sonar.squid.api.SourceFile;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class LinesOfCodeVisitorTest {
 
@@ -33,7 +32,7 @@ public class LinesOfCodeVisitorTest {
   public void linesOfCode() {
     SourceFile sourceFile = scanFile("/metrics/lines_of_code.mc");
 
-    assertThat(sourceFile.getInt(MiniCMetrics.LINES_OF_CODE), is(3));
+    assertThat(sourceFile.getInt(MiniCMetrics.LINES_OF_CODE)).isEqualTo(3);
   }
 
 }

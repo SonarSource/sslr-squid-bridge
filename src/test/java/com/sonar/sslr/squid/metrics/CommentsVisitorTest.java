@@ -25,9 +25,7 @@ import org.sonar.squid.api.SourceFile;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFileIgnoreHeaderComments;
-import static org.hamcrest.Matchers.is;
-import static org.hamcrest.Matchers.isIn;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class CommentsVisitorTest {
 
@@ -35,31 +33,30 @@ public class CommentsVisitorTest {
   public void empty() {
     SourceFile sourceFile = scanFile("/metrics/comments_none.mc");
 
-    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES), is(0));
-    assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES), is(0));
+    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES)).isEqualTo(0);
+    assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES)).isEqualTo(0);
 
-    assertThat(sourceFile.getNoSonarTagLines().size(), is(0));
+    assertThat(sourceFile.getNoSonarTagLines().size()).isEqualTo(0);
   }
 
   @Test
   public void comments() {
     SourceFile sourceFile = scanFile("/metrics/comments.mc");
 
-    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES), is(3));
-    assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES), is(3));
+    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES)).isEqualTo(3);
+    assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES)).isEqualTo(3);
 
-    assertThat(sourceFile.getNoSonarTagLines().size(), is(2));
-    assertThat(5, isIn(sourceFile.getNoSonarTagLines()));
-    assertThat(6, isIn(sourceFile.getNoSonarTagLines()));
+    assertThat(sourceFile.getNoSonarTagLines().size()).isEqualTo(2);
+    assertThat(sourceFile.getNoSonarTagLines()).containsOnly(5, 6);
   }
 
   @Test
   public void headerComments() {
     SourceFile sourceFile = scanFileIgnoreHeaderComments("/metrics/header_comments.mc");
 
-    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES), is(1));
-    assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES), is(1));
-    assertThat(sourceFile.getNoSonarTagLines().size(), is(0));
+    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES)).isEqualTo(1);
+    assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES)).isEqualTo(1);
+    assertThat(sourceFile.getNoSonarTagLines().size()).isEqualTo(0);
   }
 
 }

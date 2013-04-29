@@ -24,8 +24,7 @@ import org.junit.Test;
 import org.sonar.squid.api.SourceFile;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.assertThat;
+import static org.fest.assertions.Assertions.assertThat;
 
 public class CounterVisitorTest {
 
@@ -33,9 +32,9 @@ public class CounterVisitorTest {
   public void counter() {
     SourceFile sourceFile = scanFile("/metrics/counter.mc");
 
-    assertThat(sourceFile.getInt(MiniCMetrics.COMPLEXITY), is(4));
-    assertThat(sourceFile.getInt(MiniCMetrics.STATEMENTS), is(6));
-    assertThat(sourceFile.getInt(MiniCMetrics.FUNCTIONS), is(2));
+    assertThat(sourceFile.getInt(MiniCMetrics.COMPLEXITY)).isEqualTo(4);
+    assertThat(sourceFile.getInt(MiniCMetrics.STATEMENTS)).isEqualTo(6);
+    assertThat(sourceFile.getInt(MiniCMetrics.FUNCTIONS)).isEqualTo(2);
   }
 
 }
