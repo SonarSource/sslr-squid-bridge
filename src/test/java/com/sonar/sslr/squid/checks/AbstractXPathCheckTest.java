@@ -109,4 +109,9 @@ public class AbstractXPathCheckTest {
       .next().atLine(5);
   }
 
+  @Test
+  public void parse_error() {
+    checkMessagesVerifier.verify(scanFile("/checks/parse_error.mc", new AstNodesXpathCheck()).getCheckMessages());
+  }
+
 }
