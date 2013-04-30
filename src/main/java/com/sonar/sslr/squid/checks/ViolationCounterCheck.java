@@ -89,7 +89,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
 
     public static ViolationCounter loadFromFile(File sourceFile) {
       if (!sourceFile.exists() || sourceFile.length() == 0) {
-        return new ViolationCounter(new HashMap<String, Map<String, TreeMultiset<Integer>>>());
+        return new ViolationCounter();
       } else {
         FileInputStream fis = null;
         ObjectInputStream ois = null;
