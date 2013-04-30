@@ -19,6 +19,7 @@
  */
 package com.sonar.sslr.squid;
 
+import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.CommentAnalyser;
@@ -37,7 +38,6 @@ import org.sonar.squid.indexer.SquidIndex;
 import org.sonar.squid.measures.MetricDef;
 
 import java.io.File;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.List;
 
@@ -74,7 +74,7 @@ public class AstScanner<G extends Grammar> {
   }
 
   public void scanFile(File file) {
-    scanFiles(Arrays.asList(file));
+    scanFiles(ImmutableList.of(file));
   }
 
   public void scanFiles(Collection<File> files) {
