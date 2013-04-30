@@ -22,14 +22,20 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.sonar.api.utils.SonarException;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
 public class AbstractNestedIfCheckTest {
 
-  @org.junit.Rule
+  @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   private static class Check extends AbstractNestedIfCheck<Grammar> {
 
@@ -47,20 +53,30 @@ public class AbstractNestedIfCheckTest {
 
   }
 
+  private Check check = new Check();
+
   @Test
   public void nestedIfWithDefaultNesting() {
-    checkMessagesVerifier.verify(scanFile("/checks/nested_if.mc", new Check()).getCheckMessages())
+    checkMessagesVerifier.verify(scanFile("/checks/nested_if.mc", check).getCheckMessages())
       .next().atLine(9).withMessage("This if has a nesting level of 4, which is higher than the maximum allowed 3.");
   }
 
   @Test
   public void nestedIfWithSpecificNesting() {
-    Check check = new Check();
     check.maximumNestingLevel = 2;
 
     checkMessagesVerifier.verify(scanFile("/checks/nested_if.mc", check).getCheckMessages())
       .next().atLine(7)
       .next().atLine(27);
+  }
+
+  @Test
+  public void wrong_parameter() {
+    check.maximumNestingLevel = 0;
+
+    thrown.expect(SonarException.class);
+    thrown.expectMessage("The maximal if nesting level must be set to a value greater than 0, but given: 0");
+    scanFile("/checks/nested_if.mc", check);
   }
 
 }

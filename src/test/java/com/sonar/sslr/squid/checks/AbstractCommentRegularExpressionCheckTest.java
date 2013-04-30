@@ -22,6 +22,8 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.sonar.api.utils.SonarException;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
@@ -30,65 +32,61 @@ public class AbstractCommentRegularExpressionCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class EmptyCommentRegularExpressionCheck extends AbstractCommentRegularExpressionCheck<Grammar> {
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
+
+  private static class Check extends AbstractCommentRegularExpressionCheck<Grammar> {
+    private String regularExpression;
+    private String message;
 
     @Override
     public String getRegularExpression() {
-      return "";
+      return regularExpression;
     }
 
     @Override
     public String getMessage() {
-      return "Empty regular expression.";
+      return message;
     }
+  }
 
+  private Check check = new Check();
+
+  @Test
+  public void empty() {
+    check.regularExpression = "";
+    check.message = "Empty regular expression.";
+
+    checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", check).getCheckMessages());
   }
 
   @Test
-  public void emptyCommentRegularExpresssionCheck() {
-    checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new EmptyCommentRegularExpressionCheck()).getCheckMessages());
-  }
+  public void case_insensitive() {
+    check.regularExpression = "(?i).*TODO.*";
+    check.message = "Avoid TODO.";
 
-  private static class CaseInsensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<Grammar> {
-
-    @Override
-    public String getRegularExpression() {
-      return "(?i).*TODO.*";
-    }
-
-    @Override
-    public String getMessage() {
-      return "Avoid TODO.";
-    }
-
-  }
-
-  @Test
-  public void caseInsensitiveCommentRegularExpressionWithResultsCheck() {
-    checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new CaseInsensitiveCommentRegularExpressionWithResultsCheck()).getCheckMessages())
+    checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", check).getCheckMessages())
       .next().atLine(3).withMessage("Avoid TODO.")
       .next().atLine(5)
       .next().atLine(7);
   }
 
-  private static class CaseSensitiveCommentRegularExpressionWithResultsCheck extends AbstractCommentRegularExpressionCheck<Grammar> {
+  @Test
+  public void case_sensitive() {
+    check.regularExpression = ".*TODO.*";
+    check.message = "Avoid TODO.";
 
-    @Override
-    public String getRegularExpression() {
-      return ".*TODO.*";
-    }
-
-    @Override
-    public String getMessage() {
-      return "Avoid TODO.";
-    }
-
+    checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", check).getCheckMessages())
+      .next().atLine(3).withMessage("Avoid TODO.");
   }
 
   @Test
-  public void caseSensitiveCommentRegularExpressionWithResultsCheck() {
-    checkMessagesVerifier.verify(scanFile("/checks/commentRegularExpression.mc", new CaseSensitiveCommentRegularExpressionWithResultsCheck()).getCheckMessages())
-      .next().atLine(3).withMessage("Avoid TODO.");
+  public void wrong_regular_expression() {
+    check.regularExpression = "*";
+
+    thrown.expect(SonarException.class);
+    thrown.expectMessage("Unable to compile regular expression: *");
+    scanFile("/checks/commentRegularExpression.mc", check);
   }
 
 }

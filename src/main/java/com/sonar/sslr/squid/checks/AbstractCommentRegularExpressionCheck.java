@@ -19,6 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
+import com.google.common.base.Strings;
 import com.sonar.sslr.api.AstAndTokenVisitor;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
@@ -44,13 +45,11 @@ public abstract class AbstractCommentRegularExpressionCheck<G extends Grammar> e
     String regularExpression = getRegularExpression();
     checkNotNull(regularExpression, "getRegularExpression() should not return null");
 
-    if (!"".equals(regularExpression)) {
+    if (!Strings.isNullOrEmpty(regularExpression)) {
       try {
         pattern = Pattern.compile(regularExpression, Pattern.DOTALL);
       } catch (RuntimeException e) {
-        throw new SonarException("[AbstractCommentRegularExpressionCheck] Unable to compile the regular expression ("
-          + regularExpression
-          + " given).", e);
+        throw new SonarException("Unable to compile regular expression: " + regularExpression, e);
       }
     }
   }

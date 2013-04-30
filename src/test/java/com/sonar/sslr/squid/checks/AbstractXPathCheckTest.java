@@ -22,6 +22,8 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.sonar.api.utils.SonarException;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
@@ -30,88 +32,75 @@ public class AbstractXPathCheckTest {
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
-  private static class EmptyXPathCheck extends AbstractXPathCheck<Grammar> {
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
+
+  private static class Check extends AbstractXPathCheck<Grammar> {
+
+    private String xpath;
+    private String message;
 
     @Override
     public String getXPathQuery() {
-      return "";
+      return xpath;
     }
 
     @Override
     public String getMessage() {
-      return "Empty XPath check.";
+      return message;
     }
 
   }
+
+  private Check check = new Check();
 
   @Test
   public void emptyXPathCheck() {
-    checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", new EmptyXPathCheck()).getCheckMessages());
-  }
+    check.xpath = "";
+    check.message = "Empty XPath check.";
 
-  private static class BooleanXPathCheckWithResults extends AbstractXPathCheck<Grammar> {
-
-    @Override
-    public String getXPathQuery() {
-      return "count(//VARIABLE_DEFINITION) > 0";
-    }
-
-    @Override
-    public String getMessage() {
-      return "Boolean XPath rule with results.";
-    }
-
+    checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", check).getCheckMessages());
   }
 
   @Test
   public void booleanXPathCheckWithResults() {
-    checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", new BooleanXPathCheckWithResults()).getCheckMessages())
+    check.xpath = "count(//VARIABLE_DEFINITION) > 0";
+    check.message = "Boolean XPath rule with results.";
+
+    checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", check).getCheckMessages())
       .next().withMessage("Boolean XPath rule with results.");
-  }
-
-  private static class BooleanXPathCheckWithoutResults extends AbstractXPathCheck<Grammar> {
-
-    @Override
-    public String getXPathQuery() {
-      return "count(//variableDefinition) > 2";
-    }
-
-    @Override
-    public String getMessage() {
-      return "Boolean XPath rule without results.";
-    }
-
   }
 
   @Test
   public void booleanXPathCheckWithoutResults() {
-    checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", new BooleanXPathCheckWithoutResults()).getCheckMessages());
-  }
+    check.xpath = "count(//variableDefinition) > 2";
+    check.message = "Boolean XPath rule without results.";
 
-  private static class AstNodesXpathCheck extends AbstractXPathCheck<Grammar> {
-
-    @Override
-    public String getXPathQuery() {
-      return "//VARIABLE_DEFINITION";
-    }
-
-    @Override
-    public String getMessage() {
-      return "No variable definitions allowed!";
-    }
-
+    checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", check).getCheckMessages());
   }
 
   @Test
   public void astNodesXpathCheck() {
-    checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", new AstNodesXpathCheck()).getCheckMessages())
+    check.xpath = "//VARIABLE_DEFINITION";
+    check.message = "No variable definitions allowed!";
+
+    checkMessagesVerifier.verify(scanFile("/checks/xpath.mc", check).getCheckMessages())
       .next().atLine(1).withMessage("No variable definitions allowed!")
       .next().atLine(5);
   }
 
   @Test
   public void parse_error() {
-    checkMessagesVerifier.verify(scanFile("/checks/parse_error.mc", new AstNodesXpathCheck()).getCheckMessages());
+    checkMessagesVerifier.verify(scanFile("/checks/parse_error.mc", check).getCheckMessages());
+  }
+
+  @Test
+  public void wrong_xpath() {
+    check.xpath = "//";
+
+    thrown.expect(SonarException.class);
+    thrown.expectMessage("Unable to initialize the XPath engine, perhaps because of an invalid query: //");
+    scanFile("/checks/xpath.mc", check);
   }
 
 }

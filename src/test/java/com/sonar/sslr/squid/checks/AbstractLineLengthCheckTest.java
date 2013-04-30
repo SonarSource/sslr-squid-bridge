@@ -22,6 +22,8 @@ package com.sonar.sslr.squid.checks;
 import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.sonar.api.utils.SonarException;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
@@ -29,6 +31,9 @@ public class AbstractLineLengthCheckTest {
 
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   private static class Check extends AbstractLineLengthCheck<Grammar> {
 
@@ -41,20 +46,30 @@ public class AbstractLineLengthCheckTest {
 
   }
 
+  private Check check = new Check();
+
   @Test
   public void lineLengthWithDefaultLength() {
-    checkMessagesVerifier.verify(scanFile("/checks/line_length.mc", new Check()).getCheckMessages())
+    checkMessagesVerifier.verify(scanFile("/checks/line_length.mc", check).getCheckMessages())
       .next().atLine(3).withMessage("The line length is greater than 80 authorized.");
   }
 
   @Test
   public void lineLengthWithSpecificLength() {
-    Check check = new Check();
     check.maximumLineLength = 7;
 
     checkMessagesVerifier.verify(scanFile("/checks/line_length.mc", check).getCheckMessages())
       .next().atLine(3)
       .next().atLine(4);
+  }
+
+  @Test
+  public void wrong_parameter() {
+    check.maximumLineLength = 0;
+
+    thrown.expect(SonarException.class);
+    thrown.expectMessage("The maximal line length must be set to a value greater than 0, but given: 0");
+    scanFile("/checks/line_length.mc", check);
   }
 
 }

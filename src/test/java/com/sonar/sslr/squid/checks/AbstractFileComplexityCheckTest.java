@@ -23,6 +23,8 @@ import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCAstScanner.MiniCMetrics;
 import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.sonar.api.utils.SonarException;
 import org.sonar.squid.measures.MetricDef;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
@@ -31,6 +33,9 @@ public class AbstractFileComplexityCheckTest {
 
   @Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
+
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
 
   private static class Check extends AbstractFileComplexityCheck<Grammar> {
 
@@ -48,9 +53,10 @@ public class AbstractFileComplexityCheckTest {
 
   }
 
+  private Check check = new Check();
+
   @Test
   public void fileComplexityEqualsMaximum() {
-    Check check = new Check();
     check.maximumFileComplexity = 5;
 
     checkMessagesVerifier.verify(scanFile("/checks/complexity5.mc", check).getCheckMessages());
@@ -58,11 +64,19 @@ public class AbstractFileComplexityCheckTest {
 
   @Test
   public void fileComplexityGreaterMaximum() {
-    Check check = new Check();
     check.maximumFileComplexity = 4;
 
     checkMessagesVerifier.verify(scanFile("/checks/complexity5.mc", check).getCheckMessages())
       .next().withMessage("The file is too complex (5 while maximum allowed is set to 4).");
+  }
+
+  @Test
+  public void wrong_parameter() {
+    check.maximumFileComplexity = 0;
+
+    thrown.expect(SonarException.class);
+    thrown.expectMessage("The complexity threshold must be set to a value greater than 0, but given: 0");
+    scanFile("/checks/complexity5.mc", check);
   }
 
 }

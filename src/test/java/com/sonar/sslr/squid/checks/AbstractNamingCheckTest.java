@@ -23,7 +23,10 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.test.miniC.MiniCGrammar;
+import org.junit.Rule;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.sonar.api.utils.SonarException;
 
 import static com.sonar.sslr.squid.metrics.ResourceParser.scanFile;
 
@@ -32,7 +35,12 @@ public class AbstractNamingCheckTest {
   @org.junit.Rule
   public CheckMessagesVerifierRule checkMessagesVerifier = new CheckMessagesVerifierRule();
 
+  @Rule
+  public ExpectedException thrown = ExpectedException.none();
+
   private static class Check extends AbstractNamingCheck<Grammar> {
+
+    private String regularExpression;
 
     @Override
     public AstNodeType[] getRules() {
@@ -49,7 +57,7 @@ public class AbstractNamingCheckTest {
 
     @Override
     public String getRegexp() {
-      return "[a-z]+";
+      return regularExpression;
     }
 
     @Override
@@ -64,11 +72,23 @@ public class AbstractNamingCheckTest {
 
   }
 
+  private Check check = new Check();
+
   @Test
   public void detected() {
-    checkMessagesVerifier.verify(scanFile("/checks/naming.mc", new Check()).getCheckMessages())
+    check.regularExpression = "[a-z]+";
+    checkMessagesVerifier.verify(scanFile("/checks/naming.mc", check).getCheckMessages())
       .next().atLine(5).withMessage("\"BAD\" is a bad name.")
       .next().atLine(12).withMessage("\"myFunction\" is a bad name.");
+  }
+
+  @Test
+  public void wrong_regular_expression() {
+    check.regularExpression = "*";
+
+    thrown.expect(SonarException.class);
+    thrown.expectMessage("Unable to compile regular expression: *");
+    scanFile("/checks/naming.mc", check);
   }
 
 }

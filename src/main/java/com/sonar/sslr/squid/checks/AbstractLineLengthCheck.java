@@ -35,9 +35,7 @@ public abstract class AbstractLineLengthCheck<G extends Grammar> extends SquidCh
   @Override
   public void init() {
     if (getMaximumLineLength() <= 0) {
-      throw new SonarException("[AbstractLineLengthCheck] The maximal line length must be set to a value greater than 0 ("
-        + getMaximumLineLength()
-        + " given).");
+      throw new SonarException("The maximal line length must be set to a value greater than 0, but given: " + getMaximumLineLength());
     }
   }
 

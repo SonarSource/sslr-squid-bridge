@@ -57,7 +57,7 @@ public abstract class AbstractNamingCheck<G extends Grammar> extends SquidCheck<
     try {
       this.pattern = Pattern.compile(regexp);
     } catch (Exception e) {
-      throw new SonarException("[" + this.getClass().getSimpleName() + "] Unable to compile the regular expression \"" + regexp + "\"", e);
+      throw new SonarException("Unable to compile regular expression: " + regexp, e);
     }
   }
 

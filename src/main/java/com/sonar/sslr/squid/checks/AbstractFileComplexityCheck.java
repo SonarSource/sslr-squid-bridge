@@ -35,9 +35,7 @@ public abstract class AbstractFileComplexityCheck<G extends Grammar> extends Squ
   @Override
   public void init() {
     if (getMaximumFileComplexity() <= 0) {
-      throw new SonarException("[AbstractFileComplexityCheck] The complexity threshold must be set to a value greater than 0 ("
-        + getMaximumFileComplexity()
-        + " given).");
+      throw new SonarException("The complexity threshold must be set to a value greater than 0, but given: " + getMaximumFileComplexity());
     }
   }
 
@@ -45,10 +43,8 @@ public abstract class AbstractFileComplexityCheck<G extends Grammar> extends Squ
   public void leaveFile(AstNode astNode) {
     SourceFile sourceFile = (SourceFile) getContext().peekSourceCode();
     int fileComplexity = ChecksHelper.getRecursiveMeasureInt(sourceFile, getComplexityMetric());
-
     if (fileComplexity > getMaximumFileComplexity()) {
-      getContext().createFileViolation(this, "The file is too complex ({0} while maximum allowed is set to {1}).", fileComplexity,
-        getMaximumFileComplexity());
+      getContext().createFileViolation(this, "The file is too complex ({0} while maximum allowed is set to {1}).", fileComplexity, getMaximumFileComplexity());
     }
   }
 

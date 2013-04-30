@@ -19,6 +19,7 @@
  */
 package com.sonar.sslr.squid.checks;
 
+import com.google.common.base.Strings;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.xpath.api.AstNodeXPathQuery;
@@ -39,14 +40,11 @@ public abstract class AbstractXPathCheck<G extends Grammar> extends SquidCheck<G
   @Override
   public void init() {
     String xpath = getXPathQuery();
-
-    if (!"".equals(xpath)) {
+    if (!Strings.isNullOrEmpty(xpath)) {
       try {
         query = AstNodeXPathQuery.create(getXPathQuery());
       } catch (RuntimeException e) {
-        throw new SonarException("[AbstractXPathCheck] Unable to initialize the XPath engine, perhaps because of an invalid query ("
-          + xpath
-          + " given).", e);
+        throw new SonarException("Unable to initialize the XPath engine, perhaps because of an invalid query: " + xpath, e);
       }
     }
   }

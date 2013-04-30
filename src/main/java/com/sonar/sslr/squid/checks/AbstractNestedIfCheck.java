@@ -41,11 +41,8 @@ public abstract class AbstractNestedIfCheck<G extends Grammar> extends SquidChec
   @Override
   public void init() {
     if (getMaximumNestingLevel() <= 0) {
-      throw new SonarException("[AbstractNestedIfCheck] The maximal if nesting level must be set to a value greater than 0 ("
-        + getMaximumNestingLevel()
-        + " given).");
+      throw new SonarException("The maximal if nesting level must be set to a value greater than 0, but given: " + getMaximumNestingLevel());
     }
-
     subscribeTo(getIfRule());
   }
 
