@@ -91,6 +91,8 @@ public class AbstractXPathCheckTest {
 
   @Test
   public void parse_error() {
+    check.xpath = "//VARIABLE_DEFINITION";
+
     checkMessagesVerifier.verify(scanFile("/checks/parse_error.mc", check).getCheckMessages());
   }
 
