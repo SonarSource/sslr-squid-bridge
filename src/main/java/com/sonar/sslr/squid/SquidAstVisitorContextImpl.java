@@ -33,7 +33,7 @@ import org.sonar.squid.measures.MetricDef;
 import java.io.File;
 import java.util.Stack;
 
-public final class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisitorContext<G> {
+public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisitorContext<G> {
 
   private final Stack<SourceCode> sourceCodeStack = new Stack<SourceCode>();
   private G grammar;
@@ -92,16 +92,14 @@ public final class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAs
   }
 
   public void setFile(File file, MetricDef filesMetric) {
-    peekTillSourceProject();
+    popTillSourceProject();
     this.file = file;
-    if (file != null) {
-      SourceFile sourceFile = new SourceFile(file.getAbsolutePath(), file.getName());
-      addSourceCode(sourceFile);
-      peekSourceCode().setMeasure(filesMetric, 1);
-    }
+    SourceFile sourceFile = new SourceFile(file.getAbsolutePath(), file.getName());
+    addSourceCode(sourceFile);
+    peekSourceCode().setMeasure(filesMetric, 1);
   }
 
-  private void peekTillSourceProject() {
+  protected void popTillSourceProject() {
     while (!(peekSourceCode() instanceof SourceProject)) {
       popSourceCode();
     }

@@ -44,7 +44,7 @@ import java.util.List;
 import static com.google.common.base.Preconditions.checkNotNull;
 import static com.google.common.base.Preconditions.checkState;
 
-public final class AstScanner<G extends Grammar> {
+public class AstScanner<G extends Grammar> {
 
   private static final Logger LOG = LoggerFactory.getLogger(AstScanner.class);
 
@@ -56,7 +56,7 @@ public final class AstScanner<G extends Grammar> {
   private final MetricDef[] metrics;
   private final MetricDef filesMetric;
 
-  private AstScanner(Builder<G> builder) {
+  protected AstScanner(Builder<G> builder) {
     this.visitors = Lists.newArrayList(builder.visitors);
     this.parser = builder.baseParser;
     this.context = builder.context;
@@ -116,7 +116,7 @@ public final class AstScanner<G extends Grammar> {
             visitor.leaveFile(ast);
           }
         }
-        context.setFile(null, null);
+        context.popTillSourceProject();
       } catch (Exception e) {
         throw new AnalysisException("Unable to analyze file: " + file.getAbsolutePath(), e);
       }
@@ -129,7 +129,7 @@ public final class AstScanner<G extends Grammar> {
     decorateSquidTree();
   }
 
-  private void decorateSquidTree() {
+  protected void decorateSquidTree() {
     if (metrics != null && metrics.length > 0) {
       SourceProject project = context.getProject();
       SourceCodeTreeDecorator decorator = new SourceCodeTreeDecorator(project);
