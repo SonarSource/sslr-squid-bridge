@@ -19,14 +19,13 @@
  */
 package com.sonar.sslr.squid.checks;
 
-import com.sonar.sslr.api.AuditListener;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.RecognitionException;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
 
-public abstract class AbstractParseErrorCheck<G extends Grammar> extends SquidCheck<G> implements AuditListener {
+public abstract class AbstractParseErrorCheck<G extends Grammar> extends SquidCheck<G> {
 
   public void processRecognitionException(RecognitionException e) {
     getContext().createLineViolation(this, e.getMessage(), e.getLine());

@@ -33,9 +33,11 @@ public class AbstractParseErrorCheckTest {
   private static class Check extends AbstractParseErrorCheck<Grammar> {
   }
 
+  private Check check = new Check();
+
   @Test
   public void parseError() {
-    checkMessagesVerifier.verify(scanFile("/checks/parse_error.mc", new Check()).getCheckMessages())
+    checkMessagesVerifier.verify(scanFile("/checks/parse_error.mc", check).getCheckMessages())
       .next().atLine(3);
   }
 
