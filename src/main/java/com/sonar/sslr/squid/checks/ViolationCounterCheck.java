@@ -78,7 +78,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
       try {
         fos = new FileOutputStream(destinationFilePath);
         oos = new ObjectOutputStream(fos);
-        oos.writeObject(this.violationsByFileAndRule); // NOSONAR findbugs.DMI_NONSERIALIZABLE_OBJECT_WRITTEN
+        oos.writeObject(this.violationsByFileAndRule);
       } catch (Exception e) {
         throw Throwables.propagate(e);
       } finally {
