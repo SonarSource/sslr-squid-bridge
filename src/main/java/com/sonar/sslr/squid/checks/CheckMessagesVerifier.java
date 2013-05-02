@@ -122,4 +122,16 @@ public final class CheckMessagesVerifier {
     return this;
   }
 
+
+  /**
+   * @since sslr-squid-bridge 2.3
+   */
+  public CheckMessagesVerifier withCost(Double expectedCost) {
+    checkStateOfCurrent();
+    if (!Objects.equal(expectedCost, current.getCost())) {
+      throw new AssertionError("\nExpected: " + expectedCost + "\ngot: " + current.getCost());
+    }
+    return this;
+  }
+
 }

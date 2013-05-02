@@ -23,6 +23,7 @@ import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.CommentAnalyser;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
+import org.sonar.squid.api.CheckMessage;
 import org.sonar.squid.api.CodeCheck;
 import org.sonar.squid.api.SourceCode;
 
@@ -81,5 +82,7 @@ public abstract class SquidAstVisitorContext<G extends Grammar> {
    * @param messageParameters optional message parameters (see java.text.MessageFormat)
    */
   public abstract void createLineViolation(CodeCheck check, String message, int line, Object... messageParameters);
+
+  public abstract void log(CheckMessage message);
 
 }

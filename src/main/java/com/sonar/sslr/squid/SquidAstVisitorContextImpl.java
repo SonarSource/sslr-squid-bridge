@@ -161,7 +161,11 @@ public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisit
     log(checkMessage);
   }
 
-  private void log(CheckMessage message) {
+  /**
+   * {@inheritDoc}
+   */
+  @Override
+  public void log(CheckMessage message) {
     if (peekSourceCode() instanceof SourceFile) {
       peekSourceCode().log(message);
     } else if (peekSourceCode().getParent(SourceFile.class) != null) {

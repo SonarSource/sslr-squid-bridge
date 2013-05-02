@@ -110,10 +110,20 @@ public class CheckMessagesVerifierTest {
   }
 
   @Test
+  public void withCost() {
+    thrown.expect(AssertionError.class);
+    thrown.expectMessage(allOf(containsString("Expected: 1.0"), containsString("got: 0.0")));
+
+    Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo", 0d));
+    CheckMessagesVerifier.verify(messages)
+      .next().withCost(1d);
+  }
+
+  @Test
   public void ok() {
     Collection<CheckMessage> messages = Arrays.asList(
       mockCheckMessage(null, "b"),
-      mockCheckMessage(2, "a"),
+      mockCheckMessage(2, "a", 1d),
       mockCheckMessage(null, "a"),
       mockCheckMessage(1, "b"),
       mockCheckMessage(1, "a"));
@@ -122,16 +132,21 @@ public class CheckMessagesVerifierTest {
       .next().atLine(null).withMessageThat(containsString("b"))
       .next().atLine(1).withMessage("a")
       .next().atLine(1).withMessage("b")
-      .next().atLine(2).withMessage("a")
+      .next().atLine(2).withMessage("a").withCost(1d)
       .noMore();
   }
 
-  private static final CheckMessage mockCheckMessage(Integer line, String message) {
+  private static final CheckMessage mockCheckMessage(Integer line, String message, Double cost) {
     CheckMessage checkMessage = mock(CheckMessage.class);
     when(checkMessage.getLine()).thenReturn(line);
     when(checkMessage.getDefaultMessage()).thenReturn(message);
     when(checkMessage.getText(Mockito.any(Locale.class))).thenReturn(message);
+    when(checkMessage.getCost()).thenReturn(cost);
     return checkMessage;
+  }
+
+  private static final CheckMessage mockCheckMessage(Integer line, String message) {
+    return mockCheckMessage(line, message, null);
   }
 
 }
