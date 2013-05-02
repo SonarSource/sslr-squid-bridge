@@ -27,7 +27,6 @@ import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.RecognitionException;
 import com.sonar.sslr.impl.Parser;
 import com.sonar.sslr.impl.ast.AstWalker;
-import com.sonar.sslr.squid.checks.AbstractParseErrorCheck;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.sonar.squid.api.AnalysisException;
@@ -85,6 +84,8 @@ public class AstScanner<G extends Grammar> {
     AstWalker astWalker = new AstWalker(visitors);
 
     for (File file : files) {
+      context.setFile(file, filesMetric);
+
       Exception parseException = null;
       AstNode ast = null;
       try {
@@ -95,7 +96,6 @@ public class AstScanner<G extends Grammar> {
       }
 
       try {
-        context.setFile(file, filesMetric);
         if (parseException == null) {
           astWalker.walkAndVisit(ast);
         } else {
