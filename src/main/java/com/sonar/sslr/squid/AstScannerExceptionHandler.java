@@ -17,25 +17,17 @@
  * License along with this program; if not, write to the Free Software
  * Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA  02
  */
-package com.sonar.sslr.squid.checks;
+package com.sonar.sslr.squid;
 
-import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.RecognitionException;
-import com.sonar.sslr.squid.AstScannerExceptionHandler;
 
-import java.io.PrintWriter;
-import java.io.StringWriter;
+/**
+ * @since 2.3
+ */
+public interface AstScannerExceptionHandler {
 
-public abstract class AbstractParseErrorCheck<G extends Grammar> extends SquidCheck<G> implements AstScannerExceptionHandler {
+  void processRecognitionException(RecognitionException e);
 
-  public void processRecognitionException(RecognitionException e) {
-    getContext().createLineViolation(this, e.getMessage(), e.getLine());
-  }
-
-  public void processException(Exception e) {
-    StringWriter exception = new StringWriter();
-    e.printStackTrace(new PrintWriter(exception));
-    getContext().createLineViolation(this, exception.toString(), 1);
-  }
+  void processException(Exception e);
 
 }

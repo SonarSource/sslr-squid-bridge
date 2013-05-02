@@ -104,7 +104,7 @@ public class AstScanner<G extends Grammar> {
             visitor.visitFile(ast);
           }
           for (SquidAstVisitor<? extends Grammar> visitor : visitors) {
-            if (visitor instanceof AbstractParseErrorCheck) {
+            if (visitor instanceof AstScannerExceptionHandler) {
               if (parseException instanceof RecognitionException) {
                 ((AbstractParseErrorCheck) visitor).processRecognitionException((RecognitionException) parseException);
               } else {
