@@ -23,6 +23,7 @@ import com.sonar.sslr.api.AstAndTokenVisitor;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.api.Trivia;
+import org.sonar.squid.api.CheckMessage;
 
 public abstract class AbstractNoSonarCheck<G extends Grammar> extends SquidCheck<G> implements AstAndTokenVisitor {
 
@@ -34,7 +35,10 @@ public abstract class AbstractNoSonarCheck<G extends Grammar> extends SquidCheck
 
         for (String commentLine : commentLines) {
           if (commentLine.contains("NOSONAR")) {
-            getContext().createLineViolation(this, "Is NOSONAR usage acceptable or does it hide a real quality flaw?", line);
+            CheckMessage violation = new CheckMessage(this, "Is NOSONAR usage acceptable or does it hide a real quality flaw?");
+            violation.setLine(line);
+            violation.setBypassExclusion(true);
+            getContext().log(violation);
           }
 
           line++;
