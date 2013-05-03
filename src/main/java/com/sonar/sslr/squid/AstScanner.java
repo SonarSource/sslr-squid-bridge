@@ -93,6 +93,8 @@ public class AstScanner<G extends Grammar> {
       } catch (Exception e) {
         parseException = e;
         LOG.error("Unable to parse file: " + file.getAbsolutePath(), e);
+      } catch (Throwable e) {
+        throw new AnalysisException("Unable to parse file: " + file.getAbsolutePath(), e);
       }
 
       try {
@@ -117,7 +119,7 @@ public class AstScanner<G extends Grammar> {
           }
         }
         context.popTillSourceProject();
-      } catch (Exception e) {
+      } catch (Throwable e) {
         throw new AnalysisException("Unable to analyze file: " + file.getAbsolutePath(), e);
       }
     }
