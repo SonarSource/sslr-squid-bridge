@@ -38,54 +38,33 @@ public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G>
 
   private Set<Integer> noSonar;
   private Set<Integer> comments;
-  private Set<Integer> blankComments;
   private boolean seenFirstToken;
 
   private final boolean enableNoSonar;
   private final MetricDef commentMetric;
-  private final MetricDef blankCommentMetric;
   private final boolean ignoreHeaderComments;
 
   private CommentsVisitor(CommentsVisitorBuilder<G> builder) {
     this.enableNoSonar = builder.enableNoSonar;
     this.commentMetric = builder.commentMetric;
-    this.blankCommentMetric = builder.blankCommentMetric;
     this.ignoreHeaderComments = builder.ignoreHeaderComments;
   }
 
   private void addNoSonar(int line) {
-    /* Remove from lower priorities categories first */
     comments.remove(line);
-    blankComments.remove(line);
-
     noSonar.add(line);
   }
 
   private void addCommentLine(int line) {
-    /* Mark the line only if it does not already have 1) no sonar */
     if (!noSonar.contains(line)) {
-      /* Remove from lower priorities categories first */
-      blankComments.remove(line);
-
       comments.add(line);
     }
   }
 
-  private void addBlankCommentLine(int line) {
-    /* Mark the line only if it does not already have 1) no sonar, or 2) a non-empty comment */
-    if (!noSonar.contains(line) && !comments.contains(line)) {
-      blankComments.add(line);
-    }
-  }
-
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void visitFile(AstNode astNode) {
     noSonar = new HashSet<Integer>();
     comments = new HashSet<Integer>();
-    blankComments = new HashSet<Integer>();
     seenFirstToken = false;
   }
 
@@ -100,9 +79,7 @@ public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G>
           for (String commentLine : commentLines) {
             if (enableNoSonar && commentLine.contains("NOSONAR")) {
               addNoSonar(line);
-            } else if (blankCommentMetric != null && getContext().getCommentAnalyser().isBlank(commentLine)) {
-              addBlankCommentLine(line);
-            } else if (commentMetric != null) {
+            } else if (commentMetric != null && !getContext().getCommentAnalyser().isBlank(commentLine)) {
               addCommentLine(line);
             }
 
@@ -115,9 +92,6 @@ public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G>
     seenFirstToken = true;
   }
 
-  /**
-   * {@inheritDoc}
-   */
   @Override
   public void leaveFile(AstNode astNode) {
     if (enableNoSonar) {
@@ -125,9 +99,6 @@ public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G>
     }
     if (commentMetric != null) {
       getContext().peekSourceCode().add(commentMetric, comments.size());
-    }
-    if (blankCommentMetric != null) {
-      getContext().peekSourceCode().add(blankCommentMetric, blankComments.size());
     }
   }
 
@@ -139,7 +110,6 @@ public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G>
 
     private boolean enableNoSonar = false;
     private MetricDef commentMetric;
-    private MetricDef blankCommentMetric;
     private boolean ignoreHeaderComments = false;
 
     private CommentsVisitorBuilder() {
@@ -156,11 +126,6 @@ public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G>
 
     public CommentsVisitorBuilder<G> withCommentMetric(MetricDef commentMetric) {
       this.commentMetric = commentMetric;
-      return this;
-    }
-
-    public CommentsVisitorBuilder<G> withBlankCommentMetric(MetricDef blankCommentMetric) {
-      this.blankCommentMetric = blankCommentMetric;
       return this;
     }
 

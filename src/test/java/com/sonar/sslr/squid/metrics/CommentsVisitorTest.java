@@ -33,7 +33,6 @@ public class CommentsVisitorTest {
   public void empty() {
     SourceFile sourceFile = scanFile("/metrics/comments_none.mc");
 
-    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES)).isEqualTo(0);
     assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES)).isEqualTo(0);
 
     assertThat(sourceFile.getNoSonarTagLines().size()).isEqualTo(0);
@@ -43,7 +42,6 @@ public class CommentsVisitorTest {
   public void comments() {
     SourceFile sourceFile = scanFile("/metrics/comments.mc");
 
-    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES)).isEqualTo(3);
     assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES)).isEqualTo(3);
 
     assertThat(sourceFile.getNoSonarTagLines().size()).isEqualTo(2);
@@ -54,7 +52,6 @@ public class CommentsVisitorTest {
   public void headerComments() {
     SourceFile sourceFile = scanFileIgnoreHeaderComments("/metrics/header_comments.mc");
 
-    assertThat(sourceFile.getInt(MiniCMetrics.BLANK_COMMENT_LINES)).isEqualTo(1);
     assertThat(sourceFile.getInt(MiniCMetrics.COMMENT_LINES)).isEqualTo(1);
     assertThat(sourceFile.getNoSonarTagLines().size()).isEqualTo(0);
   }

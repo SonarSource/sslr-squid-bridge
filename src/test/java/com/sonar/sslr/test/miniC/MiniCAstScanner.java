@@ -145,7 +145,6 @@ public final class MiniCAstScanner {
     builder.withSquidAstVisitor(new LinesVisitor<Grammar>(MiniCMetrics.LINES));
     builder.withSquidAstVisitor(new LinesOfCodeVisitor<Grammar>(MiniCMetrics.LINES_OF_CODE));
     builder.withSquidAstVisitor(CommentsVisitor.<Grammar>builder().withCommentMetric(MiniCMetrics.COMMENT_LINES)
-      .withBlankCommentMetric(MiniCMetrics.BLANK_COMMENT_LINES)
       .withNoSonar(true)
       .withIgnoreHeaderComment(ignoreHeaderComments)
       .build());
