@@ -54,7 +54,7 @@
 
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
-    <sonar.version>2.11</sonar.version>
+    <sonar.version>3.0</sonar.version>
     <sslrVersion>1.19</sslrVersion>
   </properties>
 
@@ -68,11 +68,6 @@
       <groupId>org.codehaus.sonar.sslr</groupId>
       <artifactId>sslr-xpath</artifactId>
       <version>${sslrVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.sonar</groupId>
-      <artifactId>sonar-channel</artifactId>
-      <version>${sonar.version}</version>
     </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
