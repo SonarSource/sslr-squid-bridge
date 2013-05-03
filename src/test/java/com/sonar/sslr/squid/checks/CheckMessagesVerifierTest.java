@@ -52,7 +52,7 @@ public class CheckMessagesVerifierTest {
   @Test
   public void noMore() {
     thrown.expect(AssertionError.class);
-    thrown.expectMessage("\nNo more violations expected\ngot:");
+    thrown.expectMessage("\nNo more violations expected\ngot: at line 1");
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)

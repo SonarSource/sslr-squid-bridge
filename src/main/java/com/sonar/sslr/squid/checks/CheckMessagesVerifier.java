@@ -86,7 +86,7 @@ public final class CheckMessagesVerifier {
   public void noMore() {
     if (iterator.hasNext()) {
       CheckMessage next = iterator.next();
-      throw new AssertionError("\nNo more violations expected\ngot: at line " + next.getLine() + " " + next);
+      throw new AssertionError("\nNo more violations expected\ngot: at line " + next.getLine());
     }
   }
 
