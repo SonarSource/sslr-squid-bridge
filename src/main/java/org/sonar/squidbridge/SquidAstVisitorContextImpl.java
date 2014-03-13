@@ -19,23 +19,23 @@
  */
 package org.sonar.squidbridge;
 
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.Grammar;
+import com.sonar.sslr.api.Token;
 import org.sonar.squidbridge.api.CheckMessage;
 import org.sonar.squidbridge.api.CodeCheck;
 import org.sonar.squidbridge.api.SourceCode;
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.api.SourceProject;
-
 import org.sonar.squidbridge.measures.MetricDef;
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.api.Token;
 
 import java.io.File;
-import java.util.Stack;
+import java.util.ArrayDeque;
+import java.util.Deque;
 
 public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisitorContext<G> {
 
-  private final Stack<SourceCode> sourceCodeStack = new Stack<SourceCode>();
+  private final Deque<SourceCode> sourceCodeStack = new ArrayDeque<SourceCode>();
   private G grammar;
   private File file;
   private final SourceProject project;
@@ -47,7 +47,7 @@ public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisit
     }
 
     this.project = project;
-    sourceCodeStack.add(project);
+    sourceCodeStack.push(project);
   }
 
   public void setGrammar(G grammar) {
@@ -72,7 +72,7 @@ public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisit
   @Override
   public void addSourceCode(SourceCode child) {
     peekSourceCode().addChild(child);
-    sourceCodeStack.add(child);
+    sourceCodeStack.push(child);
   }
 
   /**

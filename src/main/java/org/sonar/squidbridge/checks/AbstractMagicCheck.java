@@ -27,6 +27,12 @@ import java.util.Set;
 
 public abstract class AbstractMagicCheck<G extends Grammar> extends SquidCheck<G> {
 
+  private AstNodeType[] inclusions;
+  private AstNodeType[] exclusions;
+
+  private int inclusionLevel;
+  private int exclusionLevel;
+
   public abstract Set<AstNodeType> getPatterns();
 
   public abstract Set<AstNodeType> getInclusions();
@@ -36,12 +42,6 @@ public abstract class AbstractMagicCheck<G extends Grammar> extends SquidCheck<G
   public abstract String getMessage();
 
   public abstract boolean isExcepted(AstNode candidate);
-
-  private AstNodeType[] inclusions;
-  private AstNodeType[] exclusions;
-
-  private int inclusionLevel;
-  private int exclusionLevel;
 
   @Override
   public void visitFile(AstNode fileNode) {
@@ -71,7 +71,7 @@ public abstract class AbstractMagicCheck<G extends Grammar> extends SquidCheck<G
       inclusionLevel++;
     } else if (astNode.is(exclusions)) {
       exclusionLevel++;
-    } else if ((inclusions.length == 0 || inclusionLevel > 0) && (exclusionLevel == 0) && !isExcepted(astNode)) {
+    } else if ((inclusions.length == 0 || inclusionLevel > 0) && exclusionLevel == 0 && !isExcepted(astNode)) {
       getContext().createLineViolation(this, getMessage(), astNode);
     }
   }

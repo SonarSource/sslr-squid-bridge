@@ -19,7 +19,8 @@
  */
 package org.sonar.squidbridge.recognizer;
 
-import java.util.ArrayList;
+import com.google.common.collect.Lists;
+
 import java.util.List;
 
 public class CodeRecognizer {
@@ -41,7 +42,7 @@ public class CodeRecognizer {
   }
 
   public final List<String> extractCodeLines(List<String> lines) {
-    ArrayList<String> codeLines = new ArrayList<String>();
+    List<String> codeLines = Lists.newArrayList();
     for (String line : lines) {
       if (recognition(line) >= threshold) {
         codeLines.add(line);
@@ -53,4 +54,5 @@ public class CodeRecognizer {
   public final boolean isLineOfCode(String line) {
     return recognition(line) - threshold > 0;
   }
+
 }

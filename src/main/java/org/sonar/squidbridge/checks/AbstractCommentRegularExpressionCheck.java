@@ -32,13 +32,13 @@ import static com.google.common.base.Preconditions.checkNotNull;
 
 public abstract class AbstractCommentRegularExpressionCheck<G extends Grammar> extends SquidCheck<G> implements AstAndTokenVisitor {
 
+  private Pattern pattern = null;
+
   // See SONAR-3164
   public abstract String getRegularExpression();
 
   // See SONAR-3164
   public abstract String getMessage();
-
-  private Pattern pattern = null;
 
   @Override
   public void init() {
@@ -54,6 +54,7 @@ public abstract class AbstractCommentRegularExpressionCheck<G extends Grammar> e
     }
   }
 
+  @Override
   public void visitToken(Token token) {
     if (pattern != null) {
       for (Trivia trivia : token.getTrivia()) {

@@ -19,14 +19,13 @@
  */
 package org.sonar.squidbridge.metrics;
 
-import org.sonar.squidbridge.measures.MetricDef;
-
-import org.sonar.squidbridge.SquidAstVisitor;
 import com.google.common.collect.ImmutableSet;
 import com.google.common.collect.Sets;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
+import org.sonar.squidbridge.SquidAstVisitor;
+import org.sonar.squidbridge.measures.MetricDef;
 
 import java.util.Collection;
 import java.util.Set;
@@ -36,10 +35,6 @@ public final class ComplexityVisitor<G extends Grammar> extends SquidAstVisitor<
   private final MetricDef metric;
   private final Set<AstNodeType> astNodeTypes;
   private final Set<AstNodeType> exclusionAstNodeTypes;
-
-  public static <G extends Grammar> Builder<G> builder() {
-    return new Builder<G>();
-  }
 
   public static final class Builder<G extends Grammar> {
 
@@ -89,6 +84,10 @@ public final class ComplexityVisitor<G extends Grammar> extends SquidAstVisitor<
     this.metric = builder.metric;
     this.astNodeTypes = ImmutableSet.copyOf(builder.astNodeTypes);
     this.exclusionAstNodeTypes = ImmutableSet.copyOf(builder.exclusionAstNodeTypes);
+  }
+
+  public static <G extends Grammar> Builder<G> builder() {
+    return new Builder<G>();
   }
 
   @Override

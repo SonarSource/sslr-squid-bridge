@@ -29,13 +29,13 @@ import java.util.List;
 
 public abstract class AbstractXPathCheck<G extends Grammar> extends SquidCheck<G> {
 
+  private AstNodeXPathQuery<Object> query = null;
+
   // See SONAR-3164
   public abstract String getXPathQuery();
 
   // See SONAR-3164
   public abstract String getMessage();
-
-  private AstNodeXPathQuery<Object> query = null;
 
   @Override
   public void init() {
@@ -58,7 +58,7 @@ public abstract class AbstractXPathCheck<G extends Grammar> extends SquidCheck<G
         if (object instanceof AstNode) {
           AstNode astNode = (AstNode) object;
           getContext().createLineViolation(this, getMessage(), astNode.getTokenLine());
-        } else if ((object instanceof Boolean) && ((Boolean) object)) {
+        } else if (object instanceof Boolean && (Boolean) object) {
           getContext().createFileViolation(this, getMessage());
         }
       }

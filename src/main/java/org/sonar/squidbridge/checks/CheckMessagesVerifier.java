@@ -50,10 +50,6 @@ import static org.junit.Assert.assertThat;
  */
 public final class CheckMessagesVerifier {
 
-  public static CheckMessagesVerifier verify(Collection<CheckMessage> messages) {
-    return new CheckMessagesVerifier(messages);
-  }
-
   private final Iterator<CheckMessage> iterator;
   private CheckMessage current;
 
@@ -74,6 +70,10 @@ public final class CheckMessagesVerifier {
 
   private CheckMessagesVerifier(Collection<CheckMessage> messages) {
     iterator = Ordering.from(ORDERING).sortedCopy(messages).iterator();
+  }
+
+  public static CheckMessagesVerifier verify(Collection<CheckMessage> messages) {
+    return new CheckMessagesVerifier(messages);
   }
 
   public CheckMessagesVerifier next() {
