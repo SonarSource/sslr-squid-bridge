@@ -154,7 +154,7 @@ public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisit
    */
   @Override
   public void createLineViolation(CodeCheck check, String message, int line, Object... messageParameters) {
-    CheckMessage checkMessage = new CheckMessage(check, message, messageParameters);
+    CheckMessage checkMessage = new CheckMessage((Object) check, message, messageParameters);
     if (line > 0) {
       checkMessage.setLine(line);
     }
