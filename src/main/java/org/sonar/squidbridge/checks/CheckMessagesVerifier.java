@@ -19,11 +19,10 @@
  */
 package org.sonar.squidbridge.checks;
 
-import org.sonar.squidbridge.api.CheckMessage;
-
 import com.google.common.base.Objects;
 import com.google.common.collect.Ordering;
 import org.hamcrest.Matcher;
+import org.sonar.squidbridge.api.CheckMessage;
 
 import javax.annotation.Nullable;
 
@@ -101,7 +100,7 @@ public final class CheckMessagesVerifier {
   public CheckMessagesVerifier atLine(@Nullable Integer expectedLine) {
     checkStateOfCurrent();
     if (!Objects.equal(expectedLine, current.getLine())) {
-      throw new AssertionError("\nExpected: " + expectedLine + "\ngot: " + current.getLine());
+      throw assertionError(expectedLine, current.getLine());
     }
     return this;
   }
@@ -110,7 +109,7 @@ public final class CheckMessagesVerifier {
     checkStateOfCurrent();
     String actual = current.getText(Locale.ENGLISH);
     if (!actual.equals(expectedMessage)) {
-      throw new AssertionError("\nExpected: \"" + expectedMessage + "\"\ngot: \"" + actual + "\"");
+      throw assertionError("\"" + expectedMessage + "\"", "\"" + actual + "\"");
     }
     return this;
   }
@@ -125,16 +124,19 @@ public final class CheckMessagesVerifier {
     return this;
   }
 
-
   /**
    * @since sslr-squid-bridge 2.3
    */
   public CheckMessagesVerifier withCost(Double expectedCost) {
     checkStateOfCurrent();
     if (!Objects.equal(expectedCost, current.getCost())) {
-      throw new AssertionError("\nExpected: " + expectedCost + "\ngot: " + current.getCost());
+      throw assertionError(expectedCost, current.getCost());
     }
     return this;
+  }
+
+  private static AssertionError assertionError(Object expected, Object actual) {
+    return new AssertionError("\nExpected: " + expected + "\ngot: " + actual);
   }
 
 }

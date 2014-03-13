@@ -19,12 +19,11 @@
  */
 package org.sonar.squidbridge;
 
-import org.sonar.squidbridge.api.CodeVisitor;
-
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.AstVisitor;
 import com.sonar.sslr.api.Grammar;
+import org.sonar.squidbridge.api.CodeVisitor;
 
 import javax.annotation.Nullable;
 
@@ -36,7 +35,7 @@ import java.util.List;
  * <p/>
  * Methods are visited in the following sequential order : init(), visitFile(), visitNode(), leaveNode(), leaveFile() and destroy()
  */
-public class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisitor {
+public abstract class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisitor {
 
   private final List<AstNodeType> astNodeTypesToVisit = new ArrayList<AstNodeType>();
   private SquidAstVisitorContext<G> context = null;
@@ -44,7 +43,7 @@ public class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisit
   /**
    * This method can't be overridden. Used by AstScanners to inject contexts into the actual visitors.
    */
-  public final void setContext(SquidAstVisitorContext<G> context) {
+  public void setContext(SquidAstVisitorContext<G> context) {
     if (this.context != null) {
       throw new IllegalStateException("setContext() must only be called once.");
     }
@@ -54,7 +53,7 @@ public class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisit
   /**
    * This method can't be overridden. Returns the injected context, which the visitors can use.
    */
-  public final SquidAstVisitorContext<G> getContext() {
+  public SquidAstVisitorContext<G> getContext() {
     return context;
   }
 
@@ -62,14 +61,15 @@ public class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisit
    * This method can't be overridden. The method subscribeTo(AstNodeType... astNodeTypes) must be used to while overriding the public void
    * init() method.
    */
-  public final List<AstNodeType> getAstNodeTypesToVisit() {
+  @Override
+  public List<AstNodeType> getAstNodeTypesToVisit() {
     return astNodeTypesToVisit;
   }
 
   /**
    * This method must called into the init() method when an AST visitor wants to subscribe to a set of AST node type.
    */
-  public final void subscribeTo(AstNodeType... astNodeTypes) {
+  public void subscribeTo(AstNodeType... astNodeTypes) {
     for (AstNodeType type : astNodeTypes) {
       astNodeTypesToVisit.add(type);
     }
@@ -85,24 +85,28 @@ public class SquidAstVisitor<G extends Grammar> implements CodeVisitor, AstVisit
   /**
    * @param astNode AST node or null in case of parse error
    */
+  @Override
   public void visitFile(@Nullable AstNode astNode) {
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public void visitNode(AstNode astNode) {
   }
 
   /**
    * {@inheritDoc}
    */
+  @Override
   public void leaveNode(AstNode astNode) {
   }
 
   /**
    * @param astNode AST node or null in case of parse error
    */
+  @Override
   public void leaveFile(@Nullable AstNode astNode) {
   }
 
