@@ -90,6 +90,10 @@ public class AstScanner<G extends Grammar> {
       AstNode ast = null;
       try {
         ast = parser.parse(file);
+      } catch (RecognitionException e) {
+        parseException = e;
+        LOG.error("Unable to parse file: " + file.getAbsolutePath());
+        LOG.error(e.getMessage());
       } catch (Exception e) {
         parseException = e;
         LOG.error("Unable to parse file: " + file.getAbsolutePath(), e);
