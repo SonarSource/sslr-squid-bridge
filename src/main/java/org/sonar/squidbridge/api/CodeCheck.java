@@ -21,7 +21,7 @@ package org.sonar.squidbridge.api;
 
 
 /**
- * @deprecated since 2.12. See https://jira.codehaus.org/browse/SONAR-2875
+ * @deprecated since SQ version 2.12. See https://jira.codehaus.org/browse/SONAR-2875
  */
 @Deprecated
 public interface CodeCheck extends CodeVisitor {

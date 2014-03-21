@@ -100,7 +100,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   }
 
   /**
-   * @deprecated since 2.1. It's replaced by getInt(MetricDef). It's still defined for binary compatibility.
+   * @deprecated since SQ version 2.1. It's replaced by getInt(MetricDef). It's still defined for binary compatibility.
    */
   @Deprecated
   public int getInt(Metric metric) {
@@ -115,7 +115,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   }
 
   /**
-   * @deprecated since 2.1. It's replaced by getDouble(MetricDef). It's still defined for binary compatibility.
+   * @deprecated since SQ version 2.1. It's replaced by getDouble(MetricDef). It's still defined for binary compatibility.
    */
   @Deprecated
   public double getDouble(Metric metric) {
@@ -139,7 +139,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   }
 
   /**
-   * @deprecated since 2.1. It's replaced by getData(MetricDef). It's still defined for binary compatibility.
+   * @deprecated since SQ version 2.1. It's replaced by getData(MetricDef). It's still defined for binary compatibility.
    */
   @Deprecated
   public Object getData(Metric metric) {

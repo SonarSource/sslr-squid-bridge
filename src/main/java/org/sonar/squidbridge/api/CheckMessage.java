@@ -83,7 +83,7 @@ public class CheckMessage implements Message {
   }
 
   /**
-   * @deprecated replaced by getCheck() since 2.12. Warning, to be called only if check is CodeCheck.
+   * @deprecated replaced by getCheck() since SQ version 2.12. Warning, to be called only if check is CodeCheck.
    */
   @Override
   @Deprecated
