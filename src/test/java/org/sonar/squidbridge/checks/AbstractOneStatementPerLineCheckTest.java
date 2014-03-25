@@ -19,15 +19,13 @@
  */
 package org.sonar.squidbridge.checks;
 
-import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
-
-import org.sonar.squidbridge.checks.AbstractOneStatementPerLineCheck;
-import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import com.sonar.sslr.test.minic.MiniCGrammar;
 import org.junit.Test;
+
+import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
 
 public class AbstractOneStatementPerLineCheckTest {
 

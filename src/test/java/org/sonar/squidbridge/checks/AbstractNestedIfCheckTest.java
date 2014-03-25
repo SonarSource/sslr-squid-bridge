@@ -19,17 +19,15 @@
  */
 package org.sonar.squidbridge.checks;
 
-import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
-
-import org.sonar.squidbridge.checks.AbstractNestedIfCheck;
-import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.test.miniC.MiniCGrammar;
+import com.sonar.sslr.test.minic.MiniCGrammar;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.api.utils.SonarException;
+
+import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
 
 public class AbstractNestedIfCheckTest {
 
@@ -55,7 +53,7 @@ public class AbstractNestedIfCheckTest {
 
   }
 
-  private Check check = new Check();
+  private final Check check = new Check();
 
   @Test
   public void nestedIfWithDefaultNesting() {

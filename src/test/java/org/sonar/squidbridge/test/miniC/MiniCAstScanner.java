@@ -19,14 +19,18 @@
  */
 package org.sonar.squidbridge.test.miniC;
 
-import org.sonar.squidbridge.metrics.CommentsVisitor;
-import org.sonar.squidbridge.metrics.ComplexityVisitor;
-import org.sonar.squidbridge.metrics.CounterVisitor;
-import org.sonar.squidbridge.metrics.LinesOfCodeVisitor;
-import org.sonar.squidbridge.metrics.LinesVisitor;
-
-import com.sonar.sslr.test.miniC.MiniCGrammar;
-import com.sonar.sslr.test.miniC.MiniCParser;
+import com.sonar.sslr.api.AstNode;
+import com.sonar.sslr.api.AstNodeType;
+import com.sonar.sslr.api.Grammar;
+import com.sonar.sslr.impl.Parser;
+import com.sonar.sslr.test.minic.MiniCGrammar;
+import com.sonar.sslr.test.minic.MiniCParser;
+import org.sonar.squidbridge.AstScanner;
+import org.sonar.squidbridge.CommentAnalyser;
+import org.sonar.squidbridge.SourceCodeBuilderCallback;
+import org.sonar.squidbridge.SourceCodeBuilderVisitor;
+import org.sonar.squidbridge.SquidAstVisitor;
+import org.sonar.squidbridge.SquidAstVisitorContextImpl;
 import org.sonar.squidbridge.api.SourceCode;
 import org.sonar.squidbridge.api.SourceFunction;
 import org.sonar.squidbridge.api.SourceProject;
@@ -34,16 +38,11 @@ import org.sonar.squidbridge.measures.AggregationFormula;
 import org.sonar.squidbridge.measures.CalculatedMetricFormula;
 import org.sonar.squidbridge.measures.MetricDef;
 import org.sonar.squidbridge.measures.SumAggregationFormula;
-import org.sonar.squidbridge.AstScanner;
-import org.sonar.squidbridge.CommentAnalyser;
-import org.sonar.squidbridge.SourceCodeBuilderCallback;
-import org.sonar.squidbridge.SourceCodeBuilderVisitor;
-import org.sonar.squidbridge.SquidAstVisitor;
-import org.sonar.squidbridge.SquidAstVisitorContextImpl;
-import com.sonar.sslr.api.AstNode;
-import com.sonar.sslr.api.AstNodeType;
-import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.impl.Parser;
+import org.sonar.squidbridge.metrics.CommentsVisitor;
+import org.sonar.squidbridge.metrics.ComplexityVisitor;
+import org.sonar.squidbridge.metrics.CounterVisitor;
+import org.sonar.squidbridge.metrics.LinesOfCodeVisitor;
+import org.sonar.squidbridge.metrics.LinesVisitor;
 
 public final class MiniCAstScanner {
 
@@ -54,22 +53,27 @@ public final class MiniCAstScanner {
       return 0;
     }
 
+    @Override
     public String getName() {
       return name();
     }
 
+    @Override
     public boolean isCalculatedMetric() {
       return false;
     }
 
+    @Override
     public boolean aggregateIfThereIsAlreadyAValue() {
       return true;
     }
 
+    @Override
     public boolean isThereAggregationFormula() {
       return true;
     }
 
+    @Override
     public CalculatedMetricFormula getCalculatedMetricFormula() {
       return null;
     }
@@ -123,7 +127,7 @@ public final class MiniCAstScanner {
         }
 
       }
-    );
+      );
 
     /* Files */
     builder.setFilesMetric(MiniCMetrics.FILES);
@@ -131,6 +135,7 @@ public final class MiniCAstScanner {
     /* Functions */
     builder.withSquidAstVisitor(new SourceCodeBuilderVisitor<Grammar>(new SourceCodeBuilderCallback() {
 
+      @Override
       public SourceCode createSourceCode(SourceCode parentSourceCode, AstNode astNode) {
         String functionName = astNode.findFirstChild(MiniCGrammar.BIN_FUNCTION_DEFINITION).getTokenValue();
 
@@ -154,7 +159,7 @@ public final class MiniCAstScanner {
     builder.withSquidAstVisitor(CounterVisitor.<Grammar>builder().setMetricDef(MiniCMetrics.STATEMENTS)
       .subscribeTo(MiniCGrammar.STATEMENT).build());
 
-    AstNodeType[] complexityAstNodeType = new AstNodeType[]{
+    AstNodeType[] complexityAstNodeType = new AstNodeType[] {
       MiniCGrammar.FUNCTION_DEFINITION,
       MiniCGrammar.RETURN_STATEMENT,
       MiniCGrammar.IF_STATEMENT,

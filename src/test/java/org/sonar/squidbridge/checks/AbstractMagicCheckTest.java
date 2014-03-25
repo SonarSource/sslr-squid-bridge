@@ -19,14 +19,12 @@
  */
 package org.sonar.squidbridge.checks;
 
-import org.sonar.squidbridge.checks.AbstractMagicCheck;
-import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
 import com.google.common.collect.ImmutableSet;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import com.sonar.sslr.test.miniC.MiniCGrammar;
-import com.sonar.sslr.test.miniC.MiniCLexer;
+import com.sonar.sslr.test.minic.MiniCGrammar;
+import com.sonar.sslr.test.minic.MiniCLexer;
 import org.junit.Rule;
 import org.junit.Test;
 
