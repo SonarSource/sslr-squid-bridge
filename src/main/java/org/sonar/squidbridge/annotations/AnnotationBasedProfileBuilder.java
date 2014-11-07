@@ -19,14 +19,20 @@
  */
 package org.sonar.squidbridge.annotations;
 
+import org.sonar.api.profiles.ProfileDefinition;
 import org.sonar.api.profiles.RulesProfile;
 import org.sonar.api.rules.Rule;
 import org.sonar.api.rules.RuleFinder;
 import org.sonar.api.utils.AnnotationUtils;
 import org.sonar.api.utils.ValidationMessages;
 
-import java.util.Collection;
-
+/**
+ * Utility class to build an instance of {@link RulesProfile} based on a list of classes annotated
+ * with {@link ActivatedByDefault}. It can be used to implement the <code>createProfile</code>
+ * method of {@link ProfileDefinition}.
+ * 
+ *  @since 2.5
+ */
 public class AnnotationBasedProfileBuilder {
 
   private final RuleFinder ruleFinder;
@@ -35,7 +41,7 @@ public class AnnotationBasedProfileBuilder {
     this.ruleFinder = ruleFinder;
   }
 
-  public RulesProfile build(String repositoryKey, String profileName, String language, Collection<Class<?>> annotatedClasses, ValidationMessages messages) {
+  public RulesProfile build(String repositoryKey, String profileName, String language, Iterable<Class<?>> annotatedClasses, ValidationMessages messages) {
     RulesProfile profile = RulesProfile.create(profileName, language);
     for (Class<?> ruleClass : annotatedClasses) {
       addRule(ruleClass, profile, repositoryKey, messages);

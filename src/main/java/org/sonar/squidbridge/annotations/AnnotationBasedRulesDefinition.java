@@ -24,11 +24,14 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinition.NewParam;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
 import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 import org.sonar.api.utils.AnnotationUtils;
+import org.sonar.check.Rule;
+import org.sonar.check.RuleProperty;
 
 import java.lang.annotation.Annotation;
 import java.net.URL;
@@ -38,6 +41,29 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.Set;
 
+/**
+ * Utility class which helps setting up an implementation of {@link RulesDefinition} with a list of
+ * rule classes annotated with {@link Rule}, {@link RuleProperty} and SQALE annotations:
+ * <ul>
+ *   <li>{@link SqaleSubCharacteristic}</li>
+ *   <li>Exactly one of:
+ *     <ul>
+ *       <li>{@link SqaleConstantRemediation}</li>
+ *       <li>{@link SqaleLinearRemediation}</li>
+ *       <li>{@link SqaleLinearWithOffsetRemediation}</li>
+ *     </ul>
+ *   </li>
+ * </ul>
+ * Names and descriptions are also retrieved based on the legacy SonarQube conventions: 
+ * <ul>
+ *   <li>Rule names and rule property descriptions can be defined in a property file: 
+ *   /org/sonar/l10n/[languageKey].properties</li>
+ *   <li>HTML rule descriptions can be defined in individual resources: 
+ *   /org/sonar/l10n/[languageKey]/rules/[repositoryKey]/ruleKey.html</li>
+ * </ul>  
+ * 
+ * @since 2.5
+ */
 public class AnnotationBasedRulesDefinition {
 
   private final NewRepository repository;

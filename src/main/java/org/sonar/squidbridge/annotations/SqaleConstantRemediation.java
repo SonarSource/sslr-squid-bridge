@@ -28,6 +28,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface SqaleConstantRemediation {
 
+  /**
+   * e.g. "10min" or "2h"
+   */
   String value();
 
 }

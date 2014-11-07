@@ -19,6 +19,8 @@
  */
 package org.sonar.squidbridge.annotations;
 
+import org.sonar.api.server.rule.RulesDefinition.SubCharacteristics;
+
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
@@ -28,6 +30,9 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 public @interface SqaleSubCharacteristic {
 
+  /**
+   * @see SubCharacteristics
+   */
   public String value();
 
 }
