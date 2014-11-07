@@ -19,13 +19,13 @@
  */
 package org.sonar.squidbridge.metrics;
 
-import org.sonar.squidbridge.measures.MetricDef;
-
-import org.sonar.squidbridge.SquidAstVisitor;
 import com.sonar.sslr.api.AstAndTokenVisitor;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
+import org.sonar.squidbridge.SquidAstVisitor;
+import org.sonar.squidbridge.measures.MetricDef;
+
 import static com.sonar.sslr.api.GenericTokenType.EOF;
 
 /**
@@ -53,7 +53,7 @@ public class LinesOfCodeVisitor<G extends Grammar> extends SquidAstVisitor<G> im
    */
   @Override
   public void visitToken(Token token) {
-    if (EOF.equals(token.getType())) {
+    if (!EOF.equals(token.getType())) {
       /* Handle all the lines of the token */
       String[] tokenLines = token.getValue().split("\n", -1);
 
