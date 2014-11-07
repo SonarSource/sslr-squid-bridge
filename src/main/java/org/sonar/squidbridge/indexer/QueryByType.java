@@ -33,6 +33,7 @@ public class QueryByType implements Query {
     this.resourceType = resourceType;
   }
 
+  @Override
   public boolean match(SourceCode unit) {
     return unit.isType(resourceType);
   }

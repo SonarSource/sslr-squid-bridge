@@ -24,7 +24,7 @@ public class PublicDocumentedApiDensityFormula implements CalculatedMetricFormul
 
   @Override
   public double calculate(Measurable measurable) {
-    if (measurable.getDouble(Metric.PUBLIC_API) == 0) {
+    if (Double.doubleToRawLongBits(measurable.getDouble(Metric.PUBLIC_API)) == 0) {
       return 1;
     }
     return measurable.getDouble(Metric.PUBLIC_DOC_API) / measurable.getDouble(Metric.PUBLIC_API);

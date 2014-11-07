@@ -30,6 +30,7 @@ public abstract class AbstractNestedCommentsCheck<G extends Grammar> extends Squ
 
   public abstract Set<String> getCommentStartTags();
 
+  @Override
   public void visitToken(Token token) {
     for (Trivia trivia : token.getTrivia()) {
       if (trivia.isComment()) {

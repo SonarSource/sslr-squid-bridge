@@ -185,6 +185,16 @@ public class AnnotationBasedRulesDefinitionTest {
     }
   }
 
+  @Test(expected = IllegalStateException.class)
+  public void rule_not_created_by_RulesDefinitionAnnotationLoader() throws Exception {
+    @Rule
+    class RuleClass {
+    }
+    NewRepository newRepository = context.createRepository(REPO_KEY, "language1");
+    AnnotationBasedRulesDefinition rulesDef = new AnnotationBasedRulesDefinition(newRepository, "language1");
+    rulesDef.newRule(RuleClass.class);
+  }
+
   private void assertRemediation(RulesDefinition.Rule rule, Type type, String coeff, String offset, String effortDesc) {
     DebtRemediationFunction remediationFunction = rule.debtRemediationFunction();
     assertThat(remediationFunction.type()).isEqualTo(type);

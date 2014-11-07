@@ -34,6 +34,7 @@ public class SquidIndex implements SourceCodeIndexer, SourceCodeSearchEngine {
 
   private final Map<String, SourceCode> index = new TreeMap<String, SourceCode>();
 
+  @Override
   public Collection<SourceCode> search(Query... query) {
     Set<SourceCode> result = new HashSet<SourceCode>();
     for (SourceCode unit : index.values()) {
@@ -60,6 +61,7 @@ public class SquidIndex implements SourceCodeIndexer, SourceCodeSearchEngine {
     return index.get(key);
   }
 
+  @Override
   public void index(SourceCode sourceCode) {
     sourceCode.setSourceCodeIndexer(this);
     index.put(sourceCode.getKey(), sourceCode);

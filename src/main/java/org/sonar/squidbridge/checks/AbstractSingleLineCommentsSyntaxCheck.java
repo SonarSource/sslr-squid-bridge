@@ -29,6 +29,7 @@ public abstract class AbstractSingleLineCommentsSyntaxCheck<G extends Grammar> e
 
   public abstract String getSingleLineCommentSyntaxPrefix();
 
+  @Override
   public void visitToken(Token token) {
     for (Trivia trivia : token.getTrivia()) {
       if (trivia.isComment() && trivia.getToken().getLine() < token.getLine()) {

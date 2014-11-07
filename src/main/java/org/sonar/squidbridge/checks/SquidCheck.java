@@ -26,6 +26,7 @@ import com.sonar.sslr.api.Grammar;
 
 public abstract class SquidCheck<G extends Grammar> extends SquidAstVisitor<G> implements CodeCheck {
 
+  @Override
   public String getKey() {
     return null;
   }

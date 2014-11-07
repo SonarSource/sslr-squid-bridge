@@ -51,8 +51,9 @@ public class LinesOfCodeVisitor<G extends Grammar> extends SquidAstVisitor<G> im
   /**
    * {@inheritDoc}
    */
+  @Override
   public void visitToken(Token token) {
-    if (token.getType() != EOF) {
+    if (EOF.equals(token.getType())) {
       /* Handle all the lines of the token */
       String[] tokenLines = token.getValue().split("\n", -1);
 

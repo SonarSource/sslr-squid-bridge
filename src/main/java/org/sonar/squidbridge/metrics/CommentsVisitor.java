@@ -69,6 +69,7 @@ public final class CommentsVisitor<G extends Grammar> extends SquidAstVisitor<G>
     seenFirstToken = false;
   }
 
+  @Override
   public void visitToken(Token token) {
     if (!ignoreHeaderComments || seenFirstToken) {
       for (Trivia trivia : token.getTrivia()) {

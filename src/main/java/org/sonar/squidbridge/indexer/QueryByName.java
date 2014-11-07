@@ -33,6 +33,7 @@ public class QueryByName implements Query {
     this.resourceName = resourceName;
   }
 
+  @Override
   public boolean match(SourceCode unit) {
     if (unit.getName() != null) {
       return unit.getName().equals(resourceName);

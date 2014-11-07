@@ -29,10 +29,12 @@ import java.io.StringWriter;
 
 public abstract class AbstractParseErrorCheck<G extends Grammar> extends SquidCheck<G> implements AstScannerExceptionHandler {
 
+  @Override
   public void processRecognitionException(RecognitionException e) {
     getContext().createLineViolation(this, e.getMessage(), e.getLine());
   }
 
+  @Override
   public void processException(Exception e) {
     StringWriter exception = new StringWriter();
     e.printStackTrace(new PrintWriter(exception));

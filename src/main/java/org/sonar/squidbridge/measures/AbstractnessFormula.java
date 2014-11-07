@@ -19,11 +19,11 @@
  */
 package org.sonar.squidbridge.measures;
 
-
 public class AbstractnessFormula implements CalculatedMetricFormula {
 
+  @Override
   public double calculate(Measurable measurable) {
-    if (measurable.getDouble(Metric.CLASSES) == 0) {
+    if (Double.doubleToRawLongBits(measurable.getDouble(Metric.CLASSES)) == 0) {
       return 0;
     }
     return (measurable.getDouble(Metric.ABSTRACT_CLASSES) + measurable.getDouble(Metric.INTERFACES)) / measurable.getDouble(Metric.CLASSES);

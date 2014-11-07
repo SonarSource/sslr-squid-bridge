@@ -44,6 +44,7 @@ public abstract class AbstractLineLengthCheck<G extends Grammar> extends SquidCh
     lastIncorrectLine = -1;
   }
 
+  @Override
   public void visitToken(Token token) {
     if (!token.isGeneratedCode() && lastIncorrectLine != token.getLine() && token.getColumn() + token.getValue().length() > getMaximumLineLength()) {
       lastIncorrectLine = token.getLine();

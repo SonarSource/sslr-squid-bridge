@@ -41,8 +41,9 @@ public class LinesVisitor<G extends Grammar> extends SquidAstVisitor<G> implemen
   /**
    * {@inheritDoc}
    */
+  @Override
   public void visitToken(Token token) {
-    if (token.getType() == EOF) {
+    if (EOF.equals(token.getType())) {
       getContext().peekSourceCode().setMeasure(metric, token.getLine());
     }
   }

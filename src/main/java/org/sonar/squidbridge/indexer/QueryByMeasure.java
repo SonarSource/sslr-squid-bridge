@@ -49,6 +49,7 @@ public class QueryByMeasure implements Query {
     this.value = value;
   }
 
+  @Override
   public boolean match(SourceCode unit) {
     switch (operator) {
       case EQUALS:

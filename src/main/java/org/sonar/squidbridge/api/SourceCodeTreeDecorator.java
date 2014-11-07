@@ -40,7 +40,7 @@ public class SourceCodeTreeDecorator {
       }
     }
     for (MetricDef metric : metrics) {
-      if (!metric.aggregateIfThereIsAlreadyAValue() && sourceCode.getDouble(metric) != 0) {
+      if (!metric.aggregateIfThereIsAlreadyAValue() && Double.doubleToRawLongBits(sourceCode.getDouble(metric)) != 0) {
         continue;
       }
       if (sourceCode.hasChildren()) {

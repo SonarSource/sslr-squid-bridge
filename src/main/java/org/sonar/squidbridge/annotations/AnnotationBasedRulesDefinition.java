@@ -19,6 +19,7 @@
  */
 package org.sonar.squidbridge.annotations;
 
+import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
@@ -57,11 +58,7 @@ public class AnnotationBasedRulesDefinition {
     new RulesDefinitionAnnotationLoader().load(repository, Iterables.toArray(ruleClasses, Class.class));
     List<NewRule> newRules = Lists.newArrayList();
     for (Class<?> ruleClass : ruleClasses) {
-      org.sonar.check.Rule ruleAnnotation = AnnotationUtils.getAnnotation(ruleClass, org.sonar.check.Rule.class);
-      if (ruleAnnotation == null) {
-        throw new IllegalArgumentException("No Rule annotation was found on " + ruleClass);
-      }
-      NewRule rule = repository.rule(ruleAnnotation.key());
+      NewRule rule = newRule(ruleClass);
       setupExternalDescriptions(rule);
       try {
         setupSqaleModel(rule, ruleClass);
@@ -71,6 +68,19 @@ public class AnnotationBasedRulesDefinition {
       newRules.add(rule);
     }
     setupExternalNames(newRules);
+  }
+
+  @VisibleForTesting
+  NewRule newRule(Class<?> ruleClass) {
+    org.sonar.check.Rule ruleAnnotation = AnnotationUtils.getAnnotation(ruleClass, org.sonar.check.Rule.class);
+    if (ruleAnnotation == null) {
+      throw new IllegalArgumentException("No Rule annotation was found on " + ruleClass);
+    }
+    NewRule rule = repository.rule(ruleAnnotation.key());
+    if (rule == null) {
+      throw new IllegalStateException("No rule was created for " + ruleClass + " in " + repository);
+    }
+    return rule;
   }
 
   private void setupExternalNames(Collection<NewRule> rules) {

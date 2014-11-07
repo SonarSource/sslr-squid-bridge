@@ -95,6 +95,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   /**
    * {@inheritDoc}
    */
+  @Override
   public int getInt(MetricDef metric) {
     return (int) getMeasure(metric);
   }
@@ -110,6 +111,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   /**
    * {@inheritDoc}
    */
+  @Override
   public double getDouble(MetricDef metric) {
     return getMeasure(metric);
   }
@@ -156,6 +158,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void setMeasure(MetricDef metric, double measure) {
     if (metric.isCalculatedMetric()) {
       throw new IllegalStateException("It's not allowed to set the value of a calculated metric : " + metric.getName());
@@ -166,6 +169,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void setMeasure(MetricDef metric, int measure) {
     setMeasure(metric, (double) measure);
   }

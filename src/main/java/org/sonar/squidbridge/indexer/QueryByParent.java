@@ -30,6 +30,7 @@ public class QueryByParent implements Query {
     this.parent = parent;
   }
 
+  @Override
   public boolean match(SourceCode unit) {
     return unit.hasAmongParents(parent);
   }

@@ -77,6 +77,7 @@ class Line implements Measurable<Metric> {
   /**
    * {@inheritDoc}
    */
+  @Override
   public double getDouble(Metric metric) {
     return getInt(metric);
   }
@@ -84,6 +85,7 @@ class Line implements Measurable<Metric> {
   /**
    * {@inheritDoc}
    */
+  @Override
   public int getInt(Metric metric) {
     switch (metric) {
       case BLANK_LINES:
@@ -108,6 +110,7 @@ class Line implements Measurable<Metric> {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void setMeasure(Metric metric, double measure) {
     setMeasure(metric, (int) measure);
   }
@@ -115,6 +118,7 @@ class Line implements Measurable<Metric> {
   /**
    * {@inheritDoc}
    */
+  @Override
   public void setMeasure(Metric metric, int measure) {
     switch (metric) {
       case BLANK_LINES:
