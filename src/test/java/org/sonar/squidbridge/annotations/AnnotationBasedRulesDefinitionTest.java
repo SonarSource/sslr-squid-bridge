@@ -43,7 +43,7 @@ public class AnnotationBasedRulesDefinitionTest {
 
   @Test
   public void no_class_to_add() throws Exception {
-    assertThat(buildRepository().rules()).isEmpty();
+    assertThat(buildRepository(false).rules()).isEmpty();
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -57,8 +57,6 @@ public class AnnotationBasedRulesDefinitionTest {
   public void rule_annotation_data() throws Exception {
 
     @Rule(key = "key1", name = "name1", description = "description1", tags = "mytag")
-    @SqaleSubCharacteristic(SubCharacteristics.CPU_EFFICIENCY)
-    @SqaleConstantRemediation("10min")
     class RuleClass {
       @RuleProperty(key = "param1Key", description = "param1 description")
       public String param1 = "x";
@@ -78,8 +76,6 @@ public class AnnotationBasedRulesDefinitionTest {
   public void external_names_and_descriptions() throws Exception {
   
     @Rule(key = "ruleWithExternalInfo")
-    @SqaleSubCharacteristic(SubCharacteristics.CPU_EFFICIENCY)
-    @SqaleConstantRemediation("10min")
     class RuleClass {
       @RuleProperty(key = "param1Key")
       public String param1 = "x";
@@ -99,12 +95,10 @@ public class AnnotationBasedRulesDefinitionTest {
   @Test(expected = IllegalStateException.class)
   public void no_name_and_no_resource_bundle() throws Exception {
     @Rule(key = "ruleWithExternalInfo")
-    @SqaleSubCharacteristic(SubCharacteristics.CPU_EFFICIENCY)
-    @SqaleConstantRemediation("10min")
     class RuleClass {
     }
 
-    buildRepository("languageX", RuleClass.class);
+    buildRepository("languageX", false, RuleClass.class);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -113,7 +107,7 @@ public class AnnotationBasedRulesDefinitionTest {
     class RuleClass {
     }
 
-    buildSingleRuleRepository(RuleClass.class);
+    buildRepository(true, RuleClass.class);
   }
 
   @Test
@@ -195,6 +189,25 @@ public class AnnotationBasedRulesDefinitionTest {
     rulesDef.newRule(RuleClass.class);
   }
 
+  @Test(expected = IllegalArgumentException.class)
+  public void load_method_with_class_without_sqale_annotation() throws Exception {
+    @Rule(key = "key1", name = "name1", description = "description1")
+    class RuleClass {
+    }
+    load(RuleClass.class);
+  }
+
+  @Test
+  public void load_method_with_class_with_sqale_annotations() throws Exception {
+    @Rule(key = "key1", name = "name1", description = "description1")
+    @SqaleSubCharacteristic(SubCharacteristics.CPU_EFFICIENCY)
+    @SqaleConstantRemediation("10min")
+    class RuleClass {
+    }
+    Repository repository = load(RuleClass.class);
+    assertThat(repository.rules()).hasSize(1);
+  }
+
   private void assertRemediation(RulesDefinition.Rule rule, Type type, String coeff, String offset, String effortDesc) {
     DebtRemediationFunction remediationFunction = rule.debtRemediationFunction();
     assertThat(remediationFunction.type()).isEqualTo(type);
@@ -210,20 +223,33 @@ public class AnnotationBasedRulesDefinitionTest {
   }
 
   private RulesDefinition.Rule buildSingleRuleRepository(Class<?> ruleClass) {
-    Repository repository = buildRepository(ruleClass);
+    Repository repository = buildRepository(false, ruleClass);
     assertThat(repository.rules()).hasSize(1);
     return repository.rules().get(0);
   }
 
-  private Repository buildRepository(Class<?>... classes) {
-    return buildRepository(LANGUAGE_KEY_WITH_RESOURCE_BUNDLE, classes);
+  private Repository buildRepository(boolean failIfSqaleNotFound, Class<?>... classes) {
+    return buildRepository(LANGUAGE_KEY_WITH_RESOURCE_BUNDLE, failIfSqaleNotFound, classes);
   }
 
-  private Repository buildRepository(String languageKey, Class<?>... classes) {
-    NewRepository newRepository = context.createRepository(REPO_KEY, languageKey);
+  private Repository buildRepository(String languageKey, boolean failIfSqaleNotFound, Class<?>... classes) {
+    NewRepository newRepository = createRepository(languageKey);
+    new AnnotationBasedRulesDefinition(newRepository, languageKey)
+      .addRuleClasses(failIfSqaleNotFound, ImmutableList.copyOf(classes));
+    newRepository.done();
+    return context.repository(REPO_KEY);
+  }
+
+  private Repository load(Class<?>... classes) {
+    String languageKey = LANGUAGE_KEY_WITH_RESOURCE_BUNDLE;
+    NewRepository newRepository = createRepository(languageKey);
     AnnotationBasedRulesDefinition.load(newRepository, languageKey, ImmutableList.copyOf(classes));
     newRepository.done();
     return context.repository(REPO_KEY);
+  }
+
+  private NewRepository createRepository(String languageKey) {
+    return context.createRepository(REPO_KEY, languageKey);
   }
 
 }

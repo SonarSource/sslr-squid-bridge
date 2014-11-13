@@ -70,8 +70,11 @@ public class AnnotationBasedRulesDefinition {
   private final String i18nResourceBase;
   private final String languageKey;
   
+  /**
+   * Adds annotated rule classes to an instance of NewRepository. Fails if one the classes has no SQALE annotation.
+   */
   public static void load(NewRepository repository, String languageKey, Iterable<Class<?>> ruleClasses) {
-    new AnnotationBasedRulesDefinition(repository, languageKey).addRuleClasses(ruleClasses);
+    new AnnotationBasedRulesDefinition(repository, languageKey).addRuleClasses(true, ruleClasses);
   }
 
   public AnnotationBasedRulesDefinition(NewRepository repository, String languageKey) {
@@ -80,12 +83,15 @@ public class AnnotationBasedRulesDefinition {
     this.i18nResourceBase = "/org/sonar/l10n/" + languageKey + "/rules/" + repository.key() + "/";
   }
 
-  public void addRuleClasses(Iterable<Class<?>> ruleClasses) {
+  public void addRuleClasses(boolean failIfSqaleNotFound, Iterable<Class<?>> ruleClasses) {
     new RulesDefinitionAnnotationLoader().load(repository, Iterables.toArray(ruleClasses, Class.class));
     List<NewRule> newRules = Lists.newArrayList();
     for (Class<?> ruleClass : ruleClasses) {
       NewRule rule = newRule(ruleClass);
       setupExternalDescriptions(rule);
+      if (getSqaleSubCharAnnotation(ruleClass) == null && failIfSqaleNotFound) {
+        throw new IllegalArgumentException("No SqaleSubCharacteristic annotation was found on " + ruleClass);
+      }
       try {
         setupSqaleModel(rule, ruleClass);
       } catch (RuntimeException e) {
@@ -138,11 +144,10 @@ public class AnnotationBasedRulesDefinition {
   }
 
   private void setupSqaleModel(NewRule rule, Class<?> ruleClass) {
-    SqaleSubCharacteristic subChar = AnnotationUtils.getAnnotation(ruleClass, SqaleSubCharacteristic.class);
-    if (subChar == null) {
-      throw new IllegalArgumentException("No SqaleSubCharacteristic annotation was found on " + ruleClass);
+    SqaleSubCharacteristic subChar = getSqaleSubCharAnnotation(ruleClass);
+    if (subChar != null) {
+      rule.setDebtSubCharacteristic(subChar.value());
     }
-    rule.setDebtSubCharacteristic(subChar.value());
 
     SqaleConstantRemediation constant = AnnotationUtils.getAnnotation(ruleClass, SqaleConstantRemediation.class);
     SqaleLinearRemediation linear = AnnotationUtils.getAnnotation(ruleClass, SqaleLinearRemediation.class);
@@ -164,6 +169,10 @@ public class AnnotationBasedRulesDefinition {
       rule.setDebtRemediationFunction(
         rule.debtRemediationFunctions().linearWithOffset(linearWithOffset.coeff(), linearWithOffset.offset()));
     }
+  }
+
+  private SqaleSubCharacteristic getSqaleSubCharAnnotation(Class<?> ruleClass) {
+    return AnnotationUtils.getAnnotation(ruleClass, SqaleSubCharacteristic.class);
   }
 
 }
