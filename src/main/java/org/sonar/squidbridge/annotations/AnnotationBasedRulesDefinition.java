@@ -45,23 +45,23 @@ import java.util.Set;
  * Utility class which helps setting up an implementation of {@link RulesDefinition} with a list of
  * rule classes annotated with {@link Rule}, {@link RuleProperty} and SQALE annotations:
  * <ul>
- *   <li>{@link SqaleSubCharacteristic}</li>
- *   <li>Exactly one of:
- *     <ul>
- *       <li>{@link SqaleConstantRemediation}</li>
- *       <li>{@link SqaleLinearRemediation}</li>
- *       <li>{@link SqaleLinearWithOffsetRemediation}</li>
- *     </ul>
- *   </li>
- * </ul>
- * Names and descriptions are also retrieved based on the legacy SonarQube conventions: 
+ * <li>{@link SqaleSubCharacteristic}</li>
+ * <li>Exactly one of:
  * <ul>
- *   <li>Rule names and rule property descriptions can be defined in a property file: 
- *   /org/sonar/l10n/[languageKey].properties</li>
- *   <li>HTML rule descriptions can be defined in individual resources: 
- *   /org/sonar/l10n/[languageKey]/rules/[repositoryKey]/ruleKey.html</li>
- * </ul>  
- * 
+ * <li>{@link SqaleConstantRemediation}</li>
+ * <li>{@link SqaleLinearRemediation}</li>
+ * <li>{@link SqaleLinearWithOffsetRemediation}</li>
+ * </ul>
+ * </li>
+ * </ul>
+ * Names and descriptions are also retrieved based on the legacy SonarQube conventions:
+ * <ul>
+ * <li>Rule names and rule property descriptions can be defined in a property file:
+ * /org/sonar/l10n/[languageKey].properties</li>
+ * <li>HTML rule descriptions can be defined in individual resources:
+ * /org/sonar/l10n/[languageKey]/rules/[repositoryKey]/ruleKey.html</li>
+ * </ul>
+ *
  * @since 2.5
  */
 public class AnnotationBasedRulesDefinition {
@@ -69,7 +69,7 @@ public class AnnotationBasedRulesDefinition {
   private final NewRepository repository;
   private final String i18nResourceBase;
   private final String languageKey;
-  
+
   /**
    * Adds annotated rule classes to an instance of NewRepository. Fails if one the classes has no SQALE annotation.
    */
@@ -89,7 +89,7 @@ public class AnnotationBasedRulesDefinition {
     for (Class<?> ruleClass : ruleClasses) {
       NewRule rule = newRule(ruleClass);
       setupExternalDescriptions(rule);
-      if (getSqaleSubCharAnnotation(ruleClass) == null && failIfSqaleNotFound) {
+      if (!isSqaleAnnotated(ruleClass) && failIfSqaleNotFound) {
         throw new IllegalArgumentException("No SqaleSubCharacteristic annotation was found on " + ruleClass);
       }
       try {
@@ -100,6 +100,10 @@ public class AnnotationBasedRulesDefinition {
       newRules.add(rule);
     }
     setupExternalNames(newRules);
+  }
+
+  private boolean isSqaleAnnotated(Class<?> ruleClass) {
+    return getSqaleSubCharAnnotation(ruleClass) != null || getNoSqaleAnnotation(ruleClass) != null;
   }
 
   @VisibleForTesting
@@ -152,7 +156,7 @@ public class AnnotationBasedRulesDefinition {
     SqaleConstantRemediation constant = AnnotationUtils.getAnnotation(ruleClass, SqaleConstantRemediation.class);
     SqaleLinearRemediation linear = AnnotationUtils.getAnnotation(ruleClass, SqaleLinearRemediation.class);
     SqaleLinearWithOffsetRemediation linearWithOffset =
-      AnnotationUtils.getAnnotation(ruleClass, SqaleLinearWithOffsetRemediation.class);
+        AnnotationUtils.getAnnotation(ruleClass, SqaleLinearWithOffsetRemediation.class);
 
     Set<Annotation> remediations = Sets.newHashSet(constant, linear, linearWithOffset);
     if (Iterables.size(Iterables.filter(remediations, Predicates.notNull())) > 1) {
@@ -167,12 +171,16 @@ public class AnnotationBasedRulesDefinition {
     }
     if (linearWithOffset != null) {
       rule.setDebtRemediationFunction(
-        rule.debtRemediationFunctions().linearWithOffset(linearWithOffset.coeff(), linearWithOffset.offset()));
+          rule.debtRemediationFunctions().linearWithOffset(linearWithOffset.coeff(), linearWithOffset.offset()));
     }
   }
 
   private SqaleSubCharacteristic getSqaleSubCharAnnotation(Class<?> ruleClass) {
     return AnnotationUtils.getAnnotation(ruleClass, SqaleSubCharacteristic.class);
+  }
+
+  private NoSqale getNoSqaleAnnotation(Class<?> ruleClass) {
+    return AnnotationUtils.getAnnotation(ruleClass, NoSqale.class);
   }
 
 }

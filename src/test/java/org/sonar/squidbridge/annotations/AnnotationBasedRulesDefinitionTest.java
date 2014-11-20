@@ -111,6 +111,18 @@ public class AnnotationBasedRulesDefinitionTest {
   }
 
   @Test
+  public void class_with_nosqale_annotation() throws Exception {
+
+    @Rule(key = "key1", name = "name1", description = "description1")
+    @NoSqale
+    class RuleClass {
+    }
+
+    Repository repository = buildRepository(true, RuleClass.class);
+    assertThat(repository.rules()).hasSize(1);
+  }
+
+  @Test
   public void class_with_sqale_constant_remediation() throws Exception {
 
     @Rule(key = "key1", name = "name1", description = "description1")
@@ -207,6 +219,8 @@ public class AnnotationBasedRulesDefinitionTest {
     Repository repository = load(RuleClass.class);
     assertThat(repository.rules()).hasSize(1);
   }
+
+
 
   private void assertRemediation(RulesDefinition.Rule rule, Type type, String coeff, String offset, String effortDesc) {
     DebtRemediationFunction remediationFunction = rule.debtRemediationFunction();
