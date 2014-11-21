@@ -32,6 +32,7 @@ import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 import org.sonar.api.utils.AnnotationUtils;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
+import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
 
 import java.lang.annotation.Annotation;
 import java.net.URL;
@@ -67,8 +68,8 @@ import java.util.Set;
 public class AnnotationBasedRulesDefinition {
 
   private final NewRepository repository;
-  private final String i18nResourceBase;
   private final String languageKey;
+  private final ExternalDescriptionLoader externalDescriptionLoader;
 
   /**
    * Adds annotated rule classes to an instance of NewRepository. Fails if one the classes has no SQALE annotation.
@@ -80,7 +81,8 @@ public class AnnotationBasedRulesDefinition {
   public AnnotationBasedRulesDefinition(NewRepository repository, String languageKey) {
     this.repository = repository;
     this.languageKey = languageKey;
-    this.i18nResourceBase = "/org/sonar/l10n/" + languageKey + "/rules/" + repository.key() + "/";
+    String externalDescriptionBasePath = String.format("/org/sonar/l10n/%s/rules/%s", languageKey, repository.key());
+    this.externalDescriptionLoader = new ExternalDescriptionLoader(repository, externalDescriptionBasePath);
   }
 
   public void addRuleClasses(boolean failIfSqaleNotFound, Iterable<Class<?>> ruleClasses) {
@@ -88,7 +90,7 @@ public class AnnotationBasedRulesDefinition {
     List<NewRule> newRules = Lists.newArrayList();
     for (Class<?> ruleClass : ruleClasses) {
       NewRule rule = newRule(ruleClass);
-      setupExternalDescriptions(rule);
+      externalDescriptionLoader.addHtmlDescription(rule);
       if (!isSqaleAnnotated(ruleClass) && failIfSqaleNotFound) {
         throw new IllegalArgumentException("No SqaleSubCharacteristic annotation was found on " + ruleClass);
       }
@@ -137,13 +139,6 @@ public class AnnotationBasedRulesDefinition {
           param.setDescription(bundle.getString(paramDescriptionKey));
         }
       }
-    }
-  }
-
-  private void setupExternalDescriptions(NewRule rule) {
-    URL resource = AnnotationBasedRulesDefinition.class.getResource(i18nResourceBase + rule.key() + ".html");
-    if (resource != null) {
-      rule.setHtmlDescription(resource);
     }
   }
 
