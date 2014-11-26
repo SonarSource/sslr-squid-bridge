@@ -68,6 +68,7 @@ public class AnnotationBasedRulesDefinitionTest {
     assertThat(rule.htmlDescription()).isEqualTo("description1");
     assertThat(rule.markdownDescription()).isNull();
     assertThat(rule.tags()).containsOnly("mytag");
+    assertThat(rule.template()).isFalse();
     assertThat(rule.params()).hasSize(1);
     assertParam(rule.params().get(0), "param1Key", "param1 description");
   }
@@ -99,6 +100,18 @@ public class AnnotationBasedRulesDefinitionTest {
     }
 
     buildRepository("languageX", false, RuleClass.class);
+  }
+
+  @Test
+  public void rule_template() throws Exception {
+    @Rule(key = "key1", name = "name1", description = "description1")
+    @NoSqale
+    @RuleTemplate
+    class RuleClass {
+    }
+
+    RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClass.class);
+    assertThat(rule.template()).isTrue();
   }
 
   @Test(expected = IllegalArgumentException.class)

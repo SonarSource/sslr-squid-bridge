@@ -91,6 +91,7 @@ public class AnnotationBasedRulesDefinition {
     for (Class<?> ruleClass : ruleClasses) {
       NewRule rule = newRule(ruleClass);
       externalDescriptionLoader.addHtmlDescription(rule);
+      rule.setTemplate(AnnotationUtils.getAnnotation(ruleClass, RuleTemplate.class) != null);
       if (!isSqaleAnnotated(ruleClass) && failIfSqaleNotFound) {
         throw new IllegalArgumentException("No SqaleSubCharacteristic annotation was found on " + ruleClass);
       }
