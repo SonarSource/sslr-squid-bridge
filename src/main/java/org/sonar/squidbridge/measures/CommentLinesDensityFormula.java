@@ -24,9 +24,9 @@ public class CommentLinesDensityFormula implements CalculatedMetricFormula {
 
   @Override
   public double calculate(Measurable measurable) {
-    if (measurable.getDouble(Metric.LINES_OF_CODE) + measurable.getDouble(Metric.COMMENT_LINES_WITHOUT_HEADER) != 0) {
-      return measurable.getDouble(Metric.COMMENT_LINES_WITHOUT_HEADER)
-        / (measurable.getDouble(Metric.LINES_OF_CODE) + measurable.getDouble(Metric.COMMENT_LINES_WITHOUT_HEADER));
+    double total = measurable.getDouble(Metric.LINES_OF_CODE) + measurable.getDouble(Metric.COMMENT_LINES_WITHOUT_HEADER);
+    if (Double.doubleToRawLongBits(total) != 0) {
+      return measurable.getDouble(Metric.COMMENT_LINES_WITHOUT_HEADER) / total;
     }
     return 0;
   }

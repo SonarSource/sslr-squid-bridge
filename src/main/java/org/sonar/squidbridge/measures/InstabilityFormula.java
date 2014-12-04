@@ -24,7 +24,7 @@ public class InstabilityFormula implements CalculatedMetricFormula {
 
   @Override
   public double calculate(Measurable measurable) {
-    if (measurable.getDouble(Metric.CA) + measurable.getDouble(Metric.CE) == 0) {
+    if (Double.doubleToRawLongBits(measurable.getDouble(Metric.CA) + measurable.getDouble(Metric.CE)) == 0) {
       return 0;
     }
     return measurable.getDouble(Metric.CE) / (measurable.getDouble(Metric.CA) + measurable.getDouble(Metric.CE));
