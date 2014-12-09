@@ -34,6 +34,7 @@ public class Tags {
   public static final String HTML5 = "html5";
   public static final String JAVA7 = "java7";
   public static final String JAVA8 = "java8";
+  public static final String MISRA = "misra";
   public static final String MISRA_C = "misra-c";
   public static final String MISRA_CPP = "misra-c++";
   public static final String MULTI_THREADING = "multi-threading";
