@@ -29,6 +29,10 @@ import java.util.Properties;
 
 public class PropertyFileLoader {
 
+  private PropertyFileLoader() {
+    // This class should not be instantiated
+  }
+
   public static void loadNames(NewRepository repository, String resourceAbsolutePath) {
     InputStream stream = PropertyFileLoader.class.getResourceAsStream(resourceAbsolutePath);
     if (stream == null) {

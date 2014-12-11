@@ -141,11 +141,9 @@ public class SqaleXmlLoader {
     String remediationFunction, String offset, String remediationFactor) {
     if ("CONSTANT_ISSUE".equalsIgnoreCase(remediationFunction)) {
       return functions.constantPerIssue(offset);
-    }
-    else if ("LINEAR".equalsIgnoreCase(remediationFunction)) {
+    } else if ("LINEAR".equalsIgnoreCase(remediationFunction)) {
       return functions.linear(remediationFactor);
-    }
-    else if ("LINEAR_OFFSET".equalsIgnoreCase(remediationFunction)) {
+    } else if ("LINEAR_OFFSET".equalsIgnoreCase(remediationFunction)) {
       return functions.linearWithOffset(remediationFactor, offset);
     }
     return null;
