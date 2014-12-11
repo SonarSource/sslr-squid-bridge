@@ -92,7 +92,7 @@ public class SourceCodeEdge implements Edge<SourceCode> {
     return rootFromNodes.size();
   }
 
-  public final void addRootEdge(SourceCodeEdge rootRelationShip) {
+  public final void addRootEdge(@Nullable SourceCodeEdge rootRelationShip) {
     if (noRoots()) {
       rootEdges = new HashSet<SourceCodeEdge>();
       rootFromNodes = new HashSet<SourceCode>();
