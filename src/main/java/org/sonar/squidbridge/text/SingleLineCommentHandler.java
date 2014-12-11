@@ -19,6 +19,7 @@
  */
 package org.sonar.squidbridge.text;
 
+import javax.annotation.Nullable;
 
 public class SingleLineCommentHandler extends LineContextHandler {
 
@@ -31,7 +32,7 @@ public class SingleLineCommentHandler extends LineContextHandler {
     this(commentStartTag, null);
   }
 
-  public SingleLineCommentHandler(String commentStartTag, String commentNotStartTag) {
+  public SingleLineCommentHandler(String commentStartTag, @Nullable String commentNotStartTag) {
     this.commentStartTag = commentStartTag;
     this.commentNotStartTag = commentNotStartTag;
   }

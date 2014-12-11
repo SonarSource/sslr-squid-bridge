@@ -24,6 +24,8 @@ import org.sonar.squidbridge.measures.Measures;
 import org.sonar.squidbridge.measures.Metric;
 import org.sonar.squidbridge.measures.MetricDef;
 
+import javax.annotation.Nullable;
+
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
@@ -45,7 +47,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
     this(key, null);
   }
 
-  public SourceCode(String key, String name) {
+  public SourceCode(String key, @Nullable String name) {
     this.key = key;
     this.name = name;
   }

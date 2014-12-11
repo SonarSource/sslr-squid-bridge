@@ -21,6 +21,8 @@ package org.sonar.squidbridge.api;
 
 import org.sonar.graph.Edge;
 
+import javax.annotation.Nullable;
+
 import java.util.HashSet;
 import java.util.Set;
 
@@ -39,7 +41,7 @@ public class SourceCodeEdge implements Edge<SourceCode> {
     this(from, to, link, null);
   }
 
-  public SourceCodeEdge(SourceCode from, SourceCode to, SourceCodeEdgeUsage usage, SourceCodeEdge rootEdge) {
+  public SourceCodeEdge(SourceCode from, SourceCode to, SourceCodeEdgeUsage usage, @Nullable SourceCodeEdge rootEdge) {
     this.hashcode = from.hashCode() * 31 + to.hashCode() + usage.hashCode(); // NOSONAR even if this basic algorithm could be improved
     this.from = from;
     this.to = to;
