@@ -107,7 +107,7 @@ public class AnnotationBasedProfileBuilderTest {
   }
 
   private RulesProfile build(Class<?> clazz) {
-    Collection<Class<?>> annotatedClasses = ImmutableList.<Class<?>>of(clazz);
+    Collection<Class> annotatedClasses = ImmutableList.<Class>of(clazz);
     return builder.build(REPO_KEY, PROFILE_NAME, LANGUAGE, annotatedClasses, messages);
   }
 

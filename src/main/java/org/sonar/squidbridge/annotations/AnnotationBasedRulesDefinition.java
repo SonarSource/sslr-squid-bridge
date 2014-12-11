@@ -74,7 +74,7 @@ public class AnnotationBasedRulesDefinition {
   /**
    * Adds annotated rule classes to an instance of NewRepository. Fails if one the classes has no SQALE annotation.
    */
-  public static void load(NewRepository repository, String languageKey, Iterable<Class<?>> ruleClasses) {
+  public static void load(NewRepository repository, String languageKey, Iterable<Class> ruleClasses) {
     new AnnotationBasedRulesDefinition(repository, languageKey).addRuleClasses(true, ruleClasses);
   }
 
@@ -85,7 +85,7 @@ public class AnnotationBasedRulesDefinition {
     this.externalDescriptionLoader = new ExternalDescriptionLoader(repository, externalDescriptionBasePath);
   }
 
-  public void addRuleClasses(boolean failIfSqaleNotFound, Iterable<Class<?>> ruleClasses) {
+  public void addRuleClasses(boolean failIfSqaleNotFound, Iterable<Class> ruleClasses) {
     new RulesDefinitionAnnotationLoader().load(repository, Iterables.toArray(ruleClasses, Class.class));
     List<NewRule> newRules = Lists.newArrayList();
     for (Class<?> ruleClass : ruleClasses) {

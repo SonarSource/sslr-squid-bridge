@@ -259,7 +259,7 @@ public class AnnotationBasedRulesDefinitionTest {
     return buildRepository(LANGUAGE_KEY_WITH_RESOURCE_BUNDLE, failIfSqaleNotFound, classes);
   }
 
-  private Repository buildRepository(String languageKey, boolean failIfSqaleNotFound, Class<?>... classes) {
+  private Repository buildRepository(String languageKey, boolean failIfSqaleNotFound, Class... classes) {
     NewRepository newRepository = createRepository(languageKey);
     new AnnotationBasedRulesDefinition(newRepository, languageKey)
       .addRuleClasses(failIfSqaleNotFound, ImmutableList.copyOf(classes));
@@ -267,7 +267,7 @@ public class AnnotationBasedRulesDefinitionTest {
     return context.repository(REPO_KEY);
   }
 
-  private Repository load(Class<?>... classes) {
+  private Repository load(Class... classes) {
     String languageKey = LANGUAGE_KEY_WITH_RESOURCE_BUNDLE;
     NewRepository newRepository = createRepository(languageKey);
     AnnotationBasedRulesDefinition.load(newRepository, languageKey, ImmutableList.copyOf(classes));
