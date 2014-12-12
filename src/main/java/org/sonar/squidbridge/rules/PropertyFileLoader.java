@@ -19,6 +19,7 @@
  */
 package org.sonar.squidbridge.rules;
 
+import com.google.common.annotations.Beta;
 import org.sonar.api.server.rule.RulesDefinition.NewParam;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
@@ -27,6 +28,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.Properties;
 
+@Beta
 public class PropertyFileLoader {
 
   private PropertyFileLoader() {

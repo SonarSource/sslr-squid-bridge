@@ -19,11 +19,13 @@
  */
 package org.sonar.squidbridge.rules;
 
+import com.google.common.annotations.Beta;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
 
 import java.net.URL;
 
+@Beta
 public class ExternalDescriptionLoader {
 
   private final String resourceBasePath;

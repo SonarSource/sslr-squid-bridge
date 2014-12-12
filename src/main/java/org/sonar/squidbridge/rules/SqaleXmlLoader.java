@@ -19,6 +19,7 @@
  */
 package org.sonar.squidbridge.rules;
 
+import com.google.common.annotations.Beta;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
@@ -38,6 +39,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.util.Map;
 
+@Beta
 public class SqaleXmlLoader {
 
   private NewRepository repository;
