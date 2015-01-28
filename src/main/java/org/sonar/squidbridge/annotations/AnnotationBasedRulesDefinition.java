@@ -123,7 +123,7 @@ public class AnnotationBasedRulesDefinition {
   }
 
   private void setupExternalNames(Collection<NewRule> rules) {
-    URL resource = AnnotationBasedRulesDefinition.class.getResource("/org/sonar/l10n/" + languageKey);
+    URL resource = AnnotationBasedRulesDefinition.class.getResource("/org/sonar/l10n/" + languageKey + ".properties");
     if (resource == null) {
       return;
     }

@@ -99,7 +99,7 @@ public class AnnotationBasedRulesDefinitionTest {
     class RuleClass {
     }
 
-    buildRepository("languageX", false, RuleClass.class);
+    buildRepository("languageWithoutBundle", false, RuleClass.class);
   }
 
   @Test
