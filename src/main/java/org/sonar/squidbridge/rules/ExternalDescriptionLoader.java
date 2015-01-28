@@ -20,9 +20,13 @@
 package org.sonar.squidbridge.rules;
 
 import com.google.common.annotations.Beta;
+import com.google.common.annotations.VisibleForTesting;
+import com.google.common.base.Charsets;
+import com.google.common.io.Resources;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
 
+import java.io.IOException;
 import java.net.URL;
 
 @Beta
@@ -44,7 +48,16 @@ public class ExternalDescriptionLoader {
   public void addHtmlDescription(NewRule rule) {
     URL resource = ExternalDescriptionLoader.class.getResource(resourceBasePath + "/" + rule.key() + ".html");
     if (resource != null) {
-      rule.setHtmlDescription(resource);
+      addHtmlDescription(rule, resource);
+    }
+  }
+
+  @VisibleForTesting
+  void addHtmlDescription(NewRule rule, URL resource) {
+    try {
+      rule.setHtmlDescription(Resources.toString(resource, Charsets.UTF_8));
+    } catch (IOException e) {
+      throw new IllegalStateException("Failed to read: " + resource, e);
     }
   }
 

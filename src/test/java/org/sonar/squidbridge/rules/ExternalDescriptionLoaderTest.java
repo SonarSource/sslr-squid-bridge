@@ -22,8 +22,11 @@ package org.sonar.squidbridge.rules;
 import org.junit.Test;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
+import org.sonar.api.server.rule.RulesDefinition.NewRule;
 import org.sonar.api.server.rule.RulesDefinition.Repository;
 import org.sonar.api.server.rule.RulesDefinition.Rule;
+
+import java.net.URL;
 
 import static org.fest.assertions.Assertions.assertThat;
 
@@ -53,6 +56,13 @@ public class ExternalDescriptionLoaderTest {
   public void rule_without_description() throws Exception {
     repository.createRule("ruleWithoutExternalInfo").setName("name1");
     buildRepository().rule("ruleWithoutExternalInfo");
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void invalid_url() throws Exception {
+    ExternalDescriptionLoader loader = new ExternalDescriptionLoader(repository, LANGUAGE_KEY);
+    NewRule rule = repository.createRule("ruleWithoutExternalInfo").setName("name1");
+    loader.addHtmlDescription(rule, new URL("file:///xx/yy"));
   }
 
   private Repository buildRepository() {
