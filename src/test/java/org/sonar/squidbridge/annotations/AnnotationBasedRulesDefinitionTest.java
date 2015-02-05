@@ -73,6 +73,17 @@ public class AnnotationBasedRulesDefinitionTest {
     assertParam(rule.params().get(0), "param1Key", "param1 description");
   }
 
+  @Rule(name = "name1", description = "description1")
+  class RuleClassWithoutAnnotationDefinedKey {
+  }
+
+  @Test
+  public void rule_without_explicit_key() throws Exception {
+    RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClassWithoutAnnotationDefinedKey.class);
+    assertThat(rule.key()).isEqualTo(RuleClassWithoutAnnotationDefinedKey.class.getCanonicalName());
+    assertThat(rule.name()).isEqualTo("name1");
+  }
+
   @Test
   public void external_names_and_descriptions() throws Exception {
   

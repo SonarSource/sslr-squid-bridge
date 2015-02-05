@@ -24,6 +24,7 @@ import com.google.common.base.Predicates;
 import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
+import org.apache.commons.lang.StringUtils;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinition.NewParam;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
@@ -115,7 +116,8 @@ public class AnnotationBasedRulesDefinition {
     if (ruleAnnotation == null) {
       throw new IllegalArgumentException("No Rule annotation was found on " + ruleClass);
     }
-    NewRule rule = repository.rule(ruleAnnotation.key());
+    String ruleKey = StringUtils.defaultIfEmpty(ruleAnnotation.key(), ruleClass.getCanonicalName());
+    NewRule rule = repository.rule(ruleKey);
     if (rule == null) {
       throw new IllegalStateException("No rule was created for " + ruleClass + " in " + repository);
     }
