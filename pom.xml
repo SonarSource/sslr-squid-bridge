@@ -137,7 +137,7 @@
         <configuration>
           <autoVersionSubmodules>true</autoVersionSubmodules>
           <localCheckout>true</localCheckout>
-          <pushChanges>false</pushChanges>
+          <pushChanges>true</pushChanges>
           <mavenExecutorId>forked-path</mavenExecutorId>
           <preparationGoals>clean install</preparationGoals>
         </configuration>
