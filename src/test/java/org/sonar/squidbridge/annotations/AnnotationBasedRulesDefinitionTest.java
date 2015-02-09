@@ -20,8 +20,8 @@
 package org.sonar.squidbridge.annotations;
 
 import com.google.common.collect.ImmutableList;
-import junit.framework.Assert;
 import org.junit.Test;
+import org.junit.rules.ExpectedException;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.debt.DebtRemediationFunction.Type;
 import org.sonar.api.server.rule.RulesDefinition;
@@ -41,15 +41,19 @@ public class AnnotationBasedRulesDefinitionTest {
 
   private RulesDefinition.Context context = new RulesDefinition.Context();
 
+  @org.junit.Rule
+  public ExpectedException thrown = ExpectedException.none();
+
   @Test
   public void no_class_to_add() throws Exception {
     assertThat(buildRepository(false).rules()).isEmpty();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void class_without_rule_annotation() throws Exception {
     class NotRuleClass {
     }
+    thrown.expect(IllegalArgumentException.class);
     buildSingleRuleRepository(NotRuleClass.class);
   }
 
@@ -77,8 +81,9 @@ public class AnnotationBasedRulesDefinitionTest {
   class RuleClassWithoutAnnotationDefinedKey {
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void rule_without_explicit_key() throws Exception {
+    thrown.expect(IllegalArgumentException.class);
     buildSingleRuleRepository(RuleClassWithoutAnnotationDefinedKey.class);
   }
 
@@ -110,12 +115,13 @@ public class AnnotationBasedRulesDefinitionTest {
     assertParam(rule.params().get(1), "param2", null);
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void no_name_and_no_resource_bundle() throws Exception {
     @Rule(key = "ruleWithExternalInfo")
     class RuleClass {
     }
 
+    thrown.expect(IllegalStateException.class);
     buildRepository("languageWithoutBundle", false, false, RuleClass.class);
   }
 
@@ -131,12 +137,13 @@ public class AnnotationBasedRulesDefinitionTest {
     assertThat(rule.template()).isTrue();
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void class_without_sqale_annotation() throws Exception {
     @Rule(key = "key1", name = "name1", description = "description1")
     class RuleClass {
     }
 
+    thrown.expect(IllegalArgumentException.class);
     buildRepository(true, RuleClass.class);
   }
 
@@ -193,7 +200,7 @@ public class AnnotationBasedRulesDefinitionTest {
     assertRemediation(rule, Type.LINEAR_OFFSET, "5min", "1h", "Effort to test one uncovered condition");
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void class_with_several_sqale_remediation_annotations() throws Exception {
     @Rule(key = "key1", name = "name1", description = "description1")
     @SqaleSubCharacteristic(SubCharacteristics.CPU_EFFICIENCY)
@@ -202,6 +209,7 @@ public class AnnotationBasedRulesDefinitionTest {
     class RuleClass {
     }
 
+    thrown.expect(IllegalArgumentException.class);
     buildSingleRuleRepository(RuleClass.class);
   }
 
@@ -213,29 +221,28 @@ public class AnnotationBasedRulesDefinitionTest {
     class MyInvalidRuleClass {
     }
 
-    try {
-      buildSingleRuleRepository(MyInvalidRuleClass.class);
-      Assert.fail();
-    } catch (Exception e) {
-      assertThat(e.getMessage()).contains("MyInvalidRuleClass");
-    }
+    thrown.expect(IllegalArgumentException.class);
+    thrown.expectMessage("MyInvalidRuleClass");
+    buildSingleRuleRepository(MyInvalidRuleClass.class);
   }
 
-  @Test(expected = IllegalStateException.class)
+  @Test
   public void rule_not_created_by_RulesDefinitionAnnotationLoader() throws Exception {
     @Rule
     class RuleClass {
     }
     NewRepository newRepository = context.createRepository(REPO_KEY, "language1");
     AnnotationBasedRulesDefinition rulesDef = new AnnotationBasedRulesDefinition(newRepository, "language1");
+    thrown.expect(IllegalStateException.class);
     rulesDef.newRule(RuleClass.class, false);
   }
 
-  @Test(expected = IllegalArgumentException.class)
+  @Test
   public void load_method_with_class_without_sqale_annotation() throws Exception {
     @Rule(key = "key1", name = "name1", description = "description1")
     class RuleClass {
     }
+    thrown.expect(IllegalArgumentException.class);
     load(RuleClass.class);
   }
 
