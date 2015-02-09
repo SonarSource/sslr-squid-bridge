@@ -87,10 +87,14 @@ public class AnnotationBasedRulesDefinition {
   }
 
   public void addRuleClasses(boolean failIfSqaleNotFound, Iterable<Class> ruleClasses) {
+    addRuleClasses(failIfSqaleNotFound, true, ruleClasses);
+  }
+
+  public void addRuleClasses(boolean failIfSqaleNotFound, boolean failIfNoExplicitKey, Iterable<Class> ruleClasses) {
     new RulesDefinitionAnnotationLoader().load(repository, Iterables.toArray(ruleClasses, Class.class));
     List<NewRule> newRules = Lists.newArrayList();
     for (Class<?> ruleClass : ruleClasses) {
-      NewRule rule = newRule(ruleClass);
+      NewRule rule = newRule(ruleClass, failIfNoExplicitKey);
       externalDescriptionLoader.addHtmlDescription(rule);
       rule.setTemplate(AnnotationUtils.getAnnotation(ruleClass, RuleTemplate.class) != null);
       if (!isSqaleAnnotated(ruleClass) && failIfSqaleNotFound) {
@@ -111,12 +115,18 @@ public class AnnotationBasedRulesDefinition {
   }
 
   @VisibleForTesting
-  NewRule newRule(Class<?> ruleClass) {
+  NewRule newRule(Class<?> ruleClass, boolean failIfNoExplicitKey) {
     org.sonar.check.Rule ruleAnnotation = AnnotationUtils.getAnnotation(ruleClass, org.sonar.check.Rule.class);
     if (ruleAnnotation == null) {
       throw new IllegalArgumentException("No Rule annotation was found on " + ruleClass);
     }
-    String ruleKey = StringUtils.defaultIfEmpty(ruleAnnotation.key(), ruleClass.getCanonicalName());
+    String ruleKey = ruleAnnotation.key();
+    if (StringUtils.isEmpty(ruleKey)) {
+      if (failIfNoExplicitKey) {
+        throw new IllegalArgumentException("No key is defined in Rule annotation of " + ruleClass);
+      }
+      ruleKey = ruleClass.getCanonicalName();
+    }
     NewRule rule = repository.rule(ruleKey);
     if (rule == null) {
       throw new IllegalStateException("No rule was created for " + ruleClass + " in " + repository);

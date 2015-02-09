@@ -77,9 +77,15 @@ public class AnnotationBasedRulesDefinitionTest {
   class RuleClassWithoutAnnotationDefinedKey {
   }
 
-  @Test
+  @Test(expected = IllegalArgumentException.class)
   public void rule_without_explicit_key() throws Exception {
-    RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClassWithoutAnnotationDefinedKey.class);
+    buildSingleRuleRepository(RuleClassWithoutAnnotationDefinedKey.class);
+  }
+
+  @Test
+  public void rule_without_explicit_key_can_be_acceptable() throws Exception {
+    Repository repository = buildRepository(LANGUAGE_KEY_WITH_RESOURCE_BUNDLE, false, false, RuleClassWithoutAnnotationDefinedKey.class);
+    RulesDefinition.Rule rule = repository.rules().get(0);
     assertThat(rule.key()).isEqualTo(RuleClassWithoutAnnotationDefinedKey.class.getCanonicalName());
     assertThat(rule.name()).isEqualTo("name1");
   }
@@ -110,7 +116,7 @@ public class AnnotationBasedRulesDefinitionTest {
     class RuleClass {
     }
 
-    buildRepository("languageWithoutBundle", false, RuleClass.class);
+    buildRepository("languageWithoutBundle", false, false, RuleClass.class);
   }
 
   @Test
@@ -222,7 +228,7 @@ public class AnnotationBasedRulesDefinitionTest {
     }
     NewRepository newRepository = context.createRepository(REPO_KEY, "language1");
     AnnotationBasedRulesDefinition rulesDef = new AnnotationBasedRulesDefinition(newRepository, "language1");
-    rulesDef.newRule(RuleClass.class);
+    rulesDef.newRule(RuleClass.class, false);
   }
 
   @Test(expected = IllegalArgumentException.class)
@@ -267,13 +273,13 @@ public class AnnotationBasedRulesDefinitionTest {
   }
 
   private Repository buildRepository(boolean failIfSqaleNotFound, Class<?>... classes) {
-    return buildRepository(LANGUAGE_KEY_WITH_RESOURCE_BUNDLE, failIfSqaleNotFound, classes);
+    return buildRepository(LANGUAGE_KEY_WITH_RESOURCE_BUNDLE, failIfSqaleNotFound, true, classes);
   }
 
-  private Repository buildRepository(String languageKey, boolean failIfSqaleNotFound, Class... classes) {
+  private Repository buildRepository(String languageKey, boolean failIfSqaleNotFound, boolean failIfNoExplicitKey, Class... classes) {
     NewRepository newRepository = createRepository(languageKey);
     new AnnotationBasedRulesDefinition(newRepository, languageKey)
-      .addRuleClasses(failIfSqaleNotFound, ImmutableList.copyOf(classes));
+      .addRuleClasses(failIfSqaleNotFound, failIfNoExplicitKey, ImmutableList.copyOf(classes));
     newRepository.done();
     return context.repository(REPO_KEY);
   }
