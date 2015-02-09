@@ -31,6 +31,7 @@ import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
 import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 import org.sonar.api.utils.AnnotationUtils;
+import org.sonar.check.Cardinality;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
@@ -130,6 +131,9 @@ public class AnnotationBasedRulesDefinition {
     NewRule rule = repository.rule(ruleKey);
     if (rule == null) {
       throw new IllegalStateException("No rule was created for " + ruleClass + " in " + repository);
+    }
+    if (ruleAnnotation.cardinality() == Cardinality.MULTIPLE) {
+      throw new IllegalArgumentException("Cardinality is not supported, use the RuleTemplate annotation instead");
     }
     return rule;
   }
