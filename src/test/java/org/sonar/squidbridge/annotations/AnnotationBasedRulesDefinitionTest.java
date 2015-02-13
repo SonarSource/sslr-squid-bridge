@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.debt.DebtRemediationFunction.Type;
-import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.api.server.rule.*;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.Param;
 import org.sonar.api.server.rule.RulesDefinition.Repository;
@@ -283,7 +283,7 @@ public class AnnotationBasedRulesDefinitionTest {
     assertThat(remediationFunction.type()).isEqualTo(type);
     assertThat(remediationFunction.coefficient()).isEqualTo(coeff);
     assertThat(remediationFunction.offset()).isEqualTo(offset);
-    assertThat(rule.effortToFixDescription());
+    assertThat(rule.effortToFixDescription()).isEqualTo(effortDesc);
   }
 
   private void assertParam(Param param, String expectedKey, String expectedDescription) {
