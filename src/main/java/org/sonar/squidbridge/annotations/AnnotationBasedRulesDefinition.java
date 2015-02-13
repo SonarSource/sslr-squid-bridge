@@ -25,11 +25,10 @@ import com.google.common.collect.Iterables;
 import com.google.common.collect.Lists;
 import com.google.common.collect.Sets;
 import org.apache.commons.lang.StringUtils;
-import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.api.server.rule.*;
 import org.sonar.api.server.rule.RulesDefinition.NewParam;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
-import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 import org.sonar.api.utils.AnnotationUtils;
 import org.sonar.check.Cardinality;
 import org.sonar.check.Rule;
@@ -38,11 +37,7 @@ import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
 
 import java.lang.annotation.Annotation;
 import java.net.URL;
-import java.util.Collection;
-import java.util.List;
-import java.util.Locale;
-import java.util.ResourceBundle;
-import java.util.Set;
+import java.util.*;
 
 /**
  * Utility class which helps setting up an implementation of {@link RulesDefinition} with a list of
@@ -180,10 +175,12 @@ public class AnnotationBasedRulesDefinition {
     }
     if (linear != null) {
       rule.setDebtRemediationFunction(rule.debtRemediationFunctions().linear(linear.coeff()));
+      rule.setEffortToFixDescription(linear.effortToFixDescription());
     }
     if (linearWithOffset != null) {
       rule.setDebtRemediationFunction(
           rule.debtRemediationFunctions().linearWithOffset(linearWithOffset.coeff(), linearWithOffset.offset()));
+      rule.setEffortToFixDescription(linearWithOffset.effortToFixDescription());
     }
   }
 
