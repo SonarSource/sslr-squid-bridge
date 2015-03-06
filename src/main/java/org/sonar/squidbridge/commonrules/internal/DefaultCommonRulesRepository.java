@@ -19,16 +19,15 @@
  */
 package org.sonar.squidbridge.commonrules.internal;
 
+import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
+import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 import org.sonar.squidbridge.commonrules.internal.checks.BranchCoverageCheck;
 import org.sonar.squidbridge.commonrules.internal.checks.CommentDensityCheck;
 import org.sonar.squidbridge.commonrules.internal.checks.DuplicatedBlocksCheck;
 import org.sonar.squidbridge.commonrules.internal.checks.FailedUnitTestsCheck;
 import org.sonar.squidbridge.commonrules.internal.checks.LineCoverageCheck;
 import org.sonar.squidbridge.commonrules.internal.checks.SkippedUnitTestsCheck;
-
-import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
-import org.sonar.api.server.rule.RulesDefinition;
-import org.sonar.api.server.rule.RulesDefinitionAnnotationLoader;
 
 import javax.annotation.Nullable;
 
@@ -51,7 +50,7 @@ public class DefaultCommonRulesRepository implements RulesDefinition, CommonRule
   public void define(Context context) {
     NewRepository repo = context.createRepository(keyForLanguage(language), language)
       .setName("Common SonarQube");
-    new RulesDefinitionAnnotationLoader().load(repo, enabledChecks.toArray(new Class[0]));
+    AnnotationBasedRulesDefinition.load(repo, language, enabledChecks);
     NewRule insufBranchCoverage = repo.rule(RULE_INSUFFICIENT_BRANCH_COVERAGE);
     if (insufBranchCoverage != null && minimumBranchCoverageRatio != null) {
       insufBranchCoverage.param(PARAM_MIN_BRANCH_COVERAGE).setDefaultValue("" + minimumBranchCoverageRatio);

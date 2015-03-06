@@ -25,9 +25,12 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
+import org.sonar.api.server.rule.RulesDefinition.SubCharacteristics;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
+import org.sonar.squidbridge.annotations.SqaleLinearRemediation;
+import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "InsufficientCommentDensity",
@@ -36,6 +39,8 @@ import org.sonar.check.RuleProperty;
   tags = "convention",
   description = "<p>An issue is created on a file as soon as the comment density coverage on this file is less than the required threshold. "
     + "It gives the number of comment lines to be written in order to reach the required threshold.</p>")
+@SqaleSubCharacteristic(SubCharacteristics.UNDERSTANDABILITY)
+@SqaleLinearRemediation(coeff = "2min", effortToFixDescription = "number of lines required to meet minimum density")
 public class CommentDensityCheck extends CommonCheck {
 
   private static final double DEFAULT_MIN_DENSITY = 25;
