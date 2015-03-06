@@ -35,6 +35,7 @@ import org.sonar.check.RuleProperty;
   key = CommonRulesRepository.RULE_INSUFFICIENT_BRANCH_COVERAGE,
   name = "Insufficient branch coverage by unit tests",
   priority = Priority.MAJOR,
+  tags = "bad-practice",
   description = "<p>An issue is created on a file as soon as the branch coverage on this file is less than the required threshold."
     + "It gives the number of branches to be covered in order to reach the required threshold.</p>")
 public class BranchCoverageCheck extends CommonCheck {

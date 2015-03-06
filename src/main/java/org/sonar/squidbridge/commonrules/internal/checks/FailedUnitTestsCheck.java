@@ -33,6 +33,7 @@ import org.sonar.check.Rule;
   key = "FailedUnitTests",
   name = "Failed unit tests",
   priority = Priority.MAJOR,
+  tags = "bug",
   description = "<p>Test failures or errors generally indicate that regressions have been introduced. " +
     "Those tests should be handled as soon as possible to reduce the cost to fix the corresponding regressions.</p>")
 public class FailedUnitTestsCheck extends CommonCheck {

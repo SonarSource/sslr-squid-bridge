@@ -33,6 +33,7 @@ import org.sonar.check.RuleProperty;
   key = "InsufficientCommentDensity",
   name = "Insufficient comment density",
   priority = Priority.MAJOR,
+  tags = "convention",
   description = "<p>An issue is created on a file as soon as the comment density coverage on this file is less than the required threshold. "
     + "It gives the number of comment lines to be written in order to reach the required threshold.</p>")
 public class CommentDensityCheck extends CommonCheck {

@@ -33,6 +33,7 @@ import org.sonar.check.RuleProperty;
   key = "InsufficientLineCoverage",
   name = "Insufficient line coverage by unit tests",
   priority = Priority.MAJOR,
+  tags = "bad-practice",
   description = "<p>An issue is created on a file as soon as the line coverage on this file is less than the required threshold. "
     + "It gives the number of lines to be covered in order to reach the required threshold.</p>")
 public class LineCoverageCheck extends CommonCheck {

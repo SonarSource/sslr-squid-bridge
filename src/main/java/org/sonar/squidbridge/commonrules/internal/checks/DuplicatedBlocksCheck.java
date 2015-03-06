@@ -32,6 +32,7 @@ import org.sonar.check.Rule;
   key = "DuplicatedBlocks",
   name = "Duplicated blocks",
   priority = Priority.MAJOR,
+  tags = "pitfall",
   description = "<p>An issue is created on a file as soon as there is a block of duplicated code on this file. "
     + "It gives the number of blocks in the file.</p>")
 public class DuplicatedBlocksCheck extends CommonCheck {

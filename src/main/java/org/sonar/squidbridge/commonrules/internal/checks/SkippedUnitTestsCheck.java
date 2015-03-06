@@ -33,6 +33,7 @@ import org.sonar.check.Rule;
   key = "SkippedUnitTests",
   name = "Skipped unit tests",
   priority = Priority.MAJOR,
+  tags = "pitfall",
   description = "<p>Skipped unit tests are considered as dead code. " +
     "Either they should be activated again (and updated) or they should be removed.</p>")
 public class SkippedUnitTestsCheck extends CommonCheck {
