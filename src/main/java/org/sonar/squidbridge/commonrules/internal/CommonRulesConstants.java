@@ -37,6 +37,19 @@ public class CommonRulesConstants {
    */
   public static final String REPO_KEY_PREFIX = "common-";
 
+  public static final String RULE_INSUFFICIENT_BRANCH_COVERAGE = "InsufficientBranchCoverage";
+  public static final String PARAM_MIN_BRANCH_COVERAGE = "minimumBranchCoverageRatio";
+
+  public static final String RULE_INSUFFICIENT_LINE_COVERAGE = "InsufficientLineCoverage";
+  public static final String PARAM_MIN_LINE_COVERAGE = "minimumLineCoverageRatio";
+
+  public static final String RULE_INSUFFICIENT_COMMENT_DENSITY = "InsufficientCommentDensity";
+  public static final String PARAM_MIN_COMMENT_DENSITY = "minimumCommentDensity";
+
+  public static final String RULE_DUPLICATED_BLOCKS = "DuplicatedBlocks";
+  public static final String RULE_SKIPPED_UNIT_TESTS = "SkippedUnitTests";
+  public static final String RULE_FAILED_UNIT_TESTS = "FailedUnitTests";
+
   /**
    * List of existing checks.
    */

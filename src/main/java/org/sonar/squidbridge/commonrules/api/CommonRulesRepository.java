@@ -26,19 +26,6 @@ import javax.annotation.Nullable;
  */
 public interface CommonRulesRepository {
 
-  String RULE_INSUFFICIENT_BRANCH_COVERAGE = "InsufficientBranchCoverage";
-  String PARAM_MIN_BRANCH_COVERAGE = "minimumBranchCoverageRatio";
-
-  String RULE_INSUFFICIENT_LINE_COVERAGE = "InsufficientLineCoverage";
-  String PARAM_MIN_LINE_COVERAGE = "minimumLineCoverageRatio";
-
-  String RULE_INSUFFICIENT_COMMENT_DENSITY = "InsufficientCommentDensity";
-  String PARAM_MIN_COMMENT_DENSITY = "minimumCommentDensity";
-
-  String RULE_DUPLICATED_BLOCKS = "DuplicatedBlocks";
-  String RULE_SKIPPED_UNIT_TESTS = "SkippedUnitTests";
-  String RULE_FAILED_UNIT_TESTS = "FailedUnitTests";
-
   CommonRulesRepository enableInsufficientBranchCoverageRule(@Nullable Double minBranchCoverageRatio);
 
   CommonRulesRepository enableInsufficientLineCoverageRule(@Nullable Double minLineCoverageRatio);

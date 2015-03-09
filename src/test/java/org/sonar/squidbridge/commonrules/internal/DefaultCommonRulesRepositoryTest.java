@@ -23,7 +23,6 @@ import org.junit.Test;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
 import org.sonar.api.server.rule.RulesDefinition.Repository;
-import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.mock;
@@ -75,9 +74,9 @@ public final class DefaultCommonRulesRepositoryTest {
 
     Repository repo = context.repository("common-java");
     assertThat(repo.rules()).hasSize(1);
-    org.sonar.api.server.rule.RulesDefinition.Rule rule = repo.rule(CommonRulesRepository.RULE_INSUFFICIENT_COMMENT_DENSITY);
+    org.sonar.api.server.rule.RulesDefinition.Rule rule = repo.rule(CommonRulesConstants.RULE_INSUFFICIENT_COMMENT_DENSITY);
     assertThat(rule).isNotNull();
-    assertThat(Double.parseDouble(rule.param(CommonRulesRepository.PARAM_MIN_COMMENT_DENSITY).defaultValue())).isEqualTo(25.0);
+    assertThat(Double.parseDouble(rule.param(CommonRulesConstants.PARAM_MIN_COMMENT_DENSITY).defaultValue())).isEqualTo(25.0);
   }
 
   @Test
@@ -89,9 +88,9 @@ public final class DefaultCommonRulesRepositoryTest {
 
     Repository repo = context.repository("common-java");
     assertThat(repo.rules()).hasSize(1);
-    org.sonar.api.server.rule.RulesDefinition.Rule rule = repo.rule(CommonRulesRepository.RULE_INSUFFICIENT_COMMENT_DENSITY);
+    org.sonar.api.server.rule.RulesDefinition.Rule rule = repo.rule(CommonRulesConstants.RULE_INSUFFICIENT_COMMENT_DENSITY);
     assertThat(rule).isNotNull();
-    assertThat(Double.parseDouble(rule.param(CommonRulesRepository.PARAM_MIN_COMMENT_DENSITY).defaultValue())).isEqualTo(42.0);
+    assertThat(Double.parseDouble(rule.param(CommonRulesConstants.PARAM_MIN_COMMENT_DENSITY).defaultValue())).isEqualTo(42.0);
   }
 
   @Test(expected = IllegalStateException.class)

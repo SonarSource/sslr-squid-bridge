@@ -31,10 +31,10 @@ import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.annotations.SqaleLinearRemediation;
 import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
-import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
+import org.sonar.squidbridge.commonrules.internal.CommonRulesConstants;
 
 @Rule(
-  key = CommonRulesRepository.RULE_INSUFFICIENT_BRANCH_COVERAGE,
+  key = CommonRulesConstants.RULE_INSUFFICIENT_BRANCH_COVERAGE,
   name = "Branches should have sufficient coverage by unit tests",
   priority = Priority.MAJOR,
   tags = "bad-practice",
@@ -46,7 +46,7 @@ public class BranchCoverageCheck extends CommonCheck {
 
   private static final double DEFAULT_RATIO = 65;
 
-  @RuleProperty(key = CommonRulesRepository.PARAM_MIN_BRANCH_COVERAGE, description = "The minimum required branch coverage ratio.", defaultValue = "" + DEFAULT_RATIO)
+  @RuleProperty(key = CommonRulesConstants.PARAM_MIN_BRANCH_COVERAGE, description = "The minimum required branch coverage ratio.", defaultValue = "" + DEFAULT_RATIO)
   private double minimumBranchCoverageRatio = DEFAULT_RATIO;
 
   @Override

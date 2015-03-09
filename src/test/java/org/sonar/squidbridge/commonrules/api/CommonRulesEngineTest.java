@@ -19,13 +19,11 @@
  */
 package org.sonar.squidbridge.commonrules.api;
 
-import org.sonar.squidbridge.commonrules.internal.DefaultCommonRulesRepository;
-
-import org.sonar.squidbridge.commonrules.api.CommonRulesEngine;
-import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 import org.junit.Test;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinition.Repository;
+import org.sonar.squidbridge.commonrules.internal.CommonRulesConstants;
+import org.sonar.squidbridge.commonrules.internal.DefaultCommonRulesRepository;
 
 import java.util.List;
 
@@ -67,17 +65,17 @@ public final class CommonRulesEngineTest {
     Repository repository = context.repository("common-java");
 
     assertThat(repository.rules()).hasSize(3);
-    assertThat(repository.rule(CommonRulesRepository.RULE_DUPLICATED_BLOCKS)).isNotNull();
-    assertThat(repository.rule(CommonRulesRepository.RULE_INSUFFICIENT_COMMENT_DENSITY)).isNull();
+    assertThat(repository.rule(CommonRulesConstants.RULE_DUPLICATED_BLOCKS)).isNotNull();
+    assertThat(repository.rule(CommonRulesConstants.RULE_INSUFFICIENT_COMMENT_DENSITY)).isNull();
 
     // hardcoded default value
-    org.sonar.api.server.rule.RulesDefinition.Rule branchCoverage = repository.rule(CommonRulesRepository.RULE_INSUFFICIENT_BRANCH_COVERAGE);
+    org.sonar.api.server.rule.RulesDefinition.Rule branchCoverage = repository.rule(CommonRulesConstants.RULE_INSUFFICIENT_BRANCH_COVERAGE);
     assertThat(branchCoverage).isNotNull();
-    assertThat(Double.parseDouble(branchCoverage.param(CommonRulesRepository.PARAM_MIN_BRANCH_COVERAGE).defaultValue())).isEqualTo(65.0);
+    assertThat(Double.parseDouble(branchCoverage.param(CommonRulesConstants.PARAM_MIN_BRANCH_COVERAGE).defaultValue())).isEqualTo(65.0);
 
-    org.sonar.api.server.rule.RulesDefinition.Rule lineCoverage = repository.rule(CommonRulesRepository.RULE_INSUFFICIENT_LINE_COVERAGE);
+    org.sonar.api.server.rule.RulesDefinition.Rule lineCoverage = repository.rule(CommonRulesConstants.RULE_INSUFFICIENT_LINE_COVERAGE);
     assertThat(lineCoverage).isNotNull();
-    assertThat(Double.parseDouble(lineCoverage.param(CommonRulesRepository.PARAM_MIN_LINE_COVERAGE).defaultValue())).isEqualTo(82.0);
+    assertThat(Double.parseDouble(lineCoverage.param(CommonRulesConstants.PARAM_MIN_LINE_COVERAGE).defaultValue())).isEqualTo(82.0);
   }
 
   @Test

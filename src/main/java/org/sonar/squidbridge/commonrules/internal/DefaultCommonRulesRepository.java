@@ -35,6 +35,13 @@ import javax.annotation.Nullable;
 import java.util.ArrayList;
 import java.util.List;
 
+import static org.sonar.squidbridge.commonrules.internal.CommonRulesConstants.PARAM_MIN_BRANCH_COVERAGE;
+import static org.sonar.squidbridge.commonrules.internal.CommonRulesConstants.PARAM_MIN_COMMENT_DENSITY;
+import static org.sonar.squidbridge.commonrules.internal.CommonRulesConstants.PARAM_MIN_LINE_COVERAGE;
+import static org.sonar.squidbridge.commonrules.internal.CommonRulesConstants.RULE_INSUFFICIENT_BRANCH_COVERAGE;
+import static org.sonar.squidbridge.commonrules.internal.CommonRulesConstants.RULE_INSUFFICIENT_COMMENT_DENSITY;
+import static org.sonar.squidbridge.commonrules.internal.CommonRulesConstants.RULE_INSUFFICIENT_LINE_COVERAGE;
+
 public class DefaultCommonRulesRepository implements RulesDefinition, CommonRulesRepository {
 
   private List<Class> enabledChecks = new ArrayList<Class>();

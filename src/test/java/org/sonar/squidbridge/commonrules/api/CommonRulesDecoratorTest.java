@@ -19,10 +19,6 @@
  */
 package org.sonar.squidbridge.commonrules.api;
 
-import org.sonar.squidbridge.commonrules.internal.CommonRulesConstants;
-
-import org.sonar.squidbridge.commonrules.api.CommonRulesDecorator;
-import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 import org.junit.Before;
 import org.junit.Test;
 import org.sonar.api.batch.DecoratorContext;
@@ -41,6 +37,7 @@ import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Scopes;
 import org.sonar.api.rule.RuleKey;
+import org.sonar.squidbridge.commonrules.internal.CommonRulesConstants;
 
 import java.util.List;
 
@@ -96,9 +93,9 @@ public final class CommonRulesDecoratorTest {
     fs.add(new DefaultInputFile("src/foo/bar.java").setLanguage("java"));
 
     ActiveRules activeRules = new ActiveRulesBuilder()
-      .create(RuleKey.of(REPO_KEY, CommonRulesRepository.RULE_DUPLICATED_BLOCKS))
+      .create(RuleKey.of(REPO_KEY, CommonRulesConstants.RULE_DUPLICATED_BLOCKS))
       .activate()
-      .create(RuleKey.of(REPO_KEY, CommonRulesRepository.RULE_INSUFFICIENT_LINE_COVERAGE))
+      .create(RuleKey.of(REPO_KEY, CommonRulesConstants.RULE_INSUFFICIENT_LINE_COVERAGE))
       .activate()
       .build();
     CommonRulesDecorator decorator = new CommonRulesDecorator("java", fs, new CheckFactory(activeRules), mock(ResourcePerspectives.class)) {
@@ -125,7 +122,7 @@ public final class CommonRulesDecoratorTest {
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 2.0));
 
     ActiveRules activeRules = new ActiveRulesBuilder()
-      .create(RuleKey.of(REPO_KEY, CommonRulesRepository.RULE_DUPLICATED_BLOCKS))
+      .create(RuleKey.of(REPO_KEY, CommonRulesConstants.RULE_DUPLICATED_BLOCKS))
       .activate()
       .build();
     ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
@@ -147,7 +144,7 @@ public final class CommonRulesDecoratorTest {
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 2.0));
 
     ActiveRules activeRules = new ActiveRulesBuilder()
-      .create(RuleKey.of(REPO_KEY, CommonRulesRepository.RULE_DUPLICATED_BLOCKS))
+      .create(RuleKey.of(REPO_KEY, CommonRulesConstants.RULE_DUPLICATED_BLOCKS))
       .activate()
       .build();
     ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
@@ -168,7 +165,7 @@ public final class CommonRulesDecoratorTest {
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 2.0));
 
     ActiveRules activeRules = new ActiveRulesBuilder()
-      .create(RuleKey.of(REPO_KEY, CommonRulesRepository.RULE_DUPLICATED_BLOCKS))
+      .create(RuleKey.of(REPO_KEY, CommonRulesConstants.RULE_DUPLICATED_BLOCKS))
       .activate()
       .build();
     ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
@@ -190,7 +187,7 @@ public final class CommonRulesDecoratorTest {
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 2.0));
 
     ActiveRules activeRules = new ActiveRulesBuilder()
-      .create(RuleKey.of(REPO_KEY, CommonRulesRepository.RULE_DUPLICATED_BLOCKS))
+      .create(RuleKey.of(REPO_KEY, CommonRulesConstants.RULE_DUPLICATED_BLOCKS))
       .activate()
       .build();
     ResourcePerspectives resourcePerspectives = mock(ResourcePerspectives.class);
