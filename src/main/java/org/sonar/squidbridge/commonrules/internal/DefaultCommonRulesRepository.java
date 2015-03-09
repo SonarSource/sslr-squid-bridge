@@ -19,6 +19,7 @@
  */
 package org.sonar.squidbridge.commonrules.internal;
 
+import com.google.common.annotations.VisibleForTesting;
 import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
 import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
@@ -51,19 +52,25 @@ public class DefaultCommonRulesRepository implements RulesDefinition, CommonRule
     NewRepository repo = context.createRepository(keyForLanguage(language), language)
       .setName("Common SonarQube");
     AnnotationBasedRulesDefinition.load(repo, language, enabledChecks);
-    NewRule insufBranchCoverage = repo.rule(RULE_INSUFFICIENT_BRANCH_COVERAGE);
-    if (insufBranchCoverage != null && minimumBranchCoverageRatio != null) {
-      insufBranchCoverage.param(PARAM_MIN_BRANCH_COVERAGE).setDefaultValue("" + minimumBranchCoverageRatio);
-    }
-    NewRule insufLineCoverage = repo.rule(RULE_INSUFFICIENT_LINE_COVERAGE);
-    if (insufLineCoverage != null && minimumLineCoverageRatio != null) {
-      insufLineCoverage.param(PARAM_MIN_LINE_COVERAGE).setDefaultValue("" + minimumLineCoverageRatio);
-    }
-    NewRule insufCommentDensity = repo.rule(RULE_INSUFFICIENT_COMMENT_DENSITY);
-    if (insufCommentDensity != null && minimumCommentDensity != null) {
-      insufCommentDensity.param(PARAM_MIN_COMMENT_DENSITY).setDefaultValue("" + minimumCommentDensity);
-    }
+    setParamValue(repo.rule(RULE_INSUFFICIENT_BRANCH_COVERAGE), PARAM_MIN_BRANCH_COVERAGE, minimumBranchCoverageRatio);
+    setParamValue(repo.rule(RULE_INSUFFICIENT_LINE_COVERAGE), PARAM_MIN_LINE_COVERAGE, minimumLineCoverageRatio);
+    setParamValue(repo.rule(RULE_INSUFFICIENT_COMMENT_DENSITY), PARAM_MIN_COMMENT_DENSITY, minimumCommentDensity);
     repo.done();
+  }
+
+  private void setParamValue(@Nullable NewRule rule, String paramName, @Nullable Double paramValue) {
+    if (rule != null && paramValue != null) {
+      ruleParam(rule, paramName).setDefaultValue("" + paramValue);
+    }
+  }
+
+  @VisibleForTesting
+  protected static NewParam ruleParam(NewRule rule, String paramName) {
+    NewParam param = rule.param(paramName);
+    if (param == null) {
+      throw new IllegalStateException(paramName + " should be a valid parameter name on " + rule);
+    }
+    return param;
   }
 
   public static String keyForLanguage(String language) {

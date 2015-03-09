@@ -19,23 +19,28 @@
  */
 package org.sonar.squidbridge.commonrules.internal;
 
-import org.sonar.squidbridge.commonrules.internal.checks.*;
+import org.sonar.squidbridge.commonrules.internal.checks.BranchCoverageCheck;
+import org.sonar.squidbridge.commonrules.internal.checks.CommentDensityCheck;
+import org.sonar.squidbridge.commonrules.internal.checks.DuplicatedBlocksCheck;
+import org.sonar.squidbridge.commonrules.internal.checks.FailedUnitTestsCheck;
+import org.sonar.squidbridge.commonrules.internal.checks.LineCoverageCheck;
+import org.sonar.squidbridge.commonrules.internal.checks.SkippedUnitTestsCheck;
 
 import java.util.Arrays;
 import java.util.List;
 
-public interface CommonRulesConstants {
+public class CommonRulesConstants {
 
   /**
    * The prefix used to create the rule repository for a given language (using its key).
    * For instance : "common-java".
    */
-  String REPO_KEY_PREFIX = "common-";
+  public static final String REPO_KEY_PREFIX = "common-";
 
   /**
    * List of existing checks.
    */
-  List<Class> CLASSES = Arrays.<Class>asList(
+  public static final List<Class> CLASSES = Arrays.<Class>asList(
     DuplicatedBlocksCheck.class,
     LineCoverageCheck.class,
     BranchCoverageCheck.class,
@@ -43,4 +48,7 @@ public interface CommonRulesConstants {
     SkippedUnitTestsCheck.class,
     FailedUnitTestsCheck.class);
 
+  private CommonRulesConstants() {
+    // This class should not be instantiated.
+  }
 }

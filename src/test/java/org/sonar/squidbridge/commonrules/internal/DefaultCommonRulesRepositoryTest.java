@@ -19,14 +19,14 @@
  */
 package org.sonar.squidbridge.commonrules.internal;
 
-import org.sonar.squidbridge.commonrules.internal.CommonRulesConstants;
-import org.sonar.squidbridge.commonrules.internal.DefaultCommonRulesRepository;
-
-import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 import org.junit.Test;
 import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.api.server.rule.RulesDefinition.NewRule;
 import org.sonar.api.server.rule.RulesDefinition.Repository;
+import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
+
 import static org.fest.assertions.Assertions.assertThat;
+import static org.mockito.Mockito.mock;
 
 public final class DefaultCommonRulesRepositoryTest {
 
@@ -92,6 +92,11 @@ public final class DefaultCommonRulesRepositoryTest {
     org.sonar.api.server.rule.RulesDefinition.Rule rule = repo.rule(CommonRulesRepository.RULE_INSUFFICIENT_COMMENT_DENSITY);
     assertThat(rule).isNotNull();
     assertThat(Double.parseDouble(rule.param(CommonRulesRepository.PARAM_MIN_COMMENT_DENSITY).defaultValue())).isEqualTo(42.0);
+  }
+
+  @Test(expected = IllegalStateException.class)
+  public void invalid_param() throws Exception {
+    DefaultCommonRulesRepository.ruleParam(mock(NewRule.class), "xxx");
   }
 
 }

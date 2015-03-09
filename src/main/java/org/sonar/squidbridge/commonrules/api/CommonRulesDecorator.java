@@ -19,10 +19,6 @@
  */
 package org.sonar.squidbridge.commonrules.api;
 
-import org.sonar.squidbridge.commonrules.internal.checks.CommonCheck;
-
-import org.sonar.squidbridge.commonrules.internal.CommonRulesConstants;
-import org.sonar.squidbridge.commonrules.internal.DefaultCommonRulesRepository;
 import org.sonar.api.batch.Decorator;
 import org.sonar.api.batch.DecoratorBarriers;
 import org.sonar.api.batch.DecoratorContext;
@@ -34,9 +30,13 @@ import org.sonar.api.batch.rule.Checks;
 import org.sonar.api.component.ResourcePerspectives;
 import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.Metric;
+import org.sonar.api.resources.Language;
 import org.sonar.api.resources.Project;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
+import org.sonar.squidbridge.commonrules.internal.CommonRulesConstants;
+import org.sonar.squidbridge.commonrules.internal.DefaultCommonRulesRepository;
+import org.sonar.squidbridge.commonrules.internal.checks.CommonCheck;
 
 import java.util.Arrays;
 import java.util.List;
@@ -78,8 +78,9 @@ public abstract class CommonRulesDecorator implements Decorator {
 
   @Override
   public void decorate(Resource resource, DecoratorContext context) {
+    Language resourceLanguage = resource.getLanguage();
     // assume that all checks relate to files, not directories nor modules
-    if (ResourceUtils.isEntity(resource) && resource.getLanguage() != null && resource.getLanguage().getKey().equals(language)) {
+    if (ResourceUtils.isEntity(resource) && resourceLanguage != null && resourceLanguage.getKey().equals(language)) {
       for (CommonCheck check : checks.all()) {
         check.checkResource(resource, context, checks.ruleKey(check), perspectives);
       }
