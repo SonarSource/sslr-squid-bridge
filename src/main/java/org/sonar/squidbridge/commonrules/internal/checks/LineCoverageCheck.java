@@ -34,7 +34,7 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "InsufficientLineCoverage",
-  name = "Insufficient line coverage by unit tests",
+  name = "Lines should have sufficient coverage by unit tests",
   priority = Priority.MAJOR,
   tags = "bad-practice",
   description = "<p>An issue is created on a file as soon as the line coverage on this file is less than the required threshold. "

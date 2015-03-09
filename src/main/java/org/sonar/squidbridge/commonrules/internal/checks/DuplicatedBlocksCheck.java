@@ -33,11 +33,10 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "DuplicatedBlocks",
-  name = "Duplicated blocks",
+  name = "Source files should not have any duplicated blocks",
   priority = Priority.MAJOR,
   tags = "pitfall",
-  description = "<p>An issue is created on a file as soon as there is a block of duplicated code on this file. "
-    + "It gives the number of blocks in the file.</p>")
+  description = "<p>An issue is created on a file as soon as there is at least one block of duplicated code on this file.</p>")
 @SqaleSubCharacteristic(SubCharacteristics.LOGIC_CHANGEABILITY)
 @SqaleLinearWithOffsetRemediation(offset = "10min", coeff = "10min", effortToFixDescription = "Number of duplicate blocks")
 public class DuplicatedBlocksCheck extends CommonCheck {
@@ -51,6 +50,6 @@ public class DuplicatedBlocksCheck extends CommonCheck {
   }
 
   private void createIssue(Resource resource, RuleKey ruleKey, double duplicatedBlocks, ResourcePerspectives perspectives) {
-    createIssue(resource, perspectives, ruleKey, duplicatedBlocks, (int) duplicatedBlocks + " duplicated blocks of code.");
+    createIssue(resource, perspectives, ruleKey, duplicatedBlocks, (int) duplicatedBlocks + " duplicated blocks of code must be removed.");
   }
 }

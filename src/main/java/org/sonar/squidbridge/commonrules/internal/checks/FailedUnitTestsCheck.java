@@ -34,7 +34,7 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "FailedUnitTests",
-  name = "Failed unit tests",
+  name = "Failed unit tests should be fixed",
   priority = Priority.MAJOR,
   tags = "bug",
   description = "<p>Test failures or errors generally indicate that regressions have been introduced. " +
@@ -54,7 +54,8 @@ public class FailedUnitTestsCheck extends CommonCheck {
   }
 
   private void createIssue(Resource resource, RuleKey ruleKey, double testFailuresAndErrors, ResourcePerspectives perspectives) {
-    createIssue(resource, perspectives, ruleKey, testFailuresAndErrors, "Some tests are not successful. You should fix them.");
+    String fileName = resource.getName();
+    createIssue(resource, perspectives, ruleKey, testFailuresAndErrors, "Fix failing unit tests on file \"" + fileName + "\".");
   }
 
 }

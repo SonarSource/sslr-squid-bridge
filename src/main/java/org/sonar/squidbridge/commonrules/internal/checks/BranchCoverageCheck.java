@@ -35,7 +35,7 @@ import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 
 @Rule(
   key = CommonRulesRepository.RULE_INSUFFICIENT_BRANCH_COVERAGE,
-  name = "Insufficient branch coverage by unit tests",
+  name = "Branches should have sufficient coverage by unit tests",
   priority = Priority.MAJOR,
   tags = "bad-practice",
   description = "<p>An issue is created on a file as soon as the branch coverage on this file is less than the required threshold."

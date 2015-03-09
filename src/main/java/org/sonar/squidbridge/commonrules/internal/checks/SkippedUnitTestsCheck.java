@@ -34,7 +34,7 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "SkippedUnitTests",
-  name = "Skipped unit tests",
+  name = "Skipped unit tests should be either removed or fixed",
   priority = Priority.MAJOR,
   tags = "pitfall",
   description = "<p>Skipped unit tests are considered as dead code. " +
@@ -52,7 +52,8 @@ public class SkippedUnitTestsCheck extends CommonCheck {
   }
 
   private void createIssue(Resource resource, RuleKey ruleKey, double skippedTests, ResourcePerspectives perspectives) {
-    createIssue(resource, perspectives, ruleKey, skippedTests, "Some tests are skipped. You should activate them or remove them.");
+    String fileName = resource.getName();
+    createIssue(resource, perspectives, ruleKey, skippedTests, "Fix or remove skipped unit tests in file \"" + fileName + "\".");
   }
 
 }

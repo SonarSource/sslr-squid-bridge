@@ -34,11 +34,11 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "InsufficientCommentDensity",
-  name = "Insufficient comment density",
+  name = "Source files should have a sufficient density of comment lines",
   priority = Priority.MAJOR,
   tags = "convention",
-  description = "<p>An issue is created on a file as soon as the comment density coverage on this file is less than the required threshold. "
-    + "It gives the number of comment lines to be written in order to reach the required threshold.</p>")
+  description = "<p>An issue is created on a file as soon as the density of comment lines on this file is less than the required threshold. "
+    + "The number of comment lines to be written in order to reach the required threshold is provided by each issue message.</p>")
 @SqaleSubCharacteristic(SubCharacteristics.UNDERSTANDABILITY)
 @SqaleLinearRemediation(coeff = "2min", effortToFixDescription = "number of lines required to meet minimum density")
 public class CommentDensityCheck extends CommonCheck {
