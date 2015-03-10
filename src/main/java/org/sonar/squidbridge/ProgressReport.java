@@ -58,12 +58,16 @@ public class ProgressReport implements Runnable {
     while (!Thread.interrupted()) {
       try {
         Thread.sleep(period);
-        log(currentFileNumber + "/" + count + " files " + adjective + ", current file: " + currentFile.getAbsolutePath());
+        synchronized (this) {
+          log(currentFileNumber + "/" + count + " files " + adjective + ", current file: " + currentFile.getAbsolutePath());
+        }
       } catch (InterruptedException e) {
         thread.interrupt();
       }
     }
-    log(count + "/" + count + " source files have been " + adjective);
+    synchronized (this) {
+      log(count + "/" + count + " source files have been " + adjective);
+    }
   }
 
   public synchronized void start(Collection<File> files) {
