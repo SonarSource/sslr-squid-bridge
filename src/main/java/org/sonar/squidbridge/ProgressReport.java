@@ -23,25 +23,34 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.util.Collection;
+import java.util.Iterator;
 
 public class ProgressReport implements Runnable {
 
   private final long period;
   private final Logger logger;
   private int count;
-  private int currentFileNumber = 0;
+  private int currentFileNumber = -1;
+  private File currentFile;
+  private Iterator<File> it;
   private final Thread thread;
-  private String message;
+  private final String adjective;
 
-  public ProgressReport(String threadName, long period, Logger logger) {
+  public ProgressReport(String threadName, long period, Logger logger, String adjective) {
     this.period = period;
     this.logger = logger;
+    this.adjective = adjective;
     thread = new Thread(this);
     thread.setName(threadName);
   }
 
+  public ProgressReport(String threadName, long period, String adjective) {
+    this(threadName, period, LoggerFactory.getLogger(ProgressReport.class), adjective);
+  }
+
   public ProgressReport(String threadName, long period) {
-    this(threadName, period, LoggerFactory.getLogger(ProgressReport.class));
+    this(threadName, period, "analyzed");
   }
 
   @Override
@@ -49,31 +58,29 @@ public class ProgressReport implements Runnable {
     while (!Thread.interrupted()) {
       try {
         Thread.sleep(period);
-        synchronized (this) {
-          log(message);
-        }
+        log(currentFileNumber + "/" + count + " files " + adjective + ", current file: " + currentFile.getAbsolutePath());
       } catch (InterruptedException e) {
         thread.interrupt();
       }
     }
-
-    synchronized (this) {
-      log(currentFileNumber + "/" + count + " source files have been analyzed");
-    }
+    log(count + "/" + count + " source files have been " + adjective);
   }
 
-  public synchronized void start(int count) {
-    this.count = count;
+  public synchronized void start(Collection<File> files) {
+    count = files.size();
+    it = files.iterator();
 
-    log(count + " source files to be analyzed");
-    message = "Files analysis did not start yet";
+    nextFile();
 
+    log(count + " source files to be " + adjective);
     thread.start();
   }
 
-  public synchronized void setFile(File file) {
-    message = currentFileNumber + "/" + count + " files analyzed so far, currently analyzing: " + file.getAbsolutePath();
-    currentFileNumber++;
+  public synchronized void nextFile() {
+    if (it.hasNext()) {
+      currentFileNumber++;
+      currentFile = it.next();
+    }
   }
 
   public synchronized void stop() {
