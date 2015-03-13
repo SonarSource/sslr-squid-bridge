@@ -19,10 +19,9 @@
  */
 package org.sonar.squidbridge.commonrules.api;
 
-import org.sonar.squidbridge.commonrules.internal.DefaultCommonRulesRepository;
-
 import org.sonar.api.ExtensionProvider;
 import org.sonar.api.ServerExtension;
+import org.sonar.squidbridge.commonrules.internal.DefaultCommonRulesRepository;
 
 import java.util.Arrays;
 import java.util.List;
@@ -30,13 +29,6 @@ import java.util.List;
 /**
  * <p>
  * This class should be extended by any plugin that wants to use some Common Rules.
- * </p>
- * <p>
- * <b>Important:</b> both constructors must be implemented in order to have a fully working extension on both server
- * and batch side
- * <p>
- * <p>
- * See JavaCommonRulesEngine in the sonar-java-plugin to have an example of how this works.
  * </p>
  */
 public abstract class CommonRulesEngine extends ExtensionProvider implements ServerExtension {
