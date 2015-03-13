@@ -19,6 +19,10 @@
  */
 package org.sonar.squidbridge.annotations;
 
+/**
+ * @deprecated since 2.6. Each plugin should define its own list of tags.
+ */
+@Deprecated
 public class Tags {
 
   public static final String ACCESSIBILITY = "accessibility";
