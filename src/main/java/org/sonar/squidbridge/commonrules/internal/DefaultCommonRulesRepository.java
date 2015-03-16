@@ -20,7 +20,9 @@
 package org.sonar.squidbridge.commonrules.internal;
 
 import com.google.common.annotations.VisibleForTesting;
+import com.google.common.collect.Sets;
 import org.sonar.api.server.rule.RulesDefinition;
+import org.sonar.api.utils.AnnotationUtils;
 import org.sonar.squidbridge.annotations.AnnotationBasedRulesDefinition;
 import org.sonar.squidbridge.commonrules.api.CommonRulesRepository;
 import org.sonar.squidbridge.commonrules.internal.checks.BranchCoverageCheck;
@@ -34,6 +36,7 @@ import javax.annotation.Nullable;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 import static org.sonar.squidbridge.commonrules.internal.CommonRulesConstants.PARAM_MIN_BRANCH_COVERAGE;
 import static org.sonar.squidbridge.commonrules.internal.CommonRulesConstants.PARAM_MIN_COMMENT_DENSITY;
@@ -121,5 +124,15 @@ public class DefaultCommonRulesRepository implements RulesDefinition, CommonRule
   public DefaultCommonRulesRepository enableFailedUnitTestsRule() {
     enabledChecks.add(FailedUnitTestsCheck.class);
     return this;
+  }
+
+  @Override
+  @SuppressWarnings("rawtypes")
+  public Set<String> enabledRuleKeys() {
+    Set<String> keys = Sets.newHashSet();
+    for (Class clazz : enabledChecks) {
+      keys.add(AnnotationUtils.getAnnotation(clazz, org.sonar.check.Rule.class).key());
+    }
+    return keys;
   }
 }

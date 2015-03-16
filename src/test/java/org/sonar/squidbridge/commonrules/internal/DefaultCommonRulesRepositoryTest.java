@@ -63,6 +63,7 @@ public final class DefaultCommonRulesRepositoryTest {
     repository.define(context);
 
     assertThat(context.repository("common-java").rules()).isEmpty();
+    assertThat(repository.enabledRuleKeys()).isEmpty();
   }
 
   @Test
@@ -77,6 +78,7 @@ public final class DefaultCommonRulesRepositoryTest {
     org.sonar.api.server.rule.RulesDefinition.Rule rule = repo.rule(CommonRulesConstants.RULE_INSUFFICIENT_COMMENT_DENSITY);
     assertThat(rule).isNotNull();
     assertThat(Double.parseDouble(rule.param(CommonRulesConstants.PARAM_MIN_COMMENT_DENSITY).defaultValue())).isEqualTo(25.0);
+    assertThat(repository.enabledRuleKeys()).containsOnly(CommonRulesConstants.RULE_INSUFFICIENT_COMMENT_DENSITY);
   }
 
   @Test

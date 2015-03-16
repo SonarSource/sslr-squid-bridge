@@ -21,6 +21,8 @@ package org.sonar.squidbridge.commonrules.api;
 
 import javax.annotation.Nullable;
 
+import java.util.Set;
+
 /**
  * This is not an extension point. Implementation is provided by the library.
  */
@@ -37,4 +39,9 @@ public interface CommonRulesRepository {
   CommonRulesRepository enableSkippedUnitTestsRule();
 
   CommonRulesRepository enableFailedUnitTestsRule();
+
+  /**
+   * Used for unit-testing
+   */
+  Set<String> enabledRuleKeys();
 }
