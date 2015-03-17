@@ -46,10 +46,15 @@ public class ProgressAstScanner<G extends Grammar> extends AstScanner<G> {
 
   public static class Builder<G extends Grammar> extends AstScanner.Builder<G> {
 
-    private final ProgressReport progressReport = new ProgressReport("Report about progress of code analyzer", TimeUnit.SECONDS.toMillis(10));
+    private ProgressReport progressReport = new ProgressReport("Report about progress of code analyzer", TimeUnit.SECONDS.toMillis(10));
 
     public Builder(SquidAstVisitorContextImpl<G> context) {
       super(context);
+    }
+
+    public Builder<G> setProgressReport(ProgressReport progressReport) {
+      this.progressReport = progressReport;
+      return this;
     }
 
     @Override
