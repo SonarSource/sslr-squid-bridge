@@ -19,6 +19,10 @@
  */
 package org.sonar.squidbridge;
 
+import com.google.common.base.Throwables;
+import com.jayway.awaitility.Duration;
+import com.jayway.awaitility.Awaitility;
+import com.sonar.sslr.api.AstNode;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
 import com.sonar.sslr.api.Grammar;
@@ -32,7 +36,13 @@ import org.sonar.squidbridge.api.SourceProject;
 import org.sonar.squidbridge.test.miniC.MiniCAstScanner.MiniCMetrics;
 
 import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.CountDownLatch;
 
+import static org.mockito.Mockito.verifyNoMoreInteractions;
+
+import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
@@ -61,6 +71,84 @@ public class ProgressAstScannerTest {
         return ((LoggingEvent) argument).getFormattedMessage().contains("1 source files to be analyzed");
       }
     }));
+  }
+
+  @Test(timeout = 5000)
+  public void testInterrupt() throws Exception {
+    SquidAstVisitorContextImpl<Grammar> context = new SquidAstVisitorContextImpl<Grammar>(new SourceProject(""));
+    CountDownLatch latch = new CountDownLatch(1);
+    ProgressReport progress = mock(ProgressReport.class);
+    Parser<Grammar> parser = new BlockingParser(latch);
+
+    AstScanner<Grammar> scanner = new ProgressAstScanner.Builder<Grammar>(context)
+      .setProgressReport(progress)
+      .setBaseParser(parser)
+      .setFilesMetric(MiniCMetrics.FILES)
+      .build();
+
+    File[] files = {new File("src/test/resources/metrics/lines.mc"), new File("src/test/resources/metrics/lines2.mc")};
+    ScannerRunner runner = new ScannerRunner(scanner, files);
+    runner.start();
+
+    // wait for first parsing to start
+    latch.await();
+    verify(progress).start(any(Collection.class));
+
+    runner.interrupt();
+    Awaitility.waitAtMost(Duration.TWO_SECONDS).until(new AssertProgressReportCancelled(progress));
+    verifyNoMoreInteractions(progress);
+  }
+
+  private class AssertProgressReportCancelled implements Runnable {
+    private final ProgressReport progress;
+
+    AssertProgressReportCancelled(ProgressReport progress) {
+      this.progress = progress;
+    }
+
+    public void run() {
+      verify(progress).cancel();
+    }
+  }
+
+  private static class BlockingParser extends Parser<Grammar> {
+    private final CountDownLatch latch;
+
+    protected BlockingParser(CountDownLatch latch) {
+      super(null);
+      this.latch = latch;
+    }
+
+    @Override
+    public AstNode parse(File f) {
+      latch.countDown();
+      try {
+        Thread.sleep(10_000);
+      } catch (InterruptedException e) {
+        throw Throwables.propagate(e);
+      }
+      return null;
+    }
+  }
+
+  private static class ScannerRunner extends Thread {
+    private AstScanner<Grammar> scanner;
+    private File[] f;
+
+    ScannerRunner(AstScanner<Grammar> scanner, File[] f) {
+      this.setName("TestScannerRunner");
+      this.scanner = scanner;
+      this.f = f;
+    }
+
+    @Override
+    public void run() {
+      try {
+        scanner.scanFiles(Arrays.asList(f));
+      } catch (Exception e) {
+        e.printStackTrace();
+      }
+    }
   }
 
 }

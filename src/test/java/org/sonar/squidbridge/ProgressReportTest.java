@@ -40,7 +40,7 @@ public class ProgressReportTest {
   @Rule
   public final Timeout timeout = new Timeout(5000);
 
-  @Test
+  @Test(timeout=5000)
   public void test() throws Exception {
     Logger logger = mock(Logger.class);
 
@@ -72,6 +72,23 @@ public class ProgressReportTest {
       assertThat(messages.get(i)).isEqualTo("0/2 files analyzed, current file: foo");
     }
     assertThat(messages.get(messages.size() - 1)).isEqualTo("2/2" + " source files have been analyzed");
+  }
+  
+  @Test(timeout=5000)
+  public void testCancel() throws InterruptedException {
+    Logger logger = mock(Logger.class);
+
+    ProgressReport report = new ProgressReport(ProgressReport.class.getName(), 100, logger, "analyzed");
+    File file = mock(File.class);
+    when(file.getAbsolutePath()).thenReturn("foo");
+    report.start(ImmutableList.of(file, file));
+    
+    // Wait for start message
+    waitForMessage(logger);
+    
+    report.cancel();
+    report.join();
+    
   }
 
   private static void waitForMessage(Logger logger) throws InterruptedException {

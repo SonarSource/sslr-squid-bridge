@@ -36,6 +36,7 @@ public class ProgressReport implements Runnable {
   private Iterator<File> it;
   private final Thread thread;
   private final String adjective;
+  private boolean success = false;
 
   public ProgressReport(String threadName, long period, Logger logger, String adjective) {
     this.period = period;
@@ -43,6 +44,7 @@ public class ProgressReport implements Runnable {
     this.adjective = adjective;
     thread = new Thread(this);
     thread.setName(threadName);
+    thread.setDaemon(true);
   }
 
   public ProgressReport(String threadName, long period, String adjective) {
@@ -62,11 +64,13 @@ public class ProgressReport implements Runnable {
           log(currentFileNumber + "/" + count + " files " + adjective + ", current file: " + currentFile.getAbsolutePath());
         }
       } catch (InterruptedException e) {
-        thread.interrupt();
+        break;
       }
     }
     synchronized (this) {
-      log(count + "/" + count + " source files have been " + adjective);
+      if (success) {
+        log(count + "/" + count + " source files have been " + adjective);
+      }
     }
   }
 
@@ -88,6 +92,11 @@ public class ProgressReport implements Runnable {
   }
 
   public synchronized void stop() {
+    success = true;
+    thread.interrupt();
+  }
+
+  public synchronized void cancel() {
     thread.interrupt();
   }
 

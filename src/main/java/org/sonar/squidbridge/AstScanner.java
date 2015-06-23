@@ -19,11 +19,13 @@
  */
 package org.sonar.squidbridge;
 
+import javax.annotation.Nullable;
+
+import com.google.common.base.Throwables;
 import org.sonar.squidbridge.api.AnalysisException;
 import org.sonar.squidbridge.api.SourceCodeSearchEngine;
 import org.sonar.squidbridge.api.SourceCodeTreeDecorator;
 import org.sonar.squidbridge.api.SourceProject;
-
 import org.sonar.squidbridge.indexer.SquidIndex;
 import org.sonar.squidbridge.measures.MetricDef;
 import com.google.common.collect.ImmutableList;
@@ -37,6 +39,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.File;
+import java.io.InterruptedIOException;
 import java.util.Collection;
 import java.util.List;
 
@@ -84,6 +87,7 @@ public class AstScanner<G extends Grammar> {
     AstWalker astWalker = new AstWalker(visitors);
 
     for (File file : files) {
+      checkCancel();
       context.setFile(file, filesMetric);
 
       Exception parseException = null;
@@ -91,10 +95,12 @@ public class AstScanner<G extends Grammar> {
       try {
         ast = parser.parse(file);
       } catch (RecognitionException e) {
+        checkInterrupted(e);
         parseException = e;
         LOG.error("Unable to parse file: " + file.getAbsolutePath());
         LOG.error(e.getMessage());
       } catch (Exception e) {
+        checkInterrupted(e);
         parseException = e;
         LOG.error("Unable to parse file: " + file.getAbsolutePath(), e);
       } catch (Throwable e) {
@@ -133,6 +139,23 @@ public class AstScanner<G extends Grammar> {
     }
 
     decorateSquidTree();
+  }
+
+  /**
+   * Checks if the root cause of the thread is related to an interrupt.
+   * Note that when such an exception is thrown, the interrupt flag is reset.
+   */
+  private static void checkInterrupted(Exception e) {
+    Throwable cause = Throwables.getRootCause(e);
+    if (cause instanceof InterruptedException || cause instanceof InterruptedIOException) {
+      throw new AnalysisException("Analysis cancelled", e);
+    }
+  }
+
+  private static void checkCancel() {
+    if (Thread.interrupted()) {
+      throw new AnalysisException("Analysis cancelled");
+    }
   }
 
   protected void decorateSquidTree() {

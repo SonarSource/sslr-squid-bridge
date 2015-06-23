@@ -40,7 +40,12 @@ public class ProgressAstScanner<G extends Grammar> extends AstScanner<G> {
   @Override
   public void scanFiles(Collection<File> files) {
     progressReport.start(files);
-    super.scanFiles(files);
+    try {
+      super.scanFiles(files);
+    } catch (Throwable t) {
+      progressReport.cancel();
+      throw t;
+    }
     progressReport.stop();
   }
 
