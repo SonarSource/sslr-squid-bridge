@@ -41,6 +41,11 @@ import org.sonar.squidbridge.commonrules.internal.checks.CommonCheck;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * @deprecated common rules are integrated to SonarQube 5.2. It's transparent for plugins that use this Decorator, so
+ * that they can support SQ 4.5 LTS and 5.x at the same time.
+ */
+@Deprecated
 @DependedUpon(value = DecoratorBarriers.ISSUES_ADDED)
 public abstract class CommonRulesDecorator implements Decorator {
 
