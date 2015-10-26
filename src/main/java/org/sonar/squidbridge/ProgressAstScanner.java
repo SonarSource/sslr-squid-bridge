@@ -21,7 +21,6 @@ package org.sonar.squidbridge;
 
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
-
 import javax.annotation.Nullable;
 
 import java.io.File;
@@ -40,13 +39,17 @@ public class ProgressAstScanner<G extends Grammar> extends AstScanner<G> {
   @Override
   public void scanFiles(Collection<File> files) {
     progressReport.start(files);
+    boolean success = false;
     try {
       super.scanFiles(files);
-    } catch (Throwable t) {
-      progressReport.cancel();
-      throw t;
+      success = true;
+    } finally {
+      if (success) {
+        progressReport.stop();
+      } else {
+        progressReport.cancel();
+      }
     }
-    progressReport.stop();
   }
 
   public static class Builder<G extends Grammar> extends AstScanner.Builder<G> {

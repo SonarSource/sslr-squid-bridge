@@ -19,8 +19,6 @@
  */
 package org.sonar.squidbridge;
 
-import javax.annotation.Nullable;
-
 import com.google.common.base.Throwables;
 import org.sonar.squidbridge.api.AnalysisException;
 import org.sonar.squidbridge.api.SourceCodeSearchEngine;
