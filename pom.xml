@@ -10,7 +10,7 @@
 
   <groupId>org.sonarsource.sslr-squid-bridge</groupId>
   <artifactId>sslr-squid-bridge</artifactId>
-  <version>2.7-SNAPSHOT</version>
+  <version>2.6.1</version>
 
   <name>SonarSource :: Language Recognizer :: Squid Bridge</name>
   <description />
@@ -32,7 +32,7 @@
     <connection>scm:git:git@github.com:SonarSource/sslr-squid-bridge.git</connection>
     <developerConnection>scm:git:git@github.com:SonarSource/sslr-squid-bridge.git</developerConnection>
     <url>https://github.com/SonarSource/sslr-squid-bridge</url>
-    <tag>HEAD</tag>
+    <tag>2.6.1</tag>
   </scm>
   <issueManagement>
     <system>Jira</system>
