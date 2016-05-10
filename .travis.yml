@@ -5,12 +5,12 @@ install: true
 jdk:
   - oraclejdk7
 
-script:
-  - mvn verify -B -e -V
+script: ./travis.sh
 
 cache:
   directories:
     - '$HOME/.m2/repository'
 
-notifications:
-  email: false
+email: false
+  webhooks:
+    - secure: "cESu3U7rNblHANfHInE22w7ZR/KHHzaDcr3/CDd/dlSL/94d0nTbgIjlV3ZcQvHjRwYEweiLMNrG7OQ96pLnYXbNhbb/pmN0djO3GACmueLipwqfximFNcubOeqRsAoPiD6sIkS4AJyMrxWtN5MZTiTCi4UpWde4CXpK/D3E6yg="
