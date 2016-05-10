@@ -5,7 +5,7 @@
   <parent>
     <groupId>org.sonarsource.parent</groupId>
     <artifactId>parent</artifactId>
-    <version>24</version>
+    <version>32</version>
   </parent>
 
   <groupId>org.sonarsource.sslr-squid-bridge</groupId>
@@ -50,6 +50,7 @@
 
     <sonar.version>4.5.1</sonar.version>
     <sslrVersion>1.20</sslrVersion>
+    <gitRepositoryName>sslr-squid-bridge</gitRepositoryName>
   </properties>
 
   <dependencies>
