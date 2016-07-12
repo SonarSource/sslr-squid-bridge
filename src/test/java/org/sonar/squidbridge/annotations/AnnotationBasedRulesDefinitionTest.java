@@ -24,7 +24,7 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.debt.DebtRemediationFunction.Type;
-import org.sonar.api.server.rule.*;
+import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.Param;
 import org.sonar.api.server.rule.RulesDefinition.Repository;
@@ -75,7 +75,22 @@ public class AnnotationBasedRulesDefinitionTest {
     assertThat(rule.tags()).containsOnly("mytag");
     assertThat(rule.template()).isFalse();
     assertThat(rule.params()).hasSize(1);
+    assertThat(rule.activatedByDefault()).isFalse();
     assertParam(rule.params().get(0), "param1Key", "param1 description");
+  }
+
+  @Test
+  public void rule_annotation_activated_by_default() throws Exception {
+
+    @Rule(key = "key1", name = "name1", description = "description1")
+    @ActivatedByDefault
+    class RuleClass {
+    }
+
+    RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClass.class);
+    assertThat(rule.key()).isEqualTo("key1");
+    assertThat(rule.name()).isEqualTo("name1");
+    assertThat(rule.activatedByDefault()).isTrue();
   }
 
   @Rule(name = "name1", description = "description1")
@@ -98,7 +113,7 @@ public class AnnotationBasedRulesDefinitionTest {
 
   @Test
   public void external_names_and_descriptions() throws Exception {
-  
+
     @Rule(key = "ruleWithExternalInfo")
     class RuleClass {
       @RuleProperty(key = "param1Key")
@@ -106,7 +121,7 @@ public class AnnotationBasedRulesDefinitionTest {
       @RuleProperty
       public String param2 = "x";
     }
-  
+
     RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClass.class);
     assertThat(rule.key()).isEqualTo("ruleWithExternalInfo");
     assertThat(rule.name()).isEqualTo("external name for ruleWithExternalInfo");
