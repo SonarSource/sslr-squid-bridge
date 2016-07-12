@@ -116,7 +116,10 @@ public class AnnotationBasedRulesDefinition {
   }
 
   private boolean isSqaleAnnotated(Class<?> ruleClass) {
-    return getSqaleSubCharAnnotation(ruleClass) != null || getNoSqaleAnnotation(ruleClass) != null;
+    SqaleConstantRemediation constant = AnnotationUtils.getAnnotation(ruleClass, SqaleConstantRemediation.class);
+    SqaleLinearRemediation linear = AnnotationUtils.getAnnotation(ruleClass, SqaleLinearRemediation.class);
+    SqaleLinearWithOffsetRemediation linearWithOffset = AnnotationUtils.getAnnotation(ruleClass, SqaleLinearWithOffsetRemediation.class);
+    return constant != null || linear != null || linearWithOffset != null || getNoSqaleAnnotation(ruleClass) != null;
   }
 
   @VisibleForTesting
@@ -164,11 +167,6 @@ public class AnnotationBasedRulesDefinition {
   }
 
   private void setupSqaleModel(NewRule rule, Class<?> ruleClass) {
-    SqaleSubCharacteristic subChar = getSqaleSubCharAnnotation(ruleClass);
-    if (subChar != null) {
-      rule.setDebtSubCharacteristic(subChar.value());
-    }
-
     SqaleConstantRemediation constant = AnnotationUtils.getAnnotation(ruleClass, SqaleConstantRemediation.class);
     SqaleLinearRemediation linear = AnnotationUtils.getAnnotation(ruleClass, SqaleLinearRemediation.class);
     SqaleLinearWithOffsetRemediation linearWithOffset = AnnotationUtils.getAnnotation(ruleClass, SqaleLinearWithOffsetRemediation.class);
@@ -183,17 +181,13 @@ public class AnnotationBasedRulesDefinition {
     }
     if (linear != null) {
       rule.setDebtRemediationFunction(rule.debtRemediationFunctions().linear(linear.coeff()));
-      rule.setEffortToFixDescription(linear.effortToFixDescription());
+      rule.setGapDescription(linear.effortToFixDescription());
     }
     if (linearWithOffset != null) {
       rule.setDebtRemediationFunction(
         rule.debtRemediationFunctions().linearWithOffset(linearWithOffset.coeff(), linearWithOffset.offset()));
-      rule.setEffortToFixDescription(linearWithOffset.effortToFixDescription());
+      rule.setGapDescription(linearWithOffset.effortToFixDescription());
     }
-  }
-
-  private SqaleSubCharacteristic getSqaleSubCharAnnotation(Class<?> ruleClass) {
-    return AnnotationUtils.getAnnotation(ruleClass, SqaleSubCharacteristic.class);
   }
 
   private NoSqale getNoSqaleAnnotation(Class<?> ruleClass) {

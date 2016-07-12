@@ -23,6 +23,12 @@ import com.google.common.annotations.Beta;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Map;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
@@ -30,14 +36,6 @@ import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.rule.RulesDefinition.DebtRemediationFunctions;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
-
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Map;
 
 @Beta
 public class SqaleXmlLoader {
@@ -121,7 +119,6 @@ public class SqaleXmlLoader {
     }
     NewRule rule = repository.rule(ruleKey);
     if (rule != null) {
-      rule.setDebtSubCharacteristic(subCharName);
       rule.setDebtRemediationFunction(remediationFunction(
         rule.debtRemediationFunctions(), remediationFunction, offset, remediationFactor));
     }
