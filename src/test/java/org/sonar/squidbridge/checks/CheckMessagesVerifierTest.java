@@ -19,18 +19,15 @@
  */
 package org.sonar.squidbridge.checks;
 
-import org.sonar.squidbridge.checks.CheckMessagesVerifier;
-
-import org.sonar.squidbridge.api.CheckMessage;
-import org.junit.Rule;
-import org.junit.Test;
-import org.junit.rules.ExpectedException;
-import org.mockito.Mockito;
-
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Locale;
+import org.junit.Rule;
+import org.junit.Test;
+import org.junit.rules.ExpectedException;
+import org.mockito.Mockito;
+import org.sonar.squidbridge.api.CheckMessage;
 
 import static org.hamcrest.Matchers.allOf;
 import static org.hamcrest.Matchers.containsString;
@@ -104,7 +101,7 @@ public class CheckMessagesVerifierTest {
   @Test
   public void withMessageThat() {
     thrown.expect(AssertionError.class);
-    thrown.expectMessage("\nExpected: a string containing \"bar\"\n     got: \"foo\"");
+    thrown.expectMessage("\nExpected: a string containing \"bar\"\n     but: was \"foo\"");
 
     Collection<CheckMessage> messages = Arrays.asList(mockCheckMessage(1, "foo"));
     CheckMessagesVerifier.verify(messages)

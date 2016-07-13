@@ -19,15 +19,20 @@
  */
 package org.sonar.squidbridge;
 
-import com.google.common.base.Throwables;
-import com.jayway.awaitility.Duration;
-import com.jayway.awaitility.Awaitility;
-import com.sonar.sslr.api.AstNode;
+import ch.qos.logback.classic.spi.ILoggingEvent;
 import ch.qos.logback.classic.spi.LoggingEvent;
 import ch.qos.logback.core.Appender;
+import com.google.common.base.Throwables;
+import com.jayway.awaitility.Awaitility;
+import com.jayway.awaitility.Duration;
+import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.impl.Parser;
 import com.sonar.sslr.test.minic.MiniCParser;
+import java.io.File;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.concurrent.CountDownLatch;
 import org.junit.Test;
 import org.mockito.ArgumentMatcher;
 import org.slf4j.Logger;
@@ -35,17 +40,11 @@ import org.slf4j.LoggerFactory;
 import org.sonar.squidbridge.api.SourceProject;
 import org.sonar.squidbridge.test.miniC.MiniCAstScanner.MiniCMetrics;
 
-import java.io.File;
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.concurrent.CountDownLatch;
-
-import static org.mockito.Mockito.verifyNoMoreInteractions;
-
 import static org.mockito.Matchers.any;
 import static org.mockito.Matchers.argThat;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.verifyNoMoreInteractions;
 
 public class ProgressAstScannerTest {
 
@@ -60,7 +59,7 @@ public class ProgressAstScannerTest {
 
     ch.qos.logback.classic.Logger root = (ch.qos.logback.classic.Logger) LoggerFactory.getLogger(Logger.ROOT_LOGGER_NAME);
     @SuppressWarnings("unchecked")
-    Appender<LoggingEvent> mockAppender = mock(Appender.class);
+    Appender<ILoggingEvent> mockAppender = mock(Appender.class);
     root.addAppender(mockAppender);
 
     scanner.scanFile(new File("src/test/resources/metrics/lines.mc"));
