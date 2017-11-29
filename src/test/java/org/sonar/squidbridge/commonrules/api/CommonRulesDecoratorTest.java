@@ -38,7 +38,7 @@ import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.Scopes;
 import org.sonar.api.rule.RuleKey;
 import org.sonar.squidbridge.commonrules.internal.CommonRulesConstants;
-
+import java.nio.file.Paths;
 import java.util.List;
 
 import static org.fest.assertions.Assertions.assertThat;
@@ -49,7 +49,7 @@ import static org.mockito.Mockito.verifyZeroInteractions;
 import static org.mockito.Mockito.when;
 
 public final class CommonRulesDecoratorTest {
-
+  
   private static final String REPO_KEY = CommonRulesConstants.REPO_KEY_PREFIX + "java";
 
   Resource resource = mock(Resource.class);
@@ -58,7 +58,7 @@ public final class CommonRulesDecoratorTest {
 
   @Before
   public void prepare() {
-    fs = new DefaultFileSystem();
+    fs = new DefaultFileSystem(Paths.get(""));
   }
 
   @Test
@@ -90,7 +90,7 @@ public final class CommonRulesDecoratorTest {
 
   @Test
   public void do_execute_if_source_files_and_active_rules() {
-    fs.add(new DefaultInputFile("src/foo/bar.java").setLanguage("java"));
+    fs.add(new DefaultInputFile("module", "src/foo/bar.java").setLanguage("java"));
 
     ActiveRules activeRules = new ActiveRulesBuilder()
       .create(RuleKey.of(REPO_KEY, CommonRulesConstants.RULE_DUPLICATED_BLOCKS))
@@ -106,7 +106,7 @@ public final class CommonRulesDecoratorTest {
 
   @Test
   public void do_not_execute_if_no_active_rules() {
-    fs.add(new DefaultInputFile("src/foo/bar.java").setLanguage("java"));
+    fs.add(new DefaultInputFile("module","src/foo/bar.java").setLanguage("java"));
     // Q profile is empty
     ActiveRules activeRules = new ActiveRulesBuilder().build();
     CommonRulesDecorator decorator = new CommonRulesDecorator("java", fs, new CheckFactory(activeRules), mock(ResourcePerspectives.class)) {
@@ -116,7 +116,7 @@ public final class CommonRulesDecoratorTest {
 
   @Test
   public void create_issue() {
-    fs.add(new DefaultInputFile("src/foo/bar.java").setLanguage("java"));
+    fs.add(new DefaultInputFile("module","src/foo/bar.java").setLanguage("java"));
     when(resource.getScope()).thenReturn(Scopes.FILE);
     when(resource.getLanguage()).thenReturn(new Java());
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 2.0));
@@ -138,7 +138,7 @@ public final class CommonRulesDecoratorTest {
 
   @Test
   public void do_not_decorate_other_languages() {
-    fs.add(new DefaultInputFile("src/foo/bar.java").setLanguage("java"));
+    fs.add(new DefaultInputFile("module","src/foo/bar.java").setLanguage("java"));
     when(resource.getScope()).thenReturn(Scopes.FILE);
     when(resource.getLanguage()).thenReturn(new Php());
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 2.0));
@@ -160,7 +160,7 @@ public final class CommonRulesDecoratorTest {
 
   @Test
   public void do_not_decorate_directories() {
-    fs.add(new DefaultInputFile("src/foo/bar.java").setLanguage("java"));
+    fs.add(new DefaultInputFile("module","src/foo/bar.java").setLanguage("java"));
     when(resource.getScope()).thenReturn(Scopes.DIRECTORY);
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 2.0));
 
@@ -181,7 +181,7 @@ public final class CommonRulesDecoratorTest {
 
   @Test
   public void do_not_decorate_if_missing_file_language() {
-    fs.add(new DefaultInputFile("src/foo/bar.java").setLanguage("java"));
+    fs.add(new DefaultInputFile("module","src/foo/bar.java").setLanguage("java"));
     when(resource.getScope()).thenReturn(Scopes.FILE);
     when(resource.getLanguage()).thenReturn(null);
     when(context.getMeasure(CoreMetrics.DUPLICATED_BLOCKS)).thenReturn(new Measure(CoreMetrics.DUPLICATED_BLOCKS, 2.0));

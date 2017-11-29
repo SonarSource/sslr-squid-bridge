@@ -19,18 +19,12 @@
  */
 package org.sonar.squidbridge.checks;
 
-import org.sonar.squidbridge.api.CheckMessage;
-
-import org.sonar.squidbridge.SquidAstVisitor;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultiset;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
-import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang.StringUtils;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -41,6 +35,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.sonar.squidbridge.SquidAstVisitor;
+import org.sonar.squidbridge.api.CheckMessage;
 
 public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G> {
 
@@ -74,17 +71,11 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
     }
 
     public void saveToFile(String destinationFilePath) {
-      FileOutputStream fos = null;
-      ObjectOutputStream oos = null;
-      try {
-        fos = new FileOutputStream(destinationFilePath);
-        oos = new ObjectOutputStream(fos);
+      try (FileOutputStream fos = new FileOutputStream(destinationFilePath);
+        ObjectOutputStream oos = new ObjectOutputStream(fos)) {
         oos.writeObject(this.violationsByFileAndRule);
       } catch (Exception e) {
         throw Throwables.propagate(e);
-      } finally {
-        IOUtils.closeQuietly(fos);
-        IOUtils.closeQuietly(oos);
       }
     }
 
@@ -92,17 +83,11 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
       if (!sourceFile.exists() || sourceFile.length() == 0) {
         return new ViolationCounter();
       } else {
-        FileInputStream fis = null;
-        ObjectInputStream ois = null;
-        try {
-          fis = new FileInputStream(sourceFile);
-          ois = new ObjectInputStream(fis);
+        try (FileInputStream fis = new FileInputStream(sourceFile);
+          ObjectInputStream ois = new ObjectInputStream(fis)) {
           return new ViolationCounter((Map<String, Map<String, TreeMultiset<Integer>>>) ois.readObject());
         } catch (Exception e) {
           throw Throwables.propagate(e);
-        } finally {
-          IOUtils.closeQuietly(fis);
-          IOUtils.closeQuietly(ois);
         }
       }
     }
@@ -276,7 +261,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
   public void leaveFile(AstNode node) {
     Set<CheckMessage> violationsOnCurrentFile = new HashSet<CheckMessage>(getContext().peekSourceCode().getCheckMessages());
     for (CheckMessage violation : violationsOnCurrentFile) {
-      violationCounter.increment(getRelativePath(getContext().getFile()), violation.getChecker().getClass().getSimpleName(),
+      violationCounter.increment(getRelativePath(getContext().getFile()), violation.getCheck().getClass().getSimpleName(),
         violation.getLine() == null ? -1
           : violation.getLine());
     }

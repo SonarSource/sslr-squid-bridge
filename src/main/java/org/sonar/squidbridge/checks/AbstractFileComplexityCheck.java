@@ -19,12 +19,10 @@
  */
 package org.sonar.squidbridge.checks;
 
-import org.sonar.squidbridge.api.SourceFile;
-
-import org.sonar.squidbridge.measures.MetricDef;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
-import org.sonar.api.utils.SonarException;
+import org.sonar.squidbridge.api.SourceFile;
+import org.sonar.squidbridge.measures.MetricDef;
 
 public abstract class AbstractFileComplexityCheck<G extends Grammar> extends SquidCheck<G> {
 
@@ -36,7 +34,7 @@ public abstract class AbstractFileComplexityCheck<G extends Grammar> extends Squ
   @Override
   public void init() {
     if (getMaximumFileComplexity() <= 0) {
-      throw new SonarException("The complexity threshold must be set to a value greater than 0, but given: " + getMaximumFileComplexity());
+      throw new IllegalStateException("The complexity threshold must be set to a value greater than 0, but given: " + getMaximumFileComplexity());
     }
   }
 

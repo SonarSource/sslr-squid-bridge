@@ -22,16 +22,14 @@ package org.sonar.squidbridge;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
+import java.io.File;
+import java.util.ArrayDeque;
+import java.util.Deque;
 import org.sonar.squidbridge.api.CheckMessage;
-import org.sonar.squidbridge.api.CodeCheck;
 import org.sonar.squidbridge.api.SourceCode;
 import org.sonar.squidbridge.api.SourceFile;
 import org.sonar.squidbridge.api.SourceProject;
 import org.sonar.squidbridge.measures.MetricDef;
-
-import java.io.File;
-import java.util.ArrayDeque;
-import java.util.Deque;
 
 public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisitorContext<G> {
 
@@ -129,7 +127,7 @@ public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisit
    * {@inheritDoc}
    */
   @Override
-  public void createFileViolation(CodeCheck check, String message, Object... messageParameters) {
+  public void createFileViolation(Object check, String message, Object... messageParameters) {
     createLineViolation(check, message, -1, messageParameters);
   }
 
@@ -137,7 +135,7 @@ public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisit
    * {@inheritDoc}
    */
   @Override
-  public void createLineViolation(CodeCheck check, String message, AstNode node, Object... messageParameters) {
+  public void createLineViolation(Object check, String message, AstNode node, Object... messageParameters) {
     createLineViolation(check, message, node.getToken(), messageParameters);
   }
 
@@ -145,7 +143,7 @@ public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisit
    * {@inheritDoc}
    */
   @Override
-  public void createLineViolation(CodeCheck check, String message, Token token, Object... messageParameters) {
+  public void createLineViolation(Object check, String message, Token token, Object... messageParameters) {
     createLineViolation(check, message, token.getLine(), messageParameters);
   }
 
@@ -153,7 +151,7 @@ public class SquidAstVisitorContextImpl<G extends Grammar> extends SquidAstVisit
    * {@inheritDoc}
    */
   @Override
-  public void createLineViolation(CodeCheck check, String message, int line, Object... messageParameters) {
+  public void createLineViolation(Object check, String message, int line, Object... messageParameters) {
     CheckMessage checkMessage = new CheckMessage((Object) check, message, messageParameters);
     if (line > 0) {
       checkMessage.setLine(line);

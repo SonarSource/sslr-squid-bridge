@@ -25,11 +25,9 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.server.rule.RulesDefinition.SubCharacteristics;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.SqaleLinearWithOffsetRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "DuplicatedBlocks",
@@ -37,7 +35,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
   priority = Priority.MAJOR,
   tags = "pitfall",
   description = "<p>An issue is created on a file as soon as there is at least one block of duplicated code on this file.</p>")
-@SqaleSubCharacteristic(SubCharacteristics.LOGIC_CHANGEABILITY)
 @SqaleLinearWithOffsetRemediation(offset = "10min", coeff = "10min", effortToFixDescription = "Number of duplicate blocks")
 public class DuplicatedBlocksCheck extends CommonCheck {
 

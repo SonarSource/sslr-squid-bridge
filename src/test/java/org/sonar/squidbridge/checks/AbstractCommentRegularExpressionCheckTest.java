@@ -19,15 +19,12 @@
  */
 package org.sonar.squidbridge.checks;
 
-import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
-
-import org.sonar.squidbridge.checks.AbstractCommentRegularExpressionCheck;
-import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
 import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.sonar.api.utils.SonarException;
+
+import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
 
 public class AbstractCommentRegularExpressionCheckTest {
 
@@ -86,7 +83,7 @@ public class AbstractCommentRegularExpressionCheckTest {
   public void wrong_regular_expression() {
     check.regularExpression = "*";
 
-    thrown.expect(SonarException.class);
+    thrown.expect(IllegalStateException.class);
     thrown.expectMessage("Unable to compile regular expression: *");
     scanFile("/checks/commentRegularExpression.mc", check);
   }

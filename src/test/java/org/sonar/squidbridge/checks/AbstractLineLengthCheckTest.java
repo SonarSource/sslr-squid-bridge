@@ -19,15 +19,12 @@
  */
 package org.sonar.squidbridge.checks;
 
-import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
-
-import org.sonar.squidbridge.checks.AbstractLineLengthCheck;
-import org.sonar.squidbridge.checks.CheckMessagesVerifierRule;
 import com.sonar.sslr.api.Grammar;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.sonar.api.utils.SonarException;
+
+import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
 
 public class AbstractLineLengthCheckTest {
 
@@ -69,7 +66,7 @@ public class AbstractLineLengthCheckTest {
   public void wrong_parameter() {
     check.maximumLineLength = 0;
 
-    thrown.expect(SonarException.class);
+    thrown.expect(IllegalStateException.class);
     thrown.expectMessage("The maximal line length must be set to a value greater than 0, but given: 0");
     scanFile("/checks/line_length.mc", check);
   }

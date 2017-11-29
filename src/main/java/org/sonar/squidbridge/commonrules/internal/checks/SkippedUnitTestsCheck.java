@@ -26,11 +26,9 @@ import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.server.rule.RulesDefinition.SubCharacteristics;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.SqaleLinearRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "SkippedUnitTests",
@@ -39,7 +37,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
   tags = "pitfall",
   description = "<p>Skipped unit tests are considered as dead code. " +
     "Either they should be activated again (and updated) or they should be removed.</p>")
-@SqaleSubCharacteristic(SubCharacteristics.UNIT_TESTABILITY)
 @SqaleLinearRemediation(coeff = "10min", effortToFixDescription = "number of skipped tests")
 public class SkippedUnitTestsCheck extends CommonCheck {
 
