@@ -24,8 +24,6 @@ import com.sonar.sslr.api.AstAndTokenVisitor;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
 import com.sonar.sslr.api.Trivia;
-import org.sonar.api.utils.SonarException;
-
 import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkNotNull;
@@ -49,7 +47,7 @@ public abstract class AbstractCommentRegularExpressionCheck<G extends Grammar> e
       try {
         pattern = Pattern.compile(regularExpression, Pattern.DOTALL);
       } catch (RuntimeException e) {
-        throw new SonarException("Unable to compile regular expression: " + regularExpression, e);
+        throw new IllegalStateException("Unable to compile regular expression: " + regularExpression, e);
       }
     }
   }

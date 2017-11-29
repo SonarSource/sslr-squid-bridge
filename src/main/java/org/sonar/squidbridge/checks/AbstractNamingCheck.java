@@ -22,8 +22,6 @@ package org.sonar.squidbridge.checks;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import org.sonar.api.utils.SonarException;
-
 import java.util.regex.Pattern;
 
 import static com.google.common.base.Preconditions.checkArgument;
@@ -57,7 +55,7 @@ public abstract class AbstractNamingCheck<G extends Grammar> extends SquidCheck<
     try {
       this.pattern = Pattern.compile(regexp);
     } catch (Exception e) {
-      throw new SonarException("Unable to compile regular expression: " + regexp, e);
+      throw new IllegalStateException("Unable to compile regular expression: " + regexp, e);
     }
   }
 

@@ -25,7 +25,6 @@ import com.sonar.sslr.test.minic.MiniCGrammar;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import org.sonar.api.utils.SonarException;
 
 import static org.sonar.squidbridge.metrics.ResourceParser.scanFile;
 
@@ -74,7 +73,7 @@ public class AbstractNestedIfCheckTest {
   public void wrong_parameter() {
     check.maximumNestingLevel = 0;
 
-    thrown.expect(SonarException.class);
+    thrown.expect(IllegalStateException.class);
     thrown.expectMessage("The maximal if nesting level must be set to a value greater than 0, but given: 0");
     scanFile("/checks/nested_if.mc", check);
   }

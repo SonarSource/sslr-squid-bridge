@@ -22,7 +22,6 @@ package org.sonar.squidbridge.checks;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.AstNodeType;
 import com.sonar.sslr.api.Grammar;
-import org.sonar.api.utils.SonarException;
 
 public abstract class AbstractNestedIfCheck<G extends Grammar> extends SquidCheck<G> {
 
@@ -41,7 +40,7 @@ public abstract class AbstractNestedIfCheck<G extends Grammar> extends SquidChec
   @Override
   public void init() {
     if (getMaximumNestingLevel() <= 0) {
-      throw new SonarException("The maximal if nesting level must be set to a value greater than 0, but given: " + getMaximumNestingLevel());
+      throw new IllegalStateException("The maximal if nesting level must be set to a value greater than 0, but given: " + getMaximumNestingLevel());
     }
     subscribeTo(getIfRule());
   }

@@ -46,8 +46,8 @@ public class Squid implements DirectedGraphAccessor<SourceCode, SourceCodeEdge>,
   private MutablePicoContainer pico;
   private final SourceProject project;
   private final SquidIndex squidIndex;
-  private DirectedGraph<SourceCode, SourceCodeEdge> graph = new DirectedGraph<SourceCode, SourceCodeEdge>();
-  private final Set<CodeVisitor> externalCodeVisitors = new HashSet<CodeVisitor>();
+  private DirectedGraph<SourceCode, SourceCodeEdge> graph = new DirectedGraph<>();
+  private final Set<CodeVisitor> externalCodeVisitors = new HashSet<>();
 
   public Squid(SquidConfiguration conf) {
     pico = new TransientPicoContainer();

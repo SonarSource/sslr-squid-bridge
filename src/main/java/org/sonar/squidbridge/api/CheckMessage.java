@@ -19,13 +19,11 @@
  */
 package org.sonar.squidbridge.api;
 
-import org.apache.commons.lang.builder.ToStringBuilder;
-import org.sonar.check.Message;
-
 import java.text.MessageFormat;
 import java.util.Locale;
+import org.apache.commons.lang.builder.ToStringBuilder;
 
-public class CheckMessage implements Message {
+public class CheckMessage {
 
   private Integer line;
   private Double cost;
@@ -41,14 +39,6 @@ public class CheckMessage implements Message {
     this.messageArguments = messageArguments;
   }
 
-  /**
-   * @deprecated replaced by the other constructor since 2.12. See SONAR-2875.
-   */
-  @Deprecated
-  public CheckMessage(CodeCheck check, String message, Object... messageArguments) {
-    this((Object) check, message, messageArguments);
-  }
-
   public void setSourceCode(SourceCode sourceCode) {
     this.sourceCode = sourceCode;
   }
@@ -61,7 +51,6 @@ public class CheckMessage implements Message {
     this.line = line;
   }
 
-  @Override
   public Integer getLine() {
     return line;
   }
@@ -82,15 +71,6 @@ public class CheckMessage implements Message {
     return bypassExclusion == null ? false : bypassExclusion;
   }
 
-  /**
-   * @deprecated replaced by getCheck() since SQ version 2.12. Warning, to be called only if check is CodeCheck.
-   */
-  @Override
-  @Deprecated
-  public CodeCheck getChecker() {
-    return (CodeCheck) check;
-  }
-
   public Object getCheck() {
     return check;
   }
@@ -103,7 +83,6 @@ public class CheckMessage implements Message {
     return messageArguments;
   }
 
-  @Override
   public String getText(Locale locale) {
     return formatDefaultMessage();
   }

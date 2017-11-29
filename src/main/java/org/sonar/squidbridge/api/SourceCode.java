@@ -19,17 +19,14 @@
  */
 package org.sonar.squidbridge.api;
 
-import org.sonar.squidbridge.measures.Measurable;
-import org.sonar.squidbridge.measures.Measures;
-import org.sonar.squidbridge.measures.Metric;
-import org.sonar.squidbridge.measures.MetricDef;
-
-import javax.annotation.Nullable;
-
 import java.util.HashSet;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+import javax.annotation.Nullable;
+import org.sonar.squidbridge.measures.Measurable;
+import org.sonar.squidbridge.measures.Measures;
+import org.sonar.squidbridge.measures.MetricDef;
 
 public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
 
@@ -103,26 +100,10 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   }
 
   /**
-   * @deprecated since SQ version 2.1. It's replaced by getInt(MetricDef). It's still defined for binary compatibility.
-   */
-  @Deprecated
-  public int getInt(Metric metric) {
-    return (int) getMeasure(metric);
-  }
-
-  /**
    * {@inheritDoc}
    */
   @Override
   public double getDouble(MetricDef metric) {
-    return getMeasure(metric);
-  }
-
-  /**
-   * @deprecated since SQ version 2.1. It's replaced by getDouble(MetricDef). It's still defined for binary compatibility.
-   */
-  @Deprecated
-  public double getDouble(Metric metric) {
     return getMeasure(metric);
   }
 
@@ -139,14 +120,6 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
   }
 
   public Object getData(MetricDef metric) {
-    return measures.getData(metric);
-  }
-
-  /**
-   * @deprecated since SQ version 2.1. It's replaced by getData(MetricDef). It's still defined for binary compatibility.
-   */
-  @Deprecated
-  public Object getData(Metric metric) {
     return measures.getData(metric);
   }
 
@@ -199,7 +172,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
 
   public SourceCode addChild(SourceCode sourceCode) {
     if (children == null) {
-      children = new TreeSet<SourceCode>();
+      children = new TreeSet<>();
     }
     sourceCode.setParent(this);
     if (!children.contains(sourceCode)) {
@@ -237,7 +210,7 @@ public abstract class SourceCode implements Measurable, Comparable<SourceCode> {
 
   public Set<CheckMessage> getCheckMessages() {
     if (messages == null) {
-      messages = new HashSet<CheckMessage>();
+      messages = new HashSet<>();
     }
     return messages;
   }

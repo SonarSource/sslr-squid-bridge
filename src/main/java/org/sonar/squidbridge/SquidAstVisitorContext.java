@@ -19,15 +19,12 @@
  */
 package org.sonar.squidbridge;
 
-import org.sonar.squidbridge.api.CheckMessage;
-import org.sonar.squidbridge.api.CodeCheck;
-import org.sonar.squidbridge.api.SourceCode;
-
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
 import com.sonar.sslr.api.Token;
-
 import java.io.File;
+import org.sonar.squidbridge.api.CheckMessage;
+import org.sonar.squidbridge.api.SourceCode;
 
 public abstract class SquidAstVisitorContext<G extends Grammar> {
 
@@ -50,7 +47,7 @@ public abstract class SquidAstVisitorContext<G extends Grammar> {
    * @param message           message describing the violation, can be formatted (see java.text.MessageFormat)
    * @param messageParameters optional message parameters (see java.text.MessageFormat)
    */
-  public abstract void createFileViolation(CodeCheck check, String message, Object... messageParameters);
+  public abstract void createFileViolation(Object check, String message, Object... messageParameters);
 
   /**
    * Create a new line violation caused by a given AST node
@@ -60,7 +57,7 @@ public abstract class SquidAstVisitorContext<G extends Grammar> {
    * @param node              AST node which causing the violation
    * @param messageParameters optional message parameters (see java.text.MessageFormat)
    */
-  public abstract void createLineViolation(CodeCheck check, String message, AstNode node, Object... messageParameters);
+  public abstract void createLineViolation(Object check, String message, AstNode node, Object... messageParameters);
 
   /**
    * Create a new line violation caused by a given token
@@ -70,7 +67,7 @@ public abstract class SquidAstVisitorContext<G extends Grammar> {
    * @param token             Token which causing the violation
    * @param messageParameters optional message parameters (see java.text.MessageFormat)
    */
-  public abstract void createLineViolation(CodeCheck check, String message, Token token, Object... messageParameters);
+  public abstract void createLineViolation(Object check, String message, Token token, Object... messageParameters);
 
   /**
    * Create a new line violation, not directly caused by an AST node nor a Token
@@ -81,7 +78,7 @@ public abstract class SquidAstVisitorContext<G extends Grammar> {
    *                          If zero or a negative number is passed, a file violation will be created instead of a line one
    * @param messageParameters optional message parameters (see java.text.MessageFormat)
    */
-  public abstract void createLineViolation(CodeCheck check, String message, int line, Object... messageParameters);
+  public abstract void createLineViolation(Object check, String message, int line, Object... messageParameters);
 
   public abstract void log(CheckMessage message);
 

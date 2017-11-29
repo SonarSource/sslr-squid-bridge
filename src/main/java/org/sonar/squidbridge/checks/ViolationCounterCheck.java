@@ -19,16 +19,12 @@
  */
 package org.sonar.squidbridge.checks;
 
-import org.sonar.squidbridge.api.CheckMessage;
-import org.apache.commons.lang.StringUtils;
-import org.sonar.squidbridge.SquidAstVisitor;
 import com.google.common.base.Throwables;
 import com.google.common.collect.Maps;
 import com.google.common.collect.Sets;
 import com.google.common.collect.TreeMultiset;
 import com.sonar.sslr.api.AstNode;
 import com.sonar.sslr.api.Grammar;
-
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileOutputStream;
@@ -39,6 +35,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import org.apache.commons.lang.StringUtils;
+import org.sonar.squidbridge.SquidAstVisitor;
+import org.sonar.squidbridge.api.CheckMessage;
 
 public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G> {
 
@@ -262,7 +261,7 @@ public class ViolationCounterCheck<G extends Grammar> extends SquidAstVisitor<G>
   public void leaveFile(AstNode node) {
     Set<CheckMessage> violationsOnCurrentFile = new HashSet<CheckMessage>(getContext().peekSourceCode().getCheckMessages());
     for (CheckMessage violation : violationsOnCurrentFile) {
-      violationCounter.increment(getRelativePath(getContext().getFile()), violation.getChecker().getClass().getSimpleName(),
+      violationCounter.increment(getRelativePath(getContext().getFile()), violation.getCheck().getClass().getSimpleName(),
         violation.getLine() == null ? -1
           : violation.getLine());
     }
