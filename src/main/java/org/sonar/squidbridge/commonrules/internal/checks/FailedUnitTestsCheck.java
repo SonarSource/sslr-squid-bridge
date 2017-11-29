@@ -26,11 +26,9 @@ import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.resources.ResourceUtils;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.server.rule.RulesDefinition.SubCharacteristics;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.squidbridge.annotations.SqaleLinearRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "FailedUnitTests",
@@ -39,7 +37,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
   tags = "bug",
   description = "<p>Test failures or errors generally indicate that regressions have been introduced. " +
     "Those tests should be handled as soon as possible to reduce the cost to fix the corresponding regressions.</p>")
-@SqaleSubCharacteristic(SubCharacteristics.UNIT_TESTABILITY)
 @SqaleLinearRemediation(coeff = "10min", effortToFixDescription = "number of failed tests")
 public class FailedUnitTestsCheck extends CommonCheck {
 

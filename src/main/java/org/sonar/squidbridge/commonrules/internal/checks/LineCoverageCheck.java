@@ -25,12 +25,10 @@ import org.sonar.api.measures.CoreMetrics;
 import org.sonar.api.measures.MeasureUtils;
 import org.sonar.api.resources.Resource;
 import org.sonar.api.rule.RuleKey;
-import org.sonar.api.server.rule.RulesDefinition.SubCharacteristics;
 import org.sonar.check.Priority;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.annotations.SqaleLinearRemediation;
-import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
 
 @Rule(
   key = "InsufficientLineCoverage",
@@ -39,7 +37,6 @@ import org.sonar.squidbridge.annotations.SqaleSubCharacteristic;
   tags = "bad-practice",
   description = "<p>An issue is created on a file as soon as the line coverage on this file is less than the required threshold. "
     + "It gives the number of lines to be covered in order to reach the required threshold.</p>")
-@SqaleSubCharacteristic(SubCharacteristics.UNIT_TESTABILITY)
 @SqaleLinearRemediation(coeff = "2min", effortToFixDescription = "number of lines under the coverage threshold")
 public class LineCoverageCheck extends CommonCheck {
 
