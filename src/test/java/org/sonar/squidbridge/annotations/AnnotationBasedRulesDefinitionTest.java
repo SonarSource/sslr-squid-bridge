@@ -24,12 +24,11 @@ import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.debt.DebtRemediationFunction.Type;
-import org.sonar.api.server.rule.*;
+import org.sonar.api.server.rule.RulesDefinition;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.Param;
 import org.sonar.api.server.rule.RulesDefinition.Repository;
 import org.sonar.api.server.rule.RulesDefinition.SubCharacteristics;
-import org.sonar.check.Cardinality;
 import org.sonar.check.Rule;
 import org.sonar.check.RuleProperty;
 
@@ -136,26 +135,6 @@ public class AnnotationBasedRulesDefinitionTest {
 
     RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClass.class);
     assertThat(rule.template()).isTrue();
-  }
-
-  @Test
-  public void cardinality_single() throws Exception {
-    @Rule(key = "key1", name = "name1", description = "description1", cardinality = Cardinality.SINGLE)
-    class RuleClass {
-    }
-
-    RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClass.class);
-    assertThat(rule.template()).isFalse();
-  }
-
-  @Test
-  public void cardinality_multiple() throws Exception {
-    @Rule(key = "key1", name = "name1", description = "description1", cardinality = Cardinality.MULTIPLE)
-    class RuleClass {
-    }
-
-    thrown.expect(IllegalArgumentException.class);
-    buildSingleRuleRepository(RuleClass.class);
   }
 
   @Test
