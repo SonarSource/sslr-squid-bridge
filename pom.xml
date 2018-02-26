@@ -49,27 +49,10 @@
     <maven.test.redirectTestOutputToFile>true</maven.test.redirectTestOutputToFile>
 
     <sonar.version>4.5.1</sonar.version>
-    <sslrVersion>1.20</sslrVersion>
     <gitRepositoryName>sslr-squid-bridge</gitRepositoryName>
   </properties>
 
   <dependencies>
-    <dependency>
-      <groupId>org.codehaus.sonar.sslr</groupId>
-      <artifactId>sslr-core</artifactId>
-      <version>${sslrVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.sonar.sslr</groupId>
-      <artifactId>sslr-xpath</artifactId>
-      <version>${sslrVersion}</version>
-    </dependency>
-    <dependency>
-      <groupId>org.codehaus.sonar.sslr</groupId>
-      <artifactId>sslr-testing-harness</artifactId>
-      <version>${sslrVersion}</version>
-      <scope>test</scope>
-    </dependency>
     <dependency>
       <groupId>org.codehaus.sonar</groupId>
       <artifactId>sonar-plugin-api</artifactId>
