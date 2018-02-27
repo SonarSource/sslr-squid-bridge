@@ -20,12 +20,12 @@
 package org.sonar.squidbridge.rules;
 
 import com.google.common.annotations.Beta;
-import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
+import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.net.URL;
+import java.nio.charset.StandardCharsets;
 import java.util.Map;
 import javax.xml.stream.XMLInputFactory;
 import javax.xml.stream.XMLStreamException;
@@ -56,7 +56,7 @@ public class SqaleXmlLoader {
   }
 
   public void loadXmlResource(String resourcePath) {
-    InputStreamReader reader = reader(resourcePath);
+    BufferedReader reader = reader(resourcePath);
     XMLInputFactory xmlFactory = XMLInputFactory.newInstance();
     xmlFactory.setProperty(XMLInputFactory.IS_COALESCING, Boolean.TRUE);
     xmlFactory.setProperty(XMLInputFactory.IS_NAMESPACE_AWARE, Boolean.FALSE);
@@ -71,7 +71,7 @@ public class SqaleXmlLoader {
     }
   }
 
-  private void processRoot(InputStreamReader reader, SMInputFactory inputFactory) throws XMLStreamException {
+  private void processRoot(BufferedReader reader, SMInputFactory inputFactory) throws XMLStreamException {
     SMHierarchicCursor rootCursor = inputFactory.rootElementCursor(reader);
     rootCursor.advance();
     SMInputCursor charCursor = rootCursor.childElementCursor("chc");
@@ -162,10 +162,10 @@ public class SqaleXmlLoader {
     return map;
   }
 
-  private static InputStreamReader reader(String resourcePath) {
+  private static BufferedReader reader(String resourcePath) {
     URL url = Resources.getResource(SqaleXmlLoader.class, resourcePath);
     try {
-      return Resources.newReaderSupplier(url, Charsets.UTF_8).getInput();
+      return Resources.asCharSource(url, StandardCharsets.UTF_8).openBufferedStream();
     } catch (IOException e) {
       throw new IllegalArgumentException("Could not read " + resourcePath, e);
     }

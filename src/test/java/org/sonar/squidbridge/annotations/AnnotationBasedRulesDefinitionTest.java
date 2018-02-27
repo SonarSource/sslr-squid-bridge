@@ -169,7 +169,7 @@ public class AnnotationBasedRulesDefinitionTest {
     }
 
     RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClass.class);
-    assertThat(rule.debtSubCharacteristic()).isEqualTo(SubCharacteristics.CPU_EFFICIENCY);
+    assertThat(rule.debtSubCharacteristic()).isNull();
     assertRemediation(rule, Type.CONSTANT_ISSUE, null, "10min", null);
   }
 
