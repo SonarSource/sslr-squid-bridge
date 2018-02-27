@@ -43,6 +43,13 @@ import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
 
 /**
+ * @deprecated since 2.7 without alternative.
+ *
+ * Responsibility of loading rule metadata into RulesDefinition is let to custom plugins.
+ * Most of the SQALE annotations are ignored, and not supported.
+ *
+ *
+ *
  * Utility class which helps setting up an implementation of {@link RulesDefinition} with a list of
  * rule classes annotated with {@link Rule}, {@link RuleProperty} and SQALE annotations:
  * <ul>
@@ -63,8 +70,8 @@ import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
  * /org/sonar/l10n/[languageKey]/rules/[repositoryKey]/ruleKey.html</li>
  * </ul>
  *
- * @since 2.5
  */
+@Deprecated
 public class AnnotationBasedRulesDefinition {
 
   private final NewRepository repository;
@@ -109,13 +116,13 @@ public class AnnotationBasedRulesDefinition {
     setupExternalNames(newRules);
   }
 
-  private boolean isSqaleAnnotated(Class<?> ruleClass) {
+  private static boolean isSqaleAnnotated(Class<?> ruleClass) {
     return getSqaleSubCharAnnotation(ruleClass) != null || getNoSqaleAnnotation(ruleClass) != null;
   }
 
   @VisibleForTesting
   NewRule newRule(Class<?> ruleClass, boolean failIfNoExplicitKey) {
-    org.sonar.check.Rule ruleAnnotation = AnnotationUtils.getAnnotation(ruleClass, org.sonar.check.Rule.class);
+    Rule ruleAnnotation = AnnotationUtils.getAnnotation(ruleClass, Rule.class);
     if (ruleAnnotation == null) {
       throw new IllegalArgumentException("No Rule annotation was found on " + ruleClass);
     }
@@ -154,7 +161,7 @@ public class AnnotationBasedRulesDefinition {
     }
   }
 
-  private void setupSqaleModel(NewRule rule, Class<?> ruleClass) {
+  private static void setupSqaleModel(NewRule rule, Class<?> ruleClass) {
     SqaleSubCharacteristic subChar = getSqaleSubCharAnnotation(ruleClass);
     if (subChar != null) {
       rule.setDebtSubCharacteristic(subChar.value());
@@ -184,11 +191,11 @@ public class AnnotationBasedRulesDefinition {
     }
   }
 
-  private SqaleSubCharacteristic getSqaleSubCharAnnotation(Class<?> ruleClass) {
+  private static SqaleSubCharacteristic getSqaleSubCharAnnotation(Class<?> ruleClass) {
     return AnnotationUtils.getAnnotation(ruleClass, SqaleSubCharacteristic.class);
   }
 
-  private NoSqale getNoSqaleAnnotation(Class<?> ruleClass) {
+  private static NoSqale getNoSqaleAnnotation(Class<?> ruleClass) {
     return AnnotationUtils.getAnnotation(ruleClass, NoSqale.class);
   }
 

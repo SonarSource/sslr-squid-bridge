@@ -24,6 +24,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @deprecated since 2.7. Will be removed without alternative.
+ * Since SQ 5.6 LTS, SQALE is not used in our model.
+ * Remediation cost should be registered manually directly when registering a rule.
+ */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface SqaleLinearWithOffsetRemediation {

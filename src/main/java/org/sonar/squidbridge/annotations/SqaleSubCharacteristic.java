@@ -19,20 +19,20 @@
  */
 package org.sonar.squidbridge.annotations;
 
-import org.sonar.api.server.rule.RulesDefinition.SubCharacteristics;
-
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @deprecated. Will be removed without alternative.
+ * Since SQ 5.6 LTS, SQALE is not used in our model.
+ */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface SqaleSubCharacteristic {
 
-  /**
-   * @see SubCharacteristics
-   */
-  public String value();
+  String value();
 
 }

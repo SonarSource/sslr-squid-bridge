@@ -24,6 +24,11 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @deprecated since 2.7. Will be removed without alternative.
+ * Rule template should be manually registered as being template rule, when defining repositories.
+ */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RuleTemplate {

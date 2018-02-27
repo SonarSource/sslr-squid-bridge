@@ -27,12 +27,13 @@ import org.sonar.api.utils.AnnotationUtils;
 import org.sonar.api.utils.ValidationMessages;
 
 /**
+ * @deprecated since 2.7 Profile should be manually created.
+ * 
  * Utility class to build an instance of {@link RulesProfile} based on a list of classes annotated
  * with {@link ActivatedByDefault}. It can be used to implement the <code>createProfile</code>
  * method of {@link ProfileDefinition}.
- * 
- *  @since 2.5
  */
+@Deprecated
 public class AnnotationBasedProfileBuilder {
 
   private final RuleFinder ruleFinder;

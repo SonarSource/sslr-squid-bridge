@@ -23,6 +23,12 @@ import com.google.common.annotations.Beta;
 import com.google.common.base.Charsets;
 import com.google.common.collect.Maps;
 import com.google.common.io.Resources;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.URL;
+import java.util.Map;
+import javax.xml.stream.XMLInputFactory;
+import javax.xml.stream.XMLStreamException;
 import org.codehaus.staxmate.SMInputFactory;
 import org.codehaus.staxmate.in.SMHierarchicCursor;
 import org.codehaus.staxmate.in.SMInputCursor;
@@ -31,14 +37,11 @@ import org.sonar.api.server.rule.RulesDefinition.DebtRemediationFunctions;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
 
-import javax.xml.stream.XMLInputFactory;
-import javax.xml.stream.XMLStreamException;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.URL;
-import java.util.Map;
-
+/**
+ * @deprecated since 2.7. Will be removed without alternative.
+ * Since SQ 5.6 LTS, SQALE is not used in our model
+ */
+@Deprecated
 @Beta
 public class SqaleXmlLoader {
 
@@ -127,7 +130,7 @@ public class SqaleXmlLoader {
     }
   }
 
-  private String timeValue(Map<String, String> propMap) {
+  private static String timeValue(Map<String, String> propMap) {
     String timeUnit = propMap.get("txt");
     if ("mn".equals(timeUnit)) {
       timeUnit = "min";
@@ -139,7 +142,7 @@ public class SqaleXmlLoader {
     return value + timeUnit;
   }
 
-  private DebtRemediationFunction remediationFunction(DebtRemediationFunctions functions,
+  private static DebtRemediationFunction remediationFunction(DebtRemediationFunctions functions,
     String remediationFunction, String offset, String remediationFactor) {
     if ("CONSTANT_ISSUE".equalsIgnoreCase(remediationFunction)) {
       return functions.constantPerIssue(offset);
@@ -151,7 +154,7 @@ public class SqaleXmlLoader {
     return null;
   }
 
-  private Map<String, String> childrenMap(SMInputCursor cursor) throws XMLStreamException {
+  private static Map<String, String> childrenMap(SMInputCursor cursor) throws XMLStreamException {
     Map<String, String> map = Maps.newHashMap();
     while (cursor.getNext() != null) {
       map.put(cursor.getLocalName(), cursor.getElemStringValue());
@@ -159,7 +162,7 @@ public class SqaleXmlLoader {
     return map;
   }
 
-  private InputStreamReader reader(String resourcePath) {
+  private static InputStreamReader reader(String resourcePath) {
     URL url = Resources.getResource(SqaleXmlLoader.class, resourcePath);
     try {
       return Resources.newReaderSupplier(url, Charsets.UTF_8).getInput();
