@@ -27,7 +27,11 @@ import java.lang.annotation.Target;
 /**
  * @deprecated since 2.7. Will be removed without alternative.
  * Since SQ 5.6 LTS, SQALE is not used in our model.
- * Remediation cost should be registered manually directly when registering a rule.
+ * Remediation cost should be registered manually directly when registering a rule, using the following methods from SQ 6.7 LTS API:
+ * <ul>
+ * <li>org.sonar.api.server.rule.RulesDefinition.NewRule.setDebtRemediationFunction(DebtRemediationFunction)</li>
+ * <li>org.sonar.api.server.rule.RulesDefinition.NewRule.setGapDescription(String)</li>
+ * </ul>
  */
 @Deprecated
 @Retention(RetentionPolicy.RUNTIME)

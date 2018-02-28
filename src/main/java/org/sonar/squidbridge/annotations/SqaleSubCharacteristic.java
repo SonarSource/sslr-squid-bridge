@@ -26,7 +26,7 @@ import java.lang.annotation.Target;
 
 /**
  * @deprecated. Will be removed without alternative.
- * Since SQ 5.6 LTS, SQALE is not used in our model.
+ * Since SQ 5.6 LTS, SQALE is not used in our model and sub characteristics are ignored.
  */
 @Deprecated
 @Retention(RetentionPolicy.RUNTIME)

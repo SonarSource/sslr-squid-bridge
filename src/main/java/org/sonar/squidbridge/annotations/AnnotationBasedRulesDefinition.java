@@ -45,10 +45,20 @@ import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
 /**
  * @deprecated since 2.7 without alternative.
  *
- * Responsibility of loading rule metadata into RulesDefinition is let to custom plugins.
- * Most of the SQALE annotations are ignored, and not supported.
+ * Responsibility of loading rule metadata and defining rule definitions is now on (custom) plugin side.
+ * SQALE model is not supported by SonarQube anymore. Consequently, deprecated annotation {@link SqaleSubCharacteristic} is
+ * ignored and won't have any effect.
  *
+ * Other SQALE annotations related to remediation functions are also deprecated. The following methods from SQ 6.7 LTS API should
+ * be used instead:
+ * <ul>
+ * <li>org.sonar.api.server.rule.RulesDefinition.NewRule.setDebtRemediationFunction(DebtRemediationFunction)</li>
+ * <li>org.sonar.api.server.rule.RulesDefinition.NewRule.setGapDescription(String)</li>
+ * </ul>
  *
+ * <hr />
+ * Deprecated use:
+ * <br />
  *
  * Utility class which helps setting up an implementation of {@link RulesDefinition} with a list of
  * rule classes annotated with {@link Rule}, {@link RuleProperty} and SQALE annotations:
