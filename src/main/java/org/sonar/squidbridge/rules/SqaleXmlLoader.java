@@ -84,20 +84,16 @@ public class SqaleXmlLoader {
   }
 
   private void processSubChar(SMInputCursor subCharCursor) throws XMLStreamException {
-    String subCharName = null;
     SMInputCursor subCharChildCursor = subCharCursor.childElementCursor();
     while (subCharChildCursor.getNext() != null) {
       String childName = subCharChildCursor.getLocalName();
-      if ("key".equals(childName)) {
-        subCharName = subCharChildCursor.getElemStringValue();
-      }
       if ("chc".equals(childName)) {
-        processRule(subCharName, subCharChildCursor);
+        processRule(subCharChildCursor);
       }
     }
   }
 
-  private void processRule(String subCharName, SMInputCursor ruleCursor) throws XMLStreamException {
+  private void processRule(SMInputCursor ruleCursor) throws XMLStreamException {
     SMInputCursor ruleChildCursor = ruleCursor.childElementCursor();
     String ruleKey = null;
     String remediationFunction = null;
@@ -124,7 +120,6 @@ public class SqaleXmlLoader {
     }
     NewRule rule = repository.rule(ruleKey);
     if (rule != null) {
-      rule.setDebtSubCharacteristic(subCharName);
       rule.setDebtRemediationFunction(remediationFunction(
         rule.debtRemediationFunctions(), remediationFunction, offset, remediationFactor));
     }

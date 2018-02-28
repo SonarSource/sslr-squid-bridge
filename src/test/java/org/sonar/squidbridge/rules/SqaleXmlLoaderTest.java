@@ -66,7 +66,6 @@ public class SqaleXmlLoaderTest {
     repository.createRule("myRuleKey").setName("name").setHtmlDescription("desc");
     SqaleXmlLoader.load(repository, "/rules/sqale-unknown-function.xml");
     Rule rule = buildRepository().rule("myRuleKey");
-    assertThat(rule.debtSubCharacteristic()).isNull();
     assertThat(rule.debtRemediationFunction()).isNull();
   }
 
@@ -89,8 +88,8 @@ public class SqaleXmlLoaderTest {
   private void assertRemediation(RulesDefinition.Rule rule, Type type, String coeff, String offset) {
     DebtRemediationFunction remediationFunction = rule.debtRemediationFunction();
     assertThat(remediationFunction.type()).isEqualTo(type);
-    assertThat(remediationFunction.coefficient()).isEqualTo(coeff);
-    assertThat(remediationFunction.offset()).isEqualTo(offset);
+    assertThat(remediationFunction.gapMultiplier()).isEqualTo(coeff);
+    assertThat(remediationFunction.baseEffort()).isEqualTo(offset);
   }
 
 }
