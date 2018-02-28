@@ -20,14 +20,13 @@
 package org.sonar.squidbridge;
 
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 import org.mockito.ArgumentCaptor;
-import org.slf4j.Logger;
-
-import java.io.File;
-import java.util.List;
+import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.utils.log.Logger;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.atLeast;
@@ -46,8 +45,8 @@ public class ProgressReportTest {
 
     ProgressReport report = new ProgressReport(ProgressReport.class.getName(), 100, logger, "analyzed");
 
-    File file = mock(File.class);
-    when(file.getAbsolutePath()).thenReturn("foo");
+    InputFile file = mock(InputFile.class);
+    when(file.toString()).thenReturn("foo");
     report.start(ImmutableList.of(file, file));
 
     // Wait for start message
@@ -73,22 +72,21 @@ public class ProgressReportTest {
     }
     assertThat(messages.get(messages.size() - 1)).isEqualTo("2/2" + " source files have been analyzed");
   }
-  
+
   @Test(timeout=5000)
   public void testCancel() throws InterruptedException {
     Logger logger = mock(Logger.class);
 
     ProgressReport report = new ProgressReport(ProgressReport.class.getName(), 100, logger, "analyzed");
-    File file = mock(File.class);
-    when(file.getAbsolutePath()).thenReturn("foo");
+    InputFile file = mock(InputFile.class);
+    when(file.toString()).thenReturn("foo");
     report.start(ImmutableList.of(file, file));
-    
+
     // Wait for start message
     waitForMessage(logger);
-    
+
     report.cancel();
     report.join();
-    
   }
 
   private static void waitForMessage(Logger logger) throws InterruptedException {

@@ -19,12 +19,11 @@
  */
 package org.sonar.squidbridge;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
-
-import java.io.File;
-import java.util.Collection;
+import com.google.common.collect.Iterables;
 import java.util.Iterator;
+import org.sonar.api.batch.fs.InputFile;
+import org.sonar.api.utils.log.Logger;
+import org.sonar.api.utils.log.Loggers;
 
 public class ProgressReport implements Runnable {
 
@@ -32,8 +31,8 @@ public class ProgressReport implements Runnable {
   private final Logger logger;
   private int count;
   private int currentFileNumber = -1;
-  private File currentFile;
-  private Iterator<File> it;
+  private InputFile currentInputFile;
+  private Iterator<InputFile> it;
   private final Thread thread;
   private final String adjective;
   private boolean success = false;
@@ -48,7 +47,7 @@ public class ProgressReport implements Runnable {
   }
 
   public ProgressReport(String threadName, long period, String adjective) {
-    this(threadName, period, LoggerFactory.getLogger(ProgressReport.class), adjective);
+    this(threadName, period, Loggers.get(ProgressReport.class), adjective);
   }
 
   public ProgressReport(String threadName, long period) {
@@ -61,7 +60,7 @@ public class ProgressReport implements Runnable {
       try {
         Thread.sleep(period);
         synchronized (this) {
-          log(currentFileNumber + "/" + count + " files " + adjective + ", current file: " + currentFile.getAbsolutePath());
+          log(currentFileNumber + "/" + count + " files " + adjective + ", current file: " + currentInputFile);
         }
       } catch (InterruptedException e) {
         break;
@@ -74,9 +73,9 @@ public class ProgressReport implements Runnable {
     }
   }
 
-  public synchronized void start(Collection<File> files) {
-    count = files.size();
-    it = files.iterator();
+  public synchronized void start(Iterable<InputFile> inputFiles) {
+    count = Iterables.size(inputFiles);
+    it = inputFiles.iterator();
 
     nextFile();
 
@@ -87,7 +86,7 @@ public class ProgressReport implements Runnable {
   public synchronized void nextFile() {
     if (it.hasNext()) {
       currentFileNumber++;
-      currentFile = it.next();
+      currentInputFile = it.next();
     }
   }
 
