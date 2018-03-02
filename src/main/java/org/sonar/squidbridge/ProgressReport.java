@@ -21,7 +21,6 @@ package org.sonar.squidbridge;
 
 import com.google.common.collect.Iterables;
 import java.util.Iterator;
-import org.sonar.api.batch.fs.InputFile;
 import org.sonar.api.utils.log.Logger;
 import org.sonar.api.utils.log.Loggers;
 
@@ -31,8 +30,8 @@ public class ProgressReport implements Runnable {
   private final Logger logger;
   private int count;
   private int currentFileNumber = -1;
-  private InputFile currentInputFile;
-  private Iterator<InputFile> it;
+  private String currentFilename;
+  private Iterator<String> it;
   private final Thread thread;
   private final String adjective;
   private boolean success = false;
@@ -60,7 +59,7 @@ public class ProgressReport implements Runnable {
       try {
         Thread.sleep(period);
         synchronized (this) {
-          log(currentFileNumber + "/" + count + " files " + adjective + ", current file: " + currentInputFile);
+          log(currentFileNumber + "/" + count + " files " + adjective + ", current file: " + currentFilename);
         }
       } catch (InterruptedException e) {
         break;
@@ -73,9 +72,9 @@ public class ProgressReport implements Runnable {
     }
   }
 
-  public synchronized void start(Iterable<InputFile> inputFiles) {
-    count = Iterables.size(inputFiles);
-    it = inputFiles.iterator();
+  public synchronized void start(Iterable<String> filenames) {
+    count = Iterables.size(filenames);
+    it = filenames.iterator();
 
     nextFile();
 
@@ -86,7 +85,7 @@ public class ProgressReport implements Runnable {
   public synchronized void nextFile() {
     if (it.hasNext()) {
       currentFileNumber++;
-      currentInputFile = it.next();
+      currentFilename = it.next();
     }
   }
 

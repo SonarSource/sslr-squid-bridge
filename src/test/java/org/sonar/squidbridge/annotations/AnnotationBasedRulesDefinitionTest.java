@@ -147,6 +147,18 @@ public class AnnotationBasedRulesDefinitionTest {
   }
 
   @Test
+  public void sqale_sub_characteristic_is_ignored() throws Exception {
+    @Rule(key = "key1", name = "name1", description = "description1")
+    @SqaleSubCharacteristic("Some stuff")
+    class RuleClass {
+    }
+
+    RulesDefinition.Rule rule = buildSingleRuleRepository(RuleClass.class);
+    // method is deprecated and will be removed in SQ, but not used at run time
+    assertThat(rule.debtSubCharacteristic()).isNull();
+  }
+
+  @Test
   public void class_with_nosqale_annotation() throws Exception {
 
     @Rule(key = "key1", name = "name1", description = "description1")
