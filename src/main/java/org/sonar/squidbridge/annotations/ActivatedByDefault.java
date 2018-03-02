@@ -24,6 +24,12 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @deprecated since 2.7. Will be removed without alternative.
+ * Rules should be assigned to dedicated profiles.And plugins should define quality profiles 
+ * with org.sonar.api.server.profile.BuiltInQualityProfilesDefinition.
+ */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface ActivatedByDefault {

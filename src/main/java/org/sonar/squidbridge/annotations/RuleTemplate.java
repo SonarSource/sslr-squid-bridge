@@ -24,6 +24,16 @@ import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
+/**
+ * @deprecated since 2.7. Will be removed without alternative.
+ * Rule template should be manually registered as being template rule, when defining repositories.
+ *
+ * In order to register a rule as being rule template, the following method from SQ 6.7 LTS API should be used:
+ * <ul>
+ * <li>org.sonar.api.server.rule.RulesDefinition.NewRule.setTemplate(boolean)</li>
+ * </ul>
+ */
+@Deprecated
 @Retention(RetentionPolicy.RUNTIME)
 @Target(ElementType.TYPE)
 public @interface RuleTemplate {

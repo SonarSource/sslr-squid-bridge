@@ -43,6 +43,23 @@ import org.sonar.check.RuleProperty;
 import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
 
 /**
+ * @deprecated since 2.7 without alternative.
+ *
+ * Responsibility of loading rule metadata and defining rule definitions is now on (custom) plugin side.
+ * SQALE model is not supported by SonarQube anymore. Consequently, deprecated annotation {@link SqaleSubCharacteristic} is
+ * ignored and won't have any effect.
+ *
+ * Other SQALE annotations related to remediation functions are also deprecated. The following methods from SQ 6.7 LTS API should
+ * be used instead:
+ * <ul>
+ * <li>org.sonar.api.server.rule.RulesDefinition.NewRule.setDebtRemediationFunction(DebtRemediationFunction)</li>
+ * <li>org.sonar.api.server.rule.RulesDefinition.NewRule.setGapDescription(String)</li>
+ * </ul>
+ *
+ * <hr />
+ * Deprecated use:
+ * <br />
+ *
  * Utility class which helps setting up an implementation of {@link RulesDefinition} with a list of
  * rule classes annotated with {@link Rule}, {@link RuleProperty} and SQALE annotations:
  * <ul>
@@ -63,8 +80,8 @@ import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
  * /org/sonar/l10n/[languageKey]/rules/[repositoryKey]/ruleKey.html</li>
  * </ul>
  *
- * @since 2.5
  */
+@Deprecated
 public class AnnotationBasedRulesDefinition {
 
   private final NewRepository repository;
@@ -109,13 +126,13 @@ public class AnnotationBasedRulesDefinition {
     setupExternalNames(newRules);
   }
 
-  private boolean isSqaleAnnotated(Class<?> ruleClass) {
+  private static boolean isSqaleAnnotated(Class<?> ruleClass) {
     return getSqaleSubCharAnnotation(ruleClass) != null || getNoSqaleAnnotation(ruleClass) != null;
   }
 
   @VisibleForTesting
   NewRule newRule(Class<?> ruleClass, boolean failIfNoExplicitKey) {
-    org.sonar.check.Rule ruleAnnotation = AnnotationUtils.getAnnotation(ruleClass, org.sonar.check.Rule.class);
+    Rule ruleAnnotation = AnnotationUtils.getAnnotation(ruleClass, Rule.class);
     if (ruleAnnotation == null) {
       throw new IllegalArgumentException("No Rule annotation was found on " + ruleClass);
     }
@@ -154,7 +171,7 @@ public class AnnotationBasedRulesDefinition {
     }
   }
 
-  private void setupSqaleModel(NewRule rule, Class<?> ruleClass) {
+  private static void setupSqaleModel(NewRule rule, Class<?> ruleClass) {
     SqaleSubCharacteristic subChar = getSqaleSubCharAnnotation(ruleClass);
     if (subChar != null) {
       rule.setDebtSubCharacteristic(subChar.value());
@@ -184,11 +201,11 @@ public class AnnotationBasedRulesDefinition {
     }
   }
 
-  private SqaleSubCharacteristic getSqaleSubCharAnnotation(Class<?> ruleClass) {
+  private static SqaleSubCharacteristic getSqaleSubCharAnnotation(Class<?> ruleClass) {
     return AnnotationUtils.getAnnotation(ruleClass, SqaleSubCharacteristic.class);
   }
 
-  private NoSqale getNoSqaleAnnotation(Class<?> ruleClass) {
+  private static NoSqale getNoSqaleAnnotation(Class<?> ruleClass) {
     return AnnotationUtils.getAnnotation(ruleClass, NoSqale.class);
   }
 

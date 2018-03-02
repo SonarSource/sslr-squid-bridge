@@ -23,12 +23,16 @@ import com.google.common.annotations.Beta;
 import com.google.common.annotations.VisibleForTesting;
 import com.google.common.base.Charsets;
 import com.google.common.io.Resources;
+import java.io.IOException;
+import java.net.URL;
 import org.sonar.api.server.rule.RulesDefinition.NewRepository;
 import org.sonar.api.server.rule.RulesDefinition.NewRule;
 
-import java.io.IOException;
-import java.net.URL;
-
+/**
+ * @deprecated since 2.7. will be removed without alternatives
+ * Responsibility of loading rule description is let to plugins
+ */
+@Deprecated
 @Beta
 public class ExternalDescriptionLoader {
 
