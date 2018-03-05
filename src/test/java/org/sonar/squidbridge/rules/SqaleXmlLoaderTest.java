@@ -19,7 +19,6 @@
  */
 package org.sonar.squidbridge.rules;
 
-import org.junit.Assert;
 import org.junit.Test;
 import org.sonar.api.server.debt.DebtRemediationFunction;
 import org.sonar.api.server.debt.DebtRemediationFunction.Type;
@@ -66,12 +65,8 @@ public class SqaleXmlLoaderTest {
   public void unknown_remediation_function() throws Exception {
     repository.createRule("myRuleKey").setName("name").setHtmlDescription("desc");
     SqaleXmlLoader.load(repository, "/rules/sqale-unknown-function.xml");
-    try {
-      buildRepository();
-      Assert.fail("expected an exception");
-    } catch (IllegalStateException e) {
-      assertThat(e.getMessage()).contains("myRuleKey");
-    }
+    Rule rule = buildRepository().rule("myRuleKey");
+    assertThat(rule.debtRemediationFunction()).isNull();
   }
 
   @Test
@@ -93,8 +88,8 @@ public class SqaleXmlLoaderTest {
   private void assertRemediation(RulesDefinition.Rule rule, Type type, String coeff, String offset) {
     DebtRemediationFunction remediationFunction = rule.debtRemediationFunction();
     assertThat(remediationFunction.type()).isEqualTo(type);
-    assertThat(remediationFunction.coefficient()).isEqualTo(coeff);
-    assertThat(remediationFunction.offset()).isEqualTo(offset);
+    assertThat(remediationFunction.gapMultiplier()).isEqualTo(coeff);
+    assertThat(remediationFunction.baseEffort()).isEqualTo(offset);
   }
 
 }

@@ -99,35 +99,28 @@ public class AnnotationBasedRulesDefinition {
     this.repository = repository;
     this.languageKey = languageKey;
     String externalDescriptionBasePath = String.format("/org/sonar/l10n/%s/rules/%s", languageKey, repository.key());
-    this.externalDescriptionLoader = new ExternalDescriptionLoader(repository, externalDescriptionBasePath);
+    this.externalDescriptionLoader = new ExternalDescriptionLoader(externalDescriptionBasePath);
   }
 
-  public void addRuleClasses(boolean failIfSqaleNotFound, Iterable<Class> ruleClasses) {
-    addRuleClasses(failIfSqaleNotFound, true, ruleClasses);
+  public void addRuleClasses(Iterable<Class> ruleClasses) {
+    addRuleClasses(true, ruleClasses);
   }
 
-  public void addRuleClasses(boolean failIfSqaleNotFound, boolean failIfNoExplicitKey, Iterable<Class> ruleClasses) {
+  public void addRuleClasses(boolean failIfNoExplicitKey, Iterable<Class> ruleClasses) {
     new RulesDefinitionAnnotationLoader().load(repository, Iterables.toArray(ruleClasses, Class.class));
     List<NewRule> newRules = Lists.newArrayList();
     for (Class<?> ruleClass : ruleClasses) {
       NewRule rule = newRule(ruleClass, failIfNoExplicitKey);
       externalDescriptionLoader.addHtmlDescription(rule);
       rule.setTemplate(AnnotationUtils.getAnnotation(ruleClass, RuleTemplate.class) != null);
-      if (!isSqaleAnnotated(ruleClass) && failIfSqaleNotFound) {
-        throw new IllegalArgumentException("No SqaleSubCharacteristic annotation was found on " + ruleClass);
-      }
       try {
-        setupSqaleModel(rule, ruleClass);
+        setupRemediationFunction(rule, ruleClass);
       } catch (RuntimeException e) {
         throw new IllegalArgumentException("Could not setup SQALE model on " + ruleClass, e);
       }
       newRules.add(rule);
     }
     setupExternalNames(newRules);
-  }
-
-  private static boolean isSqaleAnnotated(Class<?> ruleClass) {
-    return getSqaleSubCharAnnotation(ruleClass) != null || getNoSqaleAnnotation(ruleClass) != null;
   }
 
   @VisibleForTesting
@@ -171,16 +164,10 @@ public class AnnotationBasedRulesDefinition {
     }
   }
 
-  private static void setupSqaleModel(NewRule rule, Class<?> ruleClass) {
-    SqaleSubCharacteristic subChar = getSqaleSubCharAnnotation(ruleClass);
-    if (subChar != null) {
-      rule.setDebtSubCharacteristic(subChar.value());
-    }
-
+  private static void setupRemediationFunction(NewRule rule, Class<?> ruleClass) {
     SqaleConstantRemediation constant = AnnotationUtils.getAnnotation(ruleClass, SqaleConstantRemediation.class);
     SqaleLinearRemediation linear = AnnotationUtils.getAnnotation(ruleClass, SqaleLinearRemediation.class);
-    SqaleLinearWithOffsetRemediation linearWithOffset =
-        AnnotationUtils.getAnnotation(ruleClass, SqaleLinearWithOffsetRemediation.class);
+    SqaleLinearWithOffsetRemediation linearWithOffset = AnnotationUtils.getAnnotation(ruleClass, SqaleLinearWithOffsetRemediation.class);
 
     Set<Annotation> remediations = Sets.newHashSet(constant, linear, linearWithOffset);
     if (Iterables.size(Iterables.filter(remediations, Predicates.notNull())) > 1) {
@@ -192,21 +179,12 @@ public class AnnotationBasedRulesDefinition {
     }
     if (linear != null) {
       rule.setDebtRemediationFunction(rule.debtRemediationFunctions().linear(linear.coeff()));
-      rule.setEffortToFixDescription(linear.effortToFixDescription());
+      rule.setGapDescription(linear.effortToFixDescription());
     }
     if (linearWithOffset != null) {
       rule.setDebtRemediationFunction(
           rule.debtRemediationFunctions().linearWithOffset(linearWithOffset.coeff(), linearWithOffset.offset()));
-      rule.setEffortToFixDescription(linearWithOffset.effortToFixDescription());
+      rule.setGapDescription(linearWithOffset.effortToFixDescription());
     }
   }
-
-  private static SqaleSubCharacteristic getSqaleSubCharAnnotation(Class<?> ruleClass) {
-    return AnnotationUtils.getAnnotation(ruleClass, SqaleSubCharacteristic.class);
-  }
-
-  private static NoSqale getNoSqaleAnnotation(Class<?> ruleClass) {
-    return AnnotationUtils.getAnnotation(ruleClass, NoSqale.class);
-  }
-
 }

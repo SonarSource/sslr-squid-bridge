@@ -20,20 +20,17 @@
 package org.sonar.squidbridge;
 
 import com.google.common.collect.ImmutableList;
+import java.util.List;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.Timeout;
 import org.mockito.ArgumentCaptor;
-import org.slf4j.Logger;
-
-import java.io.File;
-import java.util.List;
+import org.sonar.api.utils.log.Logger;
 
 import static org.fest.assertions.Assertions.assertThat;
 import static org.mockito.Mockito.atLeast;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
 
 public class ProgressReportTest {
 
@@ -46,9 +43,7 @@ public class ProgressReportTest {
 
     ProgressReport report = new ProgressReport(ProgressReport.class.getName(), 100, logger, "analyzed");
 
-    File file = mock(File.class);
-    when(file.getAbsolutePath()).thenReturn("foo");
-    report.start(ImmutableList.of(file, file));
+    report.start(ImmutableList.of("foo.java", "foo.java"));
 
     // Wait for start message
     waitForMessage(logger);
@@ -69,26 +64,23 @@ public class ProgressReportTest {
     assertThat(messages.size()).isGreaterThanOrEqualTo(3);
     assertThat(messages.get(0)).isEqualTo("2 source files to be analyzed");
     for (int i = 1; i < messages.size() - 1; i++) {
-      assertThat(messages.get(i)).isEqualTo("0/2 files analyzed, current file: foo");
+      assertThat(messages.get(i)).isEqualTo("0/2 files analyzed, current file: foo.java");
     }
     assertThat(messages.get(messages.size() - 1)).isEqualTo("2/2" + " source files have been analyzed");
   }
-  
+
   @Test(timeout=5000)
   public void testCancel() throws InterruptedException {
     Logger logger = mock(Logger.class);
 
     ProgressReport report = new ProgressReport(ProgressReport.class.getName(), 100, logger, "analyzed");
-    File file = mock(File.class);
-    when(file.getAbsolutePath()).thenReturn("foo");
-    report.start(ImmutableList.of(file, file));
-    
+    report.start(ImmutableList.of("foo.java", "foo.java"));
+
     // Wait for start message
     waitForMessage(logger);
-    
+
     report.cancel();
     report.join();
-    
   }
 
   private static void waitForMessage(Logger logger) throws InterruptedException {
