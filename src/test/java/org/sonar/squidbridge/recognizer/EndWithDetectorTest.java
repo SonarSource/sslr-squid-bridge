@@ -1,6 +1,6 @@
 /*
  * SSLR Squid Bridge
- * Copyright (C) 2010-2018 SonarSource SA
+ * Copyright (C) 2010-2019 SonarSource SA
  * mailto:info AT sonarsource DOT com
  *
  * This program is free software; you can redistribute it and/or
