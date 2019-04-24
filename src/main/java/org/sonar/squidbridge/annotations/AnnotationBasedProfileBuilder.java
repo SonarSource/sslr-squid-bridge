@@ -30,9 +30,8 @@ import org.sonar.api.utils.ValidationMessages;
  * @deprecated since 2.7. Will be removed without alternatives.
  * Plugins should define quality profiles with org.sonar.api.server.profile.BuiltInQualityProfilesDefinition.
  *
- * <hr />
- * Deprecated use:
- * <br />
+ *
+ * <p>Old documentation:</p>
  *
  * Utility class to build an instance of {@link RulesProfile} based on a list of classes annotated
  * with {@link ActivatedByDefault}. It can be used to implement the <code>createProfile</code>
