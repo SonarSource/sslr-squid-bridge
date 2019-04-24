@@ -56,9 +56,7 @@ import org.sonar.squidbridge.rules.ExternalDescriptionLoader;
  * <li>org.sonar.api.server.rule.RulesDefinition.NewRule.setGapDescription(String)</li>
  * </ul>
  *
- * <hr />
- * Deprecated use:
- * <br />
+ * <p>Deprecated documentation:</p>
  *
  * Utility class which helps setting up an implementation of {@link RulesDefinition} with a list of
  * rule classes annotated with {@link Rule}, {@link RuleProperty} and SQALE annotations:
