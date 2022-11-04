@@ -4,15 +4,24 @@ gcp_credentials: |
 
 env:
   CIRRUS_CLONE_DEPTH: "20"
+  CIRRUS_VAULT_AUTH_PATH: jwt-cirrusci
+  CIRRUS_VAULT_ROLE: cirrusci-${CIRRUS_REPO_OWNER}-${CIRRUS_REPO_NAME}
+  CIRRUS_VAULT_URL: https://vault.sonar.build:8200
   # Possible values for ARTIFACTORY_DEPLOY_REPO: sonarsource-private-qa, sonarsource-public-qa
+  ARTIFACTORY_DEPLOY_PASSWORD: VAULT[development/artifactory/token/SonarSource-sslr-squid-bridge-qa-deployer access_token]
   ARTIFACTORY_DEPLOY_REPO: sonarsource-public-qa
   ARTIFACTORY_DEPLOY_USERNAME: vault-sonarsource-sslr-squid-bridge-qa-deployer
+  ARTIFACTORY_URL: VAULT[development/kv/data/repox data.url]
+  BURGR_PASSWORD: VAULT[development/kv/data/burgr data.cirrus_password]
+  BURGR_URL: VAULT[development/kv/data/burgr data.url]
+  BURGR_USERNAME: VAULT[development/kv/data/burgr data.cirrus_username]
   # Use bash (instead of sh on linux or cmd.exe on windows)
   CIRRUS_SHELL: bash
-
-vault: &VAULT
-  vault_script:
-    - vault.sh
+  GCF_ACCESS_TOKEN: VAULT[development/kv/data/promote data.token]
+  GITHUB_TOKEN: VAULT[development/github/token/SonarSource-sslr-squid-bridge-ro token]
+  PGP_PASSPHRASE: VAULT[development/kv/data/sign data.passphrase]
+  PROMOTE_URL: VAULT[development/kv/data/promote data.url]
+  SONAR_TOKEN: VAULT[development/kv/data/next data.token]
 
 container_definition: &CONTAINER_DEFINITION
   image: eu.gcr.io/release-engineering-ci-prod/base:j11-latest
@@ -40,7 +49,7 @@ build_task:
     SONAR_HOST_URL: https://next.sonarqube.com/sonarqube
     # allow deployment of pull request artifacts to repox
     DEPLOY_PULL_REQUEST: "true"
-  <<: [*VAULT, *ONLY_SONARSOURCE_QA]
+  <<: *ONLY_SONARSOURCE_QA
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   build_script:
@@ -58,7 +67,7 @@ promote_task:
   env:
     # artifacts that will have downloadable links in burgr
     ARTIFACTS: 'org.sonarsource.sslr-squid-bridge:sslr-squid-bridge:jar'
-  <<: [*VAULT, *ONLY_SONARSOURCE_QA]
+  <<: *ONLY_SONARSOURCE_QA
   maven_cache:
     folder: ${CIRRUS_WORKING_DIR}/.m2/repository
   script: cirrus_promote_maven
